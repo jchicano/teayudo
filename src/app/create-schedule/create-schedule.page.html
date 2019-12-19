@@ -7,10 +7,47 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-text color="dark">
-    <p>8 tarjetas</p>
+    <p>{{ itemQuantity.length }} tarjetas</p>
   </ion-text>
+  <!-- <ion-item-group *ngFor="let item of itemQuantity; let i=index"> -->
+    <ion-card *ngFor="let item of itemQuantity; let i=index">
+      <ion-card-header>
+        <ion-card-title>{{ i+1 }}º tarjeta</ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="true"> <!--TODO -->
+        <ion-grid>
+          <ion-row>
+            <ion-col size="9">
+              <ion-item>
+                <ion-label position="floating">Título</ion-label>
+                <ion-input></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Pictograma</ion-label>
+                <ion-input></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="fixed">Color</ion-label>
+                <input style="width: 5em;" [(colorPicker)]="color" [style.background]="color"/>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Duración (minutos)</ion-label>
+                <ion-input type="number"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-text-center" size="3">
+              <app-confirm-checkbox customId="{{ i }}"></app-confirm-checkbox>
+              <p style="font-size: 3.5vmin;">Confirmar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+  
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="add" (click)="addCard()"></ion-icon>

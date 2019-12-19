@@ -20,7 +20,9 @@ export class ListPage implements OnInit {
     'build'
   ];
   public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor() {
+  constructor(
+
+  ) {
     for (let i = 1; i < 11; i++) {
       this.items.push({
         title: 'Item ' + i,
