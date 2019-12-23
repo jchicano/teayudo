@@ -1,6 +1,6 @@
 <label class="toggleButton">
-  <input type="checkbox" *ngIf="!isChecked">
-  <input type="checkbox" *ngIf="isChecked" checked>
+  <input type="checkbox" *ngIf="!isChecked" (click)="emitValue()">
+  <input type="checkbox" *ngIf="isChecked" (click)="emitValue()" checked>
   <div>
     <svg viewBox="0 0 44 44">
       <path
@@ -9,4 +9,3 @@
     </svg>
   </div>
 </label>
-<p>checked: {{isChecked}}</p>

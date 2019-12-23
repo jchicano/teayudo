@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Elige un color</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-list>
+    <ion-radio-group allow-empty-selection> <!--TODO empty selection wtf-->
+      <ion-item *ngFor="let colorObj of colorS.colorList">
+        <ion-label>{{ colorObj.name }}</ion-label>
+        <ion-icon slot="start" name="color-fill" color="{{ colorObj.value }}"></ion-icon>
+        <ion-radio (ionSelect)="radioChecked(colorObj.value)" slot="end" color=""></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>

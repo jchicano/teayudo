@@ -1,3 +1,4 @@
+import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
 import { ComponentsModule } from './../components/components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -5,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CreateSchedulePageRoutingModule } from './create-schedule-routing.module';
 import { CreateSchedulePage } from './create-schedule.page';
-import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   imports: [
@@ -13,9 +13,9 @@ import { ColorPickerModule } from 'ngx-color-picker';
     FormsModule,
     IonicModule,
     CreateSchedulePageRoutingModule,
-    ComponentsModule,
-    ColorPickerModule
+    ComponentsModule
   ],
-  declarations: [CreateSchedulePage]
+  declarations: [CreateSchedulePage, ColorsModalPage],
+  entryComponents: [ColorsModalPage]
 })
 export class CreateSchedulePageModule {}

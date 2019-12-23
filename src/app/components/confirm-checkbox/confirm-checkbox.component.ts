@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-checkbox',
@@ -7,18 +7,24 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ConfirmCheckboxComponent implements OnInit {
 
-  @Input()
-  public customId: number;
-  @Input()
-  public isChecked: boolean;
+  @Input() public customId: number;
+  @Input() public isChecked: boolean;
+  @Output() public typeChanged = new EventEmitter<string>();
+
+  // Funcion que manda el valor del checkbox
+  emitValue() {
+    // NOTE https://stackoverflow.com/a/50837509/10387022
+    this.isChecked=!this.isChecked;
+    this.typeChanged.emit(this.isChecked+'-'+this.customId);
+  }
+
 
   constructor() {
     this.isChecked = false;
   }
 
   ngOnInit() {
-    console.log("Component id: " + this.customId);
-    console.log("Component checked: " + this.customId);
+    console.log('Component id: ' + this.customId + '. Component checked: ' + this.isChecked);
   }
 
 }

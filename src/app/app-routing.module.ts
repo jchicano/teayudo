@@ -19,6 +19,12 @@ const routes: Routes = [
     path: 'create',
     loadChildren: () => import('./create-schedule/create-schedule.module').then( m => m.CreateSchedulePageModule)
   }
+  /*
+  {
+    path: 'colors-modal',
+    loadChildren: () => import('./modals/colors-modal/colors-modal.module').then( m => m.ColorsModalPageModule)
+  }
+  */
 ];
 
 @NgModule({
