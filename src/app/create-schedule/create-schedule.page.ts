@@ -1,6 +1,7 @@
+import { AlertService } from './../services/alert.service';
 import { card } from './../model/card';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -10,98 +11,60 @@ import { ModalController } from '@ionic/angular';
 })
 export class CreateSchedulePage implements OnInit {
 
-  public itemQuantity: number[];
+  public scheduleTitle: string;
   public cardsChecker: string[];
-  public colorForCard: string[];
   public cardList: card[];
-  public cardsTitles: string[];
 
-  value = "2019-09-19 1:00:00";
-
-  customPickerOptions = {
-    buttons: [
-      {
-        text: 'Cancelar',
-        role: 'cancel',
-        handler: (e) => {
-          // I want to set initial datetime here
-          // when the picker is cancelled.
-          console.log('cancelled');
-          console.log(e);
-          this.value = "10:00";
-        }
-      },
-      {
-        text: '½ hora',
-        handler: ev => {
-          console.log(ev);
-          this.value = "00:30";
-        }
-      },
-      {
-        text: 'OK',
-        handler: ev => {
-          console.log(ev);
-        }
-      }
-    ]
-  };
-  
   constructor(
-    private modalController: ModalController
+    private modalController: ModalController,
+    private alertS: AlertService
   ) {
-    this.itemQuantity = [];
+    this.scheduleTitle = '';
     this.cardsChecker = [];
-    this.colorForCard = [];
     this.cardList = [];
-    this.cardsTitles = [];
   }
 
   ngOnInit() {
   }
 
+//=============================================================================
+// Funcion que se llama cuando se hace click en el boton flotante
+//=============================================================================
   addCard(): void {
     console.log('Click FAB');
-    this.itemQuantity.push(1); // TODO push del tipo tarjeta cuando lo cargue de firebase?
     let newCard: card = {
       title: '',
       pictogram: '',
       color: '',
-      duration: '',
+      duration: new Date('2020-01-01 1:00:00').toISOString(),
       confirmed: false
     };
     this.cardList.push(newCard);
   }
 
+//=============================================================================
+// Funcion que recoje el valor que manda el componente confirm-checkbox
+//=============================================================================
   onValueEmitted(val: string) {
     // do something with 'val'
-    console.log(val);
-    // console.log('uno: '+val.split('-')[1]);
-    console.log('Tengo que poner: '+val.split('-')[0]);
     let index = val.split('-')[1]; // extract after '-' -> id
     let value = val.split('-')[0]; // extract before '-' -> boolean
+    // Tengo que usar este array porque accediendo al array de objetos cardList desde la vista no funciona bien
     this.cardsChecker[index] = val;
     this.cardList[index].confirmed = value;
-    console.log('Esta puesto:');
-    console.log(this.cardList[0].confirmed);
   }
 
-  async showColorsModal() {
-    const modal = await this.modalController.create({
-      component: ColorsModalPage
-    });
-    return await modal.present();
-  }
-
-  async openModalWithData(card_index: string) {
+//=============================================================================
+// Para abrir el modal de colores
+//=============================================================================
+  async openColorsModalWithData(card_index: string) {
     const modal = await this.modalController.create({
       component: ColorsModalPage
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.colorForCard[card_index] = dataReturned.data;
-      this.setCardColor(card_index, dataReturned.data);
+      this.cardList[card_index].color = dataReturned.data;
       console.log('Color received: ' + dataReturned);
     });
 
@@ -112,24 +75,27 @@ export class CreateSchedulePage implements OnInit {
   }
 
 //=============================================================================
-// comment
+// Funcion que se llama desde el boton de guardar horario
 //=============================================================================
   saveCards() {
     console.log('Guardando tarjetas');
+    let cardsWithoutConfirmation: boolean = false;
     this.cardList.forEach(element => {
       console.log(element);
+      alert(element.duration);
       if(!element.confirmed) {
-        
+        cardsWithoutConfirmation = true;
       }
     });
-  }
-
-  setCardTitle(index: string) {
-    this.cardList[index].title = this.cardsTitles[index];
-  }
-
-  setCardColor(index: string, color) {
-    this.cardList[index].color = color;
+    if(cardsWithoutConfirmation) {
+      this.alertS.presentAlert('Guardar tarjetas','','Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
+    }
+    else if(this.cardList.length === 0){
+      this.alertS.presentAlert('Guardar tarjetas','','No hay tarjetas creadas');
+    }
+    else {
+      // TODO guardar en firebase! :)
+    }
   }
 
 }
