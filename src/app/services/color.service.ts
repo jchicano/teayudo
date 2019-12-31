@@ -9,7 +9,7 @@ export class ColorService {
 
   constructor() {
     this.initializeColorList();
-}
+  }
 
   private initializeColorList() {
     this.colorList = [
