@@ -21,6 +21,10 @@ const routes: Routes = [
   }
   /*
   {
+    path: 'icons-modal',
+    loadChildren: () => import('./modals/icons-modal/icons-modal.module').then( m => m.IconsModalPageModule)
+  }
+  {
     path: 'colors-modal',
     loadChildren: () => import('./modals/colors-modal/colors-modal.module').then( m => m.ColorsModalPageModule)
   }

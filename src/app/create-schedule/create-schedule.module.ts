@@ -1,3 +1,4 @@
+import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
 import { ComponentsModule } from './../components/components.module';
 import { NgModule } from '@angular/core';
@@ -15,7 +16,7 @@ import { CreateSchedulePage } from './create-schedule.page';
     CreateSchedulePageRoutingModule,
     ComponentsModule
   ],
-  declarations: [CreateSchedulePage, ColorsModalPage],
-  entryComponents: [ColorsModalPage]
+  declarations: [CreateSchedulePage, ColorsModalPage, IconsModalPage],
+  entryComponents: [ColorsModalPage, IconsModalPage]
 })
 export class CreateSchedulePageModule {}

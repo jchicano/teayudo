@@ -1,3 +1,4 @@
+import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
 import { AlertService } from './../services/alert.service';
 import { card } from './../model/card';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
@@ -27,9 +28,9 @@ export class CreateSchedulePage implements OnInit {
   ngOnInit() {
   }
 
-//=============================================================================
-// Funcion que se llama cuando se hace click en el boton flotante
-//=============================================================================
+  //=============================================================================
+  // Funcion que se llama cuando se hace click en el boton flotante
+  //=============================================================================
   addCard(): void {
     console.log('Click FAB');
     let newCard: card = {
@@ -42,9 +43,9 @@ export class CreateSchedulePage implements OnInit {
     this.cardList.push(newCard);
   }
 
-//=============================================================================
-// Funcion que recoje el valor que manda el componente confirm-checkbox
-//=============================================================================
+  //=============================================================================
+  // Funcion que recoje el valor que manda el componente confirm-checkbox
+  //=============================================================================
   onValueEmitted(val: string) {
     // do something with 'val'
     let index = val.split('-')[1]; // extract after '-' -> id
@@ -54,9 +55,9 @@ export class CreateSchedulePage implements OnInit {
     this.cardList[index].confirmed = value;
   }
 
-//=============================================================================
-// Para abrir el modal de colores
-//=============================================================================
+  //=============================================================================
+  // Para abrir el modal de colores
+  //=============================================================================
   async openColorsModalWithData(card_index: string) {
     const modal = await this.modalController.create({
       component: ColorsModalPage
@@ -69,29 +70,50 @@ export class CreateSchedulePage implements OnInit {
     });
 
     return await modal.present()
-    .then(() => {
-      // triggered when opening the modal
-    });
+      .then(() => {
+        // triggered when opening the modal
+      });
   }
 
-//=============================================================================
-// Funcion que se llama desde el boton de guardar horario
-//=============================================================================
+  //=============================================================================
+  // Para abrir el modal de colores
+  //=============================================================================
+  async openIconsModalWithData(card_index: string) {
+    const modal = await this.modalController.create({
+      component: IconsModalPage
+    });
+
+    modal.onWillDismiss().then((dataReturned) => {
+      // triggered when about to close the modal
+      this.cardList[card_index].pictogram = dataReturned.data;
+      console.log('Icon received: ' + dataReturned);
+      console.log('Revisar aqui TODO2');
+    });
+
+    return await modal.present()
+      .then(() => {
+        // triggered when opening the modal
+      });
+  }
+
+  //=============================================================================
+  // Funcion que se llama desde el boton de guardar horario
+  //=============================================================================
   saveCards() {
     console.log('Guardando tarjetas');
     let cardsWithoutConfirmation: boolean = false;
     this.cardList.forEach(element => {
       console.log(element);
       alert(element.duration);
-      if(!element.confirmed) {
+      if (!element.confirmed) {
         cardsWithoutConfirmation = true;
       }
     });
-    if(cardsWithoutConfirmation) {
-      this.alertS.presentAlert('Guardar tarjetas','','Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
+    if (cardsWithoutConfirmation) {
+      this.alertS.presentAlert('Guardar tarjetas', '', 'Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
     }
-    else if(this.cardList.length === 0){
-      this.alertS.presentAlert('Guardar tarjetas','','No hay tarjetas creadas');
+    else if (this.cardList.length === 0) {
+      this.alertS.presentAlert('Guardar tarjetas', '', 'No hay tarjetas creadas');
     }
     else {
       // TODO guardar en firebase! :)
