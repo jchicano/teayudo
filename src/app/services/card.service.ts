@@ -11,11 +11,9 @@ import { firestore } from 'firebase';
 export class CardService {
 
   myCollection: AngularFirestoreCollection;
-  db: AngularFirestore;
 
   constructor(private fireStore: AngularFirestore) {
     this.myCollection = fireStore.collection<any>(environment.collection);
-    this.db = fireStore.collection<any>(environment.collection);
   }
 
   readCardSimple(): Observable<firebase.firestore.QuerySnapshot> {
