@@ -1,5 +1,9 @@
+import { environment } from 'src/environments/environment';
+import { AlertService } from './../services/ui/alert.service';
+import { CardService } from './../services/card.service';
+import { LoadingService } from './../services/ui/loading.service';
+import { ToastService } from './../services/ui/toast.service';
 import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
-import { AlertService } from './../services/alert.service';
 import { card } from './../model/card';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
@@ -18,7 +22,10 @@ export class CreateSchedulePage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private alertS: AlertService
+    private cardS: CardService,
+    private alertS: AlertService,
+    private toastS: ToastService,
+    private loadingS: LoadingService
   ) {
     this.scheduleTitle = '';
     this.cardsChecker = [];
@@ -115,6 +122,29 @@ export class CreateSchedulePage implements OnInit {
     }
     else {
       // TODO guardar en firebase! :)
+      this.loadingS.show('Guardando...');
+
+
+      this.cardS.createCollection()
+      .then((ok) => {
+        console.log('creacion ok:');
+        console.log(ok.id); // Obtengo el id del documento guardado
+        this.cardS.addArray(ok.id, this.cardList)
+          .then((data) => {
+            console.log('guardado ok:');
+            this.toastS.showOnceToast('Nota guardada - '+data);
+          })
+          .catch((err) => {
+            this.toastS.showOnceToast('Error al guardar las tarjetas');
+          })
+          .finally(() => {
+            this.loadingS.close();
+          });
+      })
+      .catch((err) => {
+        this.toastS.showOnceToast('Error al guardar'); // TODO
+        console.log(err);
+      });
     }
   }
 
