@@ -87,7 +87,6 @@ export class CreateSchedulePage implements OnInit {
       // triggered when about to close the modal
       this.cardList[card_index].pictogram = dataReturned.data;
       console.log('Icon received: ' + dataReturned);
-      console.log('Revisar aqui TODO2');
     });
 
     return await modal.present()
@@ -104,7 +103,6 @@ export class CreateSchedulePage implements OnInit {
     let cardsWithoutConfirmation: boolean = false;
     this.cardList.forEach(element => {
       console.log(element);
-      alert(element.duration);
       if (!element.confirmed) {
         cardsWithoutConfirmation = true;
       }
