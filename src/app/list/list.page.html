@@ -2,26 +2,46 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
+      <!-- <ion-back-button defaultHref="home" text=""></ion-back-button> -->
     </ion-buttons>
     <ion-title>
-      List
+      Alumnos
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [color]="filterSelected ? 'primary' : ''" shape="round" (click)="orderList()">
+        <ion-icon name="funnel"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
-    </ion-item>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="arrow-down" spinner="none">
+    </ion-refresher-content>
+  </ion-refresher>
+  <app-spinner *ngIf="showSpinner"></app-spinner>
+  <ion-text *ngIf="!studentsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No hay alumnos creados. Pulsa en el botón para añadirlos</ion-text>
+  <ion-list #list>
+    <ion-item-sliding *ngFor="let student of studentList">
+      <ion-item-options side="start" (ionSwipe)="editStudent(student)">
+        <ion-item-option expandable (click)="editStudent(student)">
+          <ion-icon slot="icon-only" name="create"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item [routerLink]="['/schedule', {id: student.collectionId, name: student.fullname}]">
+        <ion-icon name="contact" slot="start"></ion-icon>{{ student.fullname }}
+      </ion-item>
+      <ion-item-options side="end" (ionSwipe)="deleteStudent(student)">
+        <ion-item-option expandable color="danger" (click)="deleteStudent(student)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
-  <!--
-    <div *ngIf="selectedItem" padding>
-      You navigated here from <b>{{selectedItem.title }}</b>
-    </div>
-  -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addStudent()">
+    <ion-fab-button color="tertiary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

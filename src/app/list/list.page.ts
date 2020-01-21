@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { CardService } from './../services/card.service';
+import { ToastService } from './../services/ui/toast.service';
+import { StudentModalPage } from './../modals/student-modal/student-modal.page';
+import { StudentService } from './../services/student.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonList, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list',
@@ -6,36 +11,125 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['list.page.scss']
 })
 export class ListPage implements OnInit {
-  private selectedItem: any;
-  private icons = [
-    'flask',
-    'wifi',
-    'beer',
-    'football',
-    'basketball',
-    'paper-plane',
-    'american-football',
-    'boat',
-    'bluetooth',
-    'build'
-  ];
-  public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor(
 
+  @ViewChild('list', { static: false }) list: IonList;
+
+  public studentList: any[];
+  public studentListBackup: any[];
+  public showSpinner: boolean;
+  public studentsAvailable: boolean;
+  public filterSelected: boolean;
+
+  constructor(
+    private studentS: StudentService,
+    private cardS: CardService,
+    private modalController: ModalController,
+    private toastS: ToastService
   ) {
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+    this.showSpinner = false;
+    this.studentsAvailable = false;
+    this.filterSelected = false;
   }
 
   ngOnInit() {
+    this.refresh();
   }
-  // add back when alpha.4 is out
-  // navigate(item) {
-  //   this.router.navigate(['/list', JSON.stringify(item)]);
-  // }
+
+  // Refresco de la lista
+  async refresh($event?) {
+    if (!$event) this.showSpinner = true; // Si se usa el ion-refresher no se muestra spinner central
+    //this.studentList = [];
+    console.log("Cargando alumnos");
+    try {
+      this.studentS.readStudentsObsv().subscribe((list) => {
+        if (list.length <= 0) this.studentsAvailable = false;
+        else this.studentsAvailable = true;
+        this.studentList = list;
+        this.studentListBackup = this.studentList.slice(0); // Clono el array para poder restablecer el filtro
+        this.showSpinner = false;
+        if ($event) $event.target.complete();
+        console.log('Alumnos cargados');
+        // console.log(this.studentList);
+      });
+    } catch (error) {
+      this.showSpinner = false;
+      this.toastS.showOnceToast('Error al cargar alumnos');
+      console.log(error);
+    }
+    console.log('Peticion de carga solicitada');
+  }
+
+  editStudent(currentStudent: any) {
+    console.log('editStudent');
+    this.list.closeSlidingItems();
+    console.log('obj:');
+    console.log(currentStudent);
+    this.openUserModal(currentStudent);
+  }
+
+  deleteStudent(currentStudent: any) {
+    console.log('deleteStudent');
+    this.list.closeSlidingItems();
+    this.cardS.deleteCard(currentStudent.collectionId)
+      .then(() => {
+        console.log('Horario del alumno eliminado')
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    this.studentS.deleteStudent(currentStudent.id)
+      .then(() => {
+        console.log('Alumno eliminado')
+        this.toastS.showOnceToast('Alumno eliminado');
+        this.refresh();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  addStudent() {
+    console.log('Click FAB addStudent');
+    this.openUserModal();
+  }
+
+  async openUserModal(currentStudent?: any) {
+    let modal: any;
+    if (currentStudent) { // Se actualiza alumno, se pasan parametros
+      modal = await this.modalController.create({
+        component: StudentModalPage,
+        componentProps: {
+          studentObject: currentStudent
+        }
+      });
+    }
+    else { // Se crea alumno, no se pasan parametros
+      modal = await this.modalController.create({
+        component: StudentModalPage
+      });
+    }
+    modal.onWillDismiss().then((dataReturned) => {
+      // triggered when about to close the modal
+      //console.log('Data received: ' + dataReturned);
+      this.refresh();
+    });
+    return await modal.present()
+      .then(() => {
+        // triggered when opening the modal
+      });
+  }
+
+  orderList() {
+    console.log('Aplicando filtro');
+    if (this.filterSelected) { // Ya estaba pulsado el filtro
+      // this.refresh();
+      this.studentList = this.studentListBackup;
+    }
+    else { // No estaba pulsado el filtro
+      // NOTE https://stackoverflow.com/a/35092754/10387022
+      this.studentList.sort((a, b) => a.fullname.localeCompare(b.fullname));
+    }
+    this.filterSelected = !this.filterSelected;
+  }
+
 }
