@@ -1,13 +1,13 @@
-import { environment } from 'src/environments/environment';
+import { LoadingService } from './../services/ui/loading.service';
 import { AlertService } from './../services/ui/alert.service';
 import { CardService } from './../services/card.service';
-import { LoadingService } from './../services/ui/loading.service';
 import { ToastService } from './../services/ui/toast.service';
 import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
 import { card } from './../model/card';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-create-schedule',
@@ -16,42 +16,60 @@ import { ModalController } from '@ionic/angular';
 })
 export class CreateSchedulePage implements OnInit {
 
-  public scheduleTitle: string;
   public cardsChecker: string[];
   public cardList: card[];
+  public receivedParams: any;
+  public showSpinner: boolean;
+  public cardsAvailable: boolean;
 
   constructor(
+    private route: ActivatedRoute,
     private modalController: ModalController,
     private cardS: CardService,
     private alertS: AlertService,
     private toastS: ToastService,
-    private loadingS: LoadingService
+    private loadingS: LoadingService,
+    private router: Router
   ) {
-    this.scheduleTitle = '';
     this.cardsChecker = [];
     this.cardList = [];
+    this.showSpinner = false;
+    this.cardsAvailable = false;
   }
 
   ngOnInit() {
+    // NOTE https://stackoverflow.com/a/57737992/10387022
+    //=============================================================================
+    // Recibo los parametros del alumno al que le crearemos el horario
+    //=============================================================================
+    this.route.paramMap
+      .subscribe((params) => {
+        console.log('Parametros de alumno recibidos');
+        // console.log(params);
+        this.receivedParams = params;
+        this.loadCardsForCurrentUser();
+      });
   }
 
   //=============================================================================
   // Funcion que se llama cuando se hace click en el boton flotante
   //=============================================================================
   addCard(): void {
-    console.log('Click FAB');
+    console.log('Click FAB addCard');
+    this.cardsAvailable = true;
     let newCard: card = {
       title: '',
       pictogram: '',
       color: '',
       duration: new Date('2020-01-01 1:00:00').toISOString(),
-      confirmed: false
+      confirmed: false,
+      completed: false
     };
     this.cardList.push(newCard);
   }
 
   //=============================================================================
-  // Funcion que recoje el valor que manda el componente confirm-checkbox
+  // Funcion que recoge el valor que manda el componente confirm-checkbox
   //=============================================================================
   onValueEmitted(val: string) {
     // do something with 'val'
@@ -65,15 +83,15 @@ export class CreateSchedulePage implements OnInit {
   //=============================================================================
   // Para abrir el modal de colores
   //=============================================================================
-  async openColorsModalWithData(card_index: string) {
+  async openColorsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
       component: ColorsModalPage
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.cardList[card_index].color = dataReturned.data;
-      console.log('Color received: ' + dataReturned);
+      this.cardList[cardIndex].color = dataReturned.data;
+      console.log('Color received: ' + dataReturned.data);
     });
 
     return await modal.present()
@@ -85,14 +103,14 @@ export class CreateSchedulePage implements OnInit {
   //=============================================================================
   // Para abrir el modal de colores
   //=============================================================================
-  async openIconsModalWithData(card_index: string) {
+  async openIconsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
       component: IconsModalPage
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.cardList[card_index].pictogram = dataReturned.data;
+      this.cardList[cardIndex].pictogram = dataReturned.data;
       console.log('Icon received: ' + dataReturned);
     });
 
@@ -108,9 +126,9 @@ export class CreateSchedulePage implements OnInit {
   saveCards() {
     console.log('Guardando tarjetas');
     let cardsWithoutConfirmation: boolean = false;
-    this.cardList.forEach(element => {
+    this.cardList.forEach((element, index) => {
       console.log(element);
-      if (!element.confirmed) {
+      if (!element.confirmed || !this.cardsChecker[index]) {
         cardsWithoutConfirmation = true;
       }
     });
@@ -121,31 +139,56 @@ export class CreateSchedulePage implements OnInit {
       this.alertS.presentAlert('Guardar tarjetas', '', 'No hay tarjetas creadas');
     }
     else {
-      // TODO guardar en firebase! :)
-      this.loadingS.show('Guardando...');
-
-
-      this.cardS.createCollection()
-      .then((ok) => {
-        console.log('creacion ok:');
-        console.log(ok.id); // Obtengo el id del documento guardado
-        this.cardS.addArray(ok.id, this.cardList)
-          .then((data) => {
-            console.log('guardado ok:');
-            this.toastS.showOnceToast('Nota guardada - '+data);
-          })
-          .catch((err) => {
-            this.toastS.showOnceToast('Error al guardar las tarjetas');
-          })
-          .finally(() => {
-            this.loadingS.close();
-          });
-      })
-      .catch((err) => {
-        this.toastS.showOnceToast('Error al guardar'); // TODO
-        console.log(err);
-      });
+      this.loadingS.show('Guardando');
+      this.cardS.editArray(this.receivedParams.get('id'), this.cardList)
+        .then((data) => {
+          console.log('Tarjetas guardadas');
+          this.toastS.showOnceToast('Tarjetas guardadas');
+          // this.router.navigateByUrl('/list');
+        })
+        .catch((error) => {
+          this.toastS.showOnceToast('Error al guardar las tarjetas');
+          console.log(error);
+        })
+        .finally(() => {
+          this.loadingS.close();
+        });
     }
+  }
+
+  deleteCard(cardIndex: number) {
+    // Elimino 1 elemento a partir del indice dado
+    this.cardList.splice(cardIndex, 1);
+    this.cardsChecker.splice(cardIndex, 1);
+  }
+
+  loadCardsForCurrentUser() {
+    console.log('Cargando tarjetas del alumno...');
+    this.cardS.readCardsByID(this.receivedParams.get('id'))
+    .subscribe((list) => {
+      console.log('Tarjetas recibidas');
+      if(list.data().data === undefined) { // No hay tarjetas creadas
+        this.cardsAvailable = false;
+      }
+      else{ // Cargamos las tarjetas
+        this.cardsAvailable = true;
+        this.cardList = list.data().data;
+        // this.cardList.forEach((element, index) => { // Actualizo el valor de la confimacion de la tarjeta
+        //   this.cardsChecker[index] = element.confirmed+'';
+        // });
+      }
+    });
+  }
+
+  showSchedule() {
+    console.log('Mostrando horario del alumno...');
+    let navigationExtras: NavigationExtras = {
+      state: {
+        cardsId: this.receivedParams.get('id'),
+        cards: this.cardList
+      }
+    };
+    this.router.navigate(['/show'], navigationExtras);
   }
 
 }

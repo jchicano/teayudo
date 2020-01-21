@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Crear horario</ion-title>
+    <ion-title>Horario de {{ receivedParams.get('name') }}</ion-title>
     <ion-buttons slot="end">
       <ion-button shape="round" (click)="saveCards()">
         <ion-icon name="checkmark"></ion-icon>
@@ -13,63 +13,89 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Nombre del horario <ion-text color="danger">*</ion-text>
-    </ion-label>
-    <ion-input required clearInput [(ngModel)]="scheduleTitle"></ion-input>
-  </ion-item>
-  <ion-card *ngFor="let item of cardList; let i=index">
-    <ion-card-header>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="5">
-            <ion-card-title>{{ i+1 }}ª tarjeta</ion-card-title>
-          </ion-col>
-          <ion-col size="2">
-            <img src="{{ cardList[i].pictogram }}">
-          </ion-col>
-          <ion-col size="2"></ion-col>
-          <ion-col class="ion-text-center" size="3">
-            <app-confirm-checkbox customId="{{ i }}" (typeChanged)="onValueEmitted($event)"></app-confirm-checkbox>
-            <p style="font-size: 3.5vmin;" *ngIf="cardsChecker[i] != 'true-'+i">Confirmar</p>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-header>
-    <ion-card-content *ngIf="cardsChecker[i] != 'true-'+i">
-      <ion-item>
-        <ion-label position="fixed">Título</ion-label>
-        <ion-input required [(ngModel)]="cardList[i].title"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="fixed">Pictograma</ion-label>
-        <ion-button *ngIf="cardList[i].pictogram == ''" style="color:black" size="default" fill="clear"
-          (click)="openIconsModalWithData(i)">Seleccionar
-        </ion-button>
-        <ion-button *ngIf="cardList[i].pictogram != ''" style="color:black" size="default" fill="clear"
-          (click)="openIconsModalWithData(i)">Cambiar
-        </ion-button>
-      </ion-item>
-      <ion-item>
-        <ion-label position="fixed">Color</ion-label>
-        <ion-input hidden></ion-input>
-        <ion-badge class="ion-margin-start" color="{{ cardList[i].color }}">&nbsp;&nbsp;&nbsp;</ion-badge>
-        <ion-button style="color:black" size="default" fill="clear" (click)="openColorsModalWithData(i)">Seleccionar
-        </ion-button>
-      </ion-item>
-      <ion-item>
-        <ion-label position="fixed">Duración</ion-label>
-        <ion-button slot="end" fill="clear"></ion-button>
-        <ion-datetime [(ngModel)]="cardList[i].duration" displayFormat="HH:mm" pickerFormat="HH:mm"
-          placeholder="SELECCIONAR" doneText="OK" cancelText="Cancelar">
-        </ion-datetime>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
+  <app-spinner *ngIf="showSpinner"></app-spinner>
+  <ion-text *ngIf="!cardsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No hay
+    tarjetas creadas. Pulsa en el botón para añadirlas</ion-text>
+  <ion-grid>
+    <ion-row class="center-custom">
+      <ion-col class="ion-hide-xl-down" size="2"></ion-col>
+      <ion-col size="auto">
+        <ion-card *ngFor="let item of cardList; let i=index">
+          <ion-card-header>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="5">
+                  <ion-card-title>{{ i+1 }}ª tarjeta</ion-card-title>
+                </ion-col>
+                <ion-col size="2">
+                  <img src="{{ cardList[i].pictogram }}">
+                </ion-col>
+                <ion-col size="2"></ion-col>
+                <ion-col class="ion-text-center" size="3">
+                  <app-confirm-checkbox customId="{{ i }}" (typeChanged)="onValueEmitted($event)">
+                  </app-confirm-checkbox>
+                  <p *ngIf="cardsChecker[i] != 'true-'+i">Confirmar</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-header>
+          <ion-card-content *ngIf="cardsChecker[i] != 'true-'+i">
+            <ion-item>
+              <ion-label position="fixed">Título</ion-label>
+              <ion-input [(ngModel)]="cardList[i].title"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="fixed">Pictograma</ion-label>
+              <ion-button *ngIf="cardList[i].pictogram == ''" style="color:black" size="default" fill="clear"
+                (click)="openIconsModalWithData(i)">Seleccionar
+              </ion-button>
+              <ion-button *ngIf="cardList[i].pictogram != ''" style="color:black" size="default" fill="clear"
+                (click)="openIconsModalWithData(i)">Cambiar
+              </ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-label position="fixed">Color</ion-label>
+              <ion-input hidden></ion-input>
+              <ion-badge *ngIf="cardList[i].color !== ''" class="ion-margin-start"
+                [ngStyle]="{'background-color': cardList[i].color}">
+                &nbsp;&nbsp;&nbsp;</ion-badge>
+              <ion-button style="color:black" size="default" fill="clear" (click)="openColorsModalWithData(i)">
+                Seleccionar
+              </ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-label position="fixed">Duración</ion-label>
+              <ion-button slot="end" fill="clear"></ion-button>
+              <ion-datetime [(ngModel)]="cardList[i].duration" displayFormat="HH:mm" pickerFormat="HH:mm"
+                placeholder="SELECCIONAR" doneText="OK" cancelText="Cancelar">
+              </ion-datetime>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-grid>
+                <ion-row>
+                  <ion-col class="ion-text-center ion-no-padding">
+                    <ion-button class="ion-padding-horizontal" (click)="deleteCard(i)" size="large" color="danger"
+                      shape="round" fill="outline">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-col class="ion-hide-xl-down" size="2"></ion-col>
+  </ion-grid>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addCard()">
-    <ion-fab-button>
+    <ion-fab-button color="tertiary">
       <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed" (click)="showSchedule()">
+    <ion-fab-button color="medium">
+      <ion-icon name="play"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
