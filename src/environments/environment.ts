@@ -11,7 +11,10 @@ export const environment = {
     projectId: "horario-tea",
     storageBucket: "horario-tea.appspot.com"
   },
-  collection: "card"
+  collection: {
+    card: "card",
+    student: "student"
+  }
 };
 
 /*
