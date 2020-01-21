@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="studentObject === undefined ">Agregar estudiante</ion-title>
+    <ion-title *ngIf="studentObject !== undefined">Modificar estudiante</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createStudent()">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="studentForm" (ngSubmit)="createStudent()">
+    <ion-item>
+      <ion-label position="floating">Nombre <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input required clearInput formControlName="nombre"></ion-input>
+    </ion-item>
+  </form>
+</ion-content>
