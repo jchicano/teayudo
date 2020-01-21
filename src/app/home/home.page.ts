@@ -8,13 +8,8 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor() { }
 
-  ngOnInit() {
-    // TODO pedir horario al profesor
-    this.router.navigateByUrl('/create');
-  }
+  ngOnInit() { }
 
 }
