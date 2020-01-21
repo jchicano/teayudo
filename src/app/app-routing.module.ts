@@ -12,12 +12,28 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'profiles',
+    path: 'list',
     loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
   },
   {
-    path: 'create',
+    path: 'schedule',
     loadChildren: () => import('./create-schedule/create-schedule.module').then( m => m.CreateSchedulePageModule)
+  },
+  {
+    path: 'student-modal',
+    loadChildren: () => import('./modals/student-modal/student-modal.module').then( m => m.StudentModalPageModule)
+  },
+  {
+    path: 'show',
+    loadChildren: () => import('./show/show.module').then( m => m.ShowPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
   }
   /*
   {
