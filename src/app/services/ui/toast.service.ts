@@ -7,7 +7,7 @@ import { ToastController } from '@ionic/angular';
 export class ToastService {
 
   // https://stackoverflow.com/a/55125430/10387022
-  public toastInstance: any;
+  private toastInstance: any;
 
   constructor(private toastController: ToastController) { }
 
@@ -27,7 +27,7 @@ export class ToastService {
       color: color,
       duration: dur,
       animated: true,
-      position: "top"
+      position: "bottom"
     }).then((obj) => {
       obj.present();
     });
