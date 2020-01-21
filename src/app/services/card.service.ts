@@ -13,7 +13,7 @@ export class CardService {
   myCollection: AngularFirestoreCollection;
 
   constructor(private fireStore: AngularFirestore) {
-    this.myCollection = fireStore.collection<any>(environment.collection);
+    this.myCollection = fireStore.collection<any>(environment.collection.card);
   }
 
   readCardSimple(): Observable<firebase.firestore.QuerySnapshot> {
@@ -47,15 +47,19 @@ export class CardService {
     return this.myCollection.add({});
   }
 
-  addArray(docId: string, data: card[]): Promise<void> {
+  editArray(docId: string, data: card[]): Promise<void> {
     return this.myCollection.doc(docId).set({data}); // Aunque le pase el array hay que encapsularlo en un objeto
+  }
+
+  addArray(data: card[]): Promise<firebase.firestore.DocumentReference> {
+    return this.myCollection.add({data}); // Aunque le pase el array hay que encapsularlo en un objeto
   }
 
   addCard(myCard: card): Promise<firebase.firestore.DocumentReference> {
     return this.myCollection.add(myCard);
   }
 
-  readCardByID(id: string): Observable<firebase.firestore.DocumentSnapshot> {
+  readCardsByID(id: string): Observable<firebase.firestore.DocumentSnapshot> {
     return this.myCollection.doc(id).get();
   }
 
@@ -68,9 +72,4 @@ export class CardService {
     return this.myCollection.doc(id).delete();
   }
 
-
-  test() {
-    firestore
-
-  }
 }
