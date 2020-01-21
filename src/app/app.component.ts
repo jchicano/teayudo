@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -17,18 +17,31 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'Perfiles',
-      url: '/profiles',
+      title: 'Alumnos',
+      url: '/list',
       icon: 'list'
+    },
+    {
+      title: 'Configuración',
+      url: '/settings',
+      icon: 'settings'
     }
   ];
+  public fontFamilyClass = '';
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private events: Events
   ) {
     this.initializeApp();
+    this.events.subscribe(
+      'update:font-family',
+      (className) => {
+        this.fontFamilyClass = className;
+      }
+    );
   }
 
   initializeApp() {
