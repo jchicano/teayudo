@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="list" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-uppercase">Mi horario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div #scroll class="scroll" scrollX="true" (click)="scrollInfo()"
+      [style.overflow-x]="autoScroll ? 'hidden' : 'auto'">
+      <div class="cards-list">
+        <span>&nbsp;</span> <!-- spacer -->
+        <!-- <div *ngFor="let item of cardList" class="card_time title-white ion-text-uppercase">
+          <span class="">{{ millisToTime(cardsTime[currentCardCountDownIndex]) }}</span>
+        </div> -->
+        <div *ngFor="let item of cardList; let i=index">
+          <div class="card" [ngClass]="{ 'card-completed': cardList[i].completed }"
+            [ngStyle]="{'background-color': item.color}">
+            <!-- <div class="card_time ion-text-uppercase">
+            <span>{{ millisToTime(cardsTime[currentCardCountDownIndex]) }}</span>
+          </div> -->
+            <div class="card_image">
+              <img src="{{ cardList[i].pictogram }}" />
+            </div>
+            <div class="card_title ion-text-uppercase">
+              <span>{{ cardList[i].title }}</span>
+            </div>
+          </div>
+          <div id="timer{{ i }}" class="card_time ion-text-uppercase">{{ displayTime[i] }}</div>
+        </div>
+        <span>&nbsp;</span> <!-- spacer -->
+      </div>
+    </div>
+  </div>
+
+  <ion-grid class="ion-text-center">
+    <ion-row class="ion-margin-bottom">
+      <ion-col size="12">
+        <ion-button (click)="toggleAutoScroll()" color="tertiary" shape="round" [fill]="autoScroll? 'solid':'outline'">
+          <span *ngIf="autoScroll">
+            <ion-icon name="hand"></ion-icon>&nbsp;Manual
+          </span>
+          <span *ngIf="!autoScroll">
+            <ion-icon name="play"></ion-icon>&nbsp;Automático
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button [disabled]="scheduleRunning" (click)="comenzarHorario()" size="large" shape="round"
+        fill="outline">
+          <span *ngIf="scheduleRunning">Ejecutando</span>
+          <span *ngIf="!scheduleRunning">Comenzar</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div id='prog-bar-cont'>
+    <div #progressBar id="prog-bar">
+      <div id="background" [ngStyle]="{'margin-left': -progressBarMargin+'px'}"></div>
+    </div>
+  </div>
+
+  <!--[ngStyle]="{'background-color': cardList[i].color}"-->
+</ion-content>
