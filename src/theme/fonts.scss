@@ -1,0 +1,12 @@
+// NOTE https://stackoverflow.com/questions/51755047/how-do-i-install-new-fonts-in-ionic-4
+
+@font-face {
+    font-family: 'Escolar Font';
+    font-style: bold;
+    font-weight: normal;
+    src: url('./assets/font/escolar-negrita.ttf');
+}
+
+ion-app.escolar-font {
+    --ion-font-family: 'Escolar Font';
+}
