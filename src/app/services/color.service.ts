@@ -15,45 +15,55 @@ export class ColorService {
     this.colorList = [
       {
         name: 'Azul',
-        value: 'azul'
+        value: 'azul',
+        hex: '#8ed1f7'
       },
       {
         name: 'Verde',
-        value: 'verde'
+        value: 'verde',
+        hex: '#a3dc93'
       },
       {
         name: 'Vino',
-        value: 'vino'
+        value: 'vino',
+        hex: '#c05c92'
       },
       {
         name: 'Amarillo',
-        value: 'amarillo'
+        value: 'amarillo',
+        hex: '#fdf962'
       },
       {
         name: 'Bosque acuático',
-        value: 'bosqueacuatico'
+        value: 'bosqueacuatico',
+        hex: '#56ae72'
       },
       {
         name: 'Oro viejo',
-        value: 'oroviejo'
+        value: 'oroviejo',
+        hex: '#d39e3a'
       },
       {
         name: 'Granada',
-        value: 'granada'
+        value: 'granada',
+        hex: '#f44336'
       },
       {
         name: 'Gris',
-        value: 'gris'
+        value: 'gris',
+        hex: '#d6d6d6'
       },
       {
         name: 'Rosa',
-        value: 'rosa'
+        value: 'rosa',
+        hex: '#ffbaf7'
       },
       {
         name: 'Naranja',
-        value: 'naranja'
+        value: 'naranja',
+        hex: '#ff7c6b'
       }
     ];
   }
-
+  
 }
