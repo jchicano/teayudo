@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Configuración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <!-- <ion-radio-group [(ngModel)]="fontFamily" (ionChange)="onFontFamilyChange($event)">
+      <ion-list-header>
+        <ion-label>Fuente</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let font of fontList">
+        <ion-label>{{ font.name }}</ion-label>
+        <ion-radio slot="end" value="font.value"></ion-radio>
+      </ion-item>
+    </ion-radio-group> -->
+    <ion-radio-group [(ngModel)]="fontFamily" (ionChange)="onFontFamilyChange($event)">
+      <ion-list-header>
+        <ion-label>Fuente</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Por defecto</ion-label>
+        <ion-radio slot="end" value=""></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Escolar</ion-label>
+        <ion-radio checked="true" slot="end" value="escolar-font"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>
