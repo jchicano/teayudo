@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from "src/environments/environment";
 import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
+import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    LottieSplashScreen
   ],
   bootstrap: [AppComponent]
 })

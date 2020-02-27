@@ -1,3 +1,4 @@
+import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 import { Component } from '@angular/core';
 
 import { Platform, Events } from '@ionic/angular';
@@ -33,7 +34,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private events: Events
+    private events: Events,
+    private lottieSplashScreen: LottieSplashScreen
   ) {
     this.initializeApp();
     this.events.subscribe(
@@ -48,6 +50,12 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      // NOTE https://medium.com/@prashantg9912/how-to-add-beautiful-lottie-splashsceen-to-ionic-app-7fdbc00f6cea
+      // Hide splash screen after 3 seconds
+      setTimeout(() => {
+        this.lottieSplashScreen.hide();
+      }, 3000);
     });
   }
 }
