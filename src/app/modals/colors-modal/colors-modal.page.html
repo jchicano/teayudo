@@ -11,7 +11,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-radio-group allow-empty-selection> <!--TODO empty selection wtf-->
+    <ion-radio-group>
       <ion-item *ngFor="let colorObj of colorS.colorList">
         <ion-label>{{ colorObj.name }}</ion-label>
         <ion-icon slot="start" name="color-fill" color="{{ colorObj.value }}"></ion-icon>
