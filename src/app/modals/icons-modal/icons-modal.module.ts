@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { IconsModalPageRoutingModule } from './icons-modal-routing.module';
 
-import { IconsModalPage } from './icons-modal.page';
 
 @NgModule({
   imports: [
@@ -15,6 +14,6 @@ import { IconsModalPage } from './icons-modal.page';
     IonicModule,
     IconsModalPageRoutingModule
   ],
-  declarations: [IconsModalPage]
+  declarations: []
 })
 export class IconsModalPageModule {}

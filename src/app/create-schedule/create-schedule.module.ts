@@ -16,7 +16,7 @@ import { CreateSchedulePage } from './create-schedule.page';
     CreateSchedulePageRoutingModule,
     ComponentsModule
   ],
-  declarations: [CreateSchedulePage, ColorsModalPage],
-  entryComponents: [ColorsModalPage]
+  declarations: [CreateSchedulePage, ColorsModalPage, IconsModalPage],
+  entryComponents: [ColorsModalPage, IconsModalPage]
 })
 export class CreateSchedulePageModule {}
