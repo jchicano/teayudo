@@ -51,6 +51,13 @@ export class CreateSchedulePage implements OnInit {
       });
   }
 
+  // NOTE https://forum.ionicframework.com/t/ion-datetime-binding-through-ngmodel-ionic-v4/137187/7
+  // Para pillar el evento de cuando se cambia la hora
+  updateMyDate(index, $event) {
+    console.log($event); // --> wil contains $event.day.value, $event.month.value and $event.year.value
+    this.cardList[index].duration = $event;
+  }
+
   //=============================================================================
   // Funcion que se llama cuando se hace click en el boton flotante
   //=============================================================================
@@ -61,7 +68,10 @@ export class CreateSchedulePage implements OnInit {
       title: '',
       pictogram: '',
       color: '',
-      duration: new Date('2020-01-01 1:00:00').toISOString(),
+      //duration: new Date('2020-01-01 1:00:00').toISOString(),
+      duration: "1994-12-15T00:00",
+      // duration: new Date('2020-01-01T00:01:00+01:00').toISOString(),
+      //duration: "2020-01-01T01:00:00.000Z",
       confirmed: false,
       completed: false
     };
