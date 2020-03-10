@@ -1,9 +1,11 @@
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { CardService } from './../services/card.service';
 import { ToastService } from './../services/ui/toast.service';
 import { StudentModalPage } from './../modals/student-modal/student-modal.page';
 import { StudentService } from './../services/student.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonList, ModalController } from '@ionic/angular';
+import { IonList, ModalController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-list',
@@ -19,12 +21,15 @@ export class ListPage implements OnInit {
   public showSpinner: boolean;
   public studentsAvailable: boolean;
   public filterSelected: boolean;
+  private subscription: Subscription;
 
   constructor(
     private studentS: StudentService,
     private cardS: CardService,
     private modalController: ModalController,
-    private toastS: ToastService
+    private toastS: ToastService,
+    private router: Router,
+    private platform: Platform
   ) {
     this.showSpinner = false;
     this.studentsAvailable = false;
@@ -33,6 +38,18 @@ export class ListPage implements OnInit {
 
   ngOnInit() {
     this.refresh();
+  }
+
+  // NOTE https://stackoverflow.com/a/58736680
+  // Para que funcione el boton atras al salir de la app
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
+      this.router.navigate(['/home']);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
   }
 
   // Refresco de la lista
