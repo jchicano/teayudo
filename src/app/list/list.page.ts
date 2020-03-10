@@ -1,11 +1,10 @@
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
 import { CardService } from './../services/card.service';
 import { ToastService } from './../services/ui/toast.service';
 import { StudentModalPage } from './../modals/student-modal/student-modal.page';
 import { StudentService } from './../services/student.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonList, ModalController, Platform } from '@ionic/angular';
+import { IonList, ModalController, Platform, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list',
@@ -28,7 +27,7 @@ export class ListPage implements OnInit {
     private cardS: CardService,
     private modalController: ModalController,
     private toastS: ToastService,
-    private router: Router,
+    private navCtrl: NavController,
     private platform: Platform
   ) {
     this.showSpinner = false;
@@ -44,7 +43,7 @@ export class ListPage implements OnInit {
   // Para que funcione el boton atras al salir de la app
   ionViewDidEnter() {
     this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
-      this.router.navigate(['/home']);
+      this.navCtrl.navigateBack('/home');
     });
   }
 
