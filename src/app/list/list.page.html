@@ -21,7 +21,8 @@
     </ion-refresher-content>
   </ion-refresher>
   <app-spinner *ngIf="showSpinner"></app-spinner>
-  <ion-text *ngIf="!studentsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No hay alumnos creados. Pulsa en el botón para añadirlos</ion-text>
+  <ion-text *ngIf="!studentsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No
+    hay alumnos creados. Pulsa en el botón para añadirlos</ion-text>
   <ion-list #list>
     <ion-item-sliding *ngFor="let student of studentList">
       <ion-item-options side="start" (ionSwipe)="editStudent(student)">
@@ -30,7 +31,10 @@
         </ion-item-option>
       </ion-item-options>
       <ion-item [routerLink]="['/schedule', {id: student.collectionId, name: student.fullname}]">
-        <ion-icon name="contact" slot="start"></ion-icon>{{ student.fullname }}
+        <ion-avatar slot="start">
+          <img src="../../assets/img/avatar.svg">
+        </ion-avatar>
+        {{ student.fullname }}
       </ion-item>
       <ion-item-options side="end" (ionSwipe)="deleteStudent(student)">
         <ion-item-option expandable color="danger" (click)="deleteStudent(student)">
