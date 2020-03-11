@@ -30,7 +30,7 @@ export class AppComponent {
     }
   ];
   public fontFamilyClass = '';
-  public subscription: Subscription;
+  private subscription: Subscription;
 
   constructor(
     private platform: Platform,
