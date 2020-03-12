@@ -14,9 +14,9 @@ export class SettingsPage implements OnInit {
 
   public fontFamily: string;
   public fontList: any[];
-  private subscription: Subscription;
 
   constructor(
+    private subscription: Subscription,
     private events: Events,
     private fontS: FontService,
     private platform: Platform,

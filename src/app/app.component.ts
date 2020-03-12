@@ -30,7 +30,6 @@ export class AppComponent {
     }
   ];
   public fontFamilyClass = '';
-  private subscription: Subscription;
 
   constructor(
     private platform: Platform,
@@ -59,17 +58,5 @@ export class AppComponent {
         this.lottieSplashScreen.hide();
       }, 3000);
     });
-  }
-
-  // NOTE https://stackoverflow.com/a/58736680
-  // Para que funcione el boton atras al salir de la app
-  ionViewDidEnter() {
-    this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
-      navigator['app'].exitApp();
-    });
-  }
-
-  ionViewWillLeave() {
-    this.subscription.unsubscribe();
   }
 }

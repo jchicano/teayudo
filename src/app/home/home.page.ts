@@ -1,3 +1,5 @@
+import { Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,8 +10,23 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
-  constructor() { }
+  constructor(
+    private subscription: Subscription,
+    private platform: Platform
+  ) { }
 
   ngOnInit() { }
+
+  // NOTE https://stackoverflow.com/a/58736680
+  // Para que funcione el boton atras al salir de la app
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
+      navigator['app'].exitApp();
+    });
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
 
 }
