@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
+  private subscription: Subscription;
+
   constructor(
-    private subscription: Subscription,
     private platform: Platform
   ) { }
 
