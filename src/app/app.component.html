@@ -1,23 +1,47 @@
 <ion-app [ngClass]="fontFamilyClass">
-  <ion-split-pane contentId="main-content" [when]="false"><!-- Oculto siempre el menu lateral -->
+  <ion-split-pane contentId="main-content" [when]="false">
+    <!-- Oculto siempre el menu lateral -->
     <ion-menu contentId="main-content" type="overlay">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Menú</ion-title>
-        </ion-toolbar>
-      </ion-header>
       <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
-              <ion-label>
-                {{p.title}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
+        <div class="center-custom user-image">
+          <ion-avatar>
+            <img src="assets/img/avatar.svg" />
+          </ion-avatar>
+        </div>
+        <div class="center-custom user-name">
+          <ion-text>
+            <h2>Nombre Apellidos</h2>
+          </ion-text>
+        </div>
+        <ion-grid>
+          <ion-row class="hide-left-side">
+            <ion-col size="11">
+              <ion-list class="sidemenu-list" lines="none">
+                <div *ngFor="let p of appPages">
+                  <ion-menu-toggle auto-hide="false" *ngIf="p.url">
+                    <ion-item class="sidemenu-item" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active">
+                      <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                      <ion-label>
+                        {{ p.title }}
+                      </ion-label>
+                    </ion-item>
+                  </ion-menu-toggle>
+                </div>
+              </ion-list>
+            </ion-col>
+            <ion-col size="1">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-button class="fix-bottom-menu">Logout</ion-button>
       </ion-content>
+      <!-- <ion-footer class="bar-stable">
+        <ion-list>
+          <ion-item nav-clear menu-close href="#" style="left:0;right:0;margin:0; width: 100%;position: fixed;">Logout
+          </ion-item>
+        </ion-list>
+      </ion-footer> -->
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>

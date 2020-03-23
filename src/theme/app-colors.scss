@@ -1,0 +1,57 @@
+/** custom color one **/
+:root {
+    --ion-color-customone: #56a3a6;
+    --ion-color-customone-rgb: 86,163,166;
+    --ion-color-customone-contrast: #000000;
+    --ion-color-customone-contrast-rgb: 0,0,0;
+    --ion-color-customone-shade: #4c8f92;
+    --ion-color-customone-tint: #67acaf;
+}
+
+.ion-color-customone {
+    --ion-color-base: var(--ion-color-customone);
+    --ion-color-base-rgb: var(--ion-color-customone-rgb);
+    --ion-color-contrast: var(--ion-color-customone-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-customone-contrast-rgb);
+    --ion-color-shade: var(--ion-color-customone-shade);
+    --ion-color-tint: var(--ion-color-customone-tint);
+}
+
+/** custom color two **/
+:root {
+    --ion-color-customtwo: #3e8672;
+    --ion-color-customtwo-rgb: 62,134,114;
+    --ion-color-customtwo-contrast: #ffffff;
+    --ion-color-customtwo-contrast-rgb: 255,255,255;
+    --ion-color-customtwo-shade: #377664;
+    --ion-color-customtwo-tint: #519280;
+}
+
+.ion-color-customtwo {
+    --ion-color-base: var(--ion-color-customtwo);
+    --ion-color-base-rgb: var(--ion-color-customtwo-rgb);
+    --ion-color-contrast: var(--ion-color-customtwo-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-customtwo-contrast-rgb);
+    --ion-color-shade: var(--ion-color-customtwo-shade);
+    --ion-color-tint: var(--ion-color-customtwo-tint);
+}
+
+/** custom color two **/
+:root {
+    --ion-color-customthree: #93f8b3;
+    --ion-color-customthree-rgb: 147,248,179;
+    --ion-color-customthree-contrast: #000000;
+    --ion-color-customthree-contrast-rgb: 0,0,0;
+    --ion-color-customthree-shade: #81da9e;
+    --ion-color-customthree-tint: #9ef9bb;
+}
+
+.ion-color-customthree {
+    --ion-color-base: var(--ion-color-customthree);
+    --ion-color-base-rgb: var(--ion-color-customthree-rgb);
+    --ion-color-contrast: var(--ion-color-customthree-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-customthree-contrast-rgb);
+    --ion-color-shade: var(--ion-color-customthree-shade);
+    --ion-color-tint: var(--ion-color-customthree-tint);
+}
+

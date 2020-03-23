@@ -1,0 +1,69 @@
+:root {
+    /** color blanco del menu lateral **/
+    --sidemenutransparency: rgba(255,255,255,0.4);
+}
+
+.active {
+    --ion-text-color: #4c8f92;
+    font-weight: bold;
+
+    ion-icon {
+        --ion-text-color-rgb: var(--ion-color-customone);
+    }
+
+    --background: var(--sidemenutransparency);
+}
+
+.user-image {
+    padding-top:50px;
+    padding-bottom:10px;
+
+    // NOTE https://stackoverflow.com/a/35887226
+    ion-avatar {
+        border: 4px solid var(--sidemenutransparency);
+        width:100% !important;
+        height : 100% !important;
+        max-width: 130px !important; //any size
+        max-height: 130px !important; //any size
+    }
+}
+
+.user-name {
+    padding-bottom:30px;
+}
+
+.sidemenu-item {
+    border-radius: 0 50px 50px 0;
+}
+
+.hide-left-side {
+    margin-left: -10px;
+}
+
+.sidemenu-list {
+    background: transparent;
+}
+
+ion-menu {
+    --ion-background-color: linear-gradient(to right, #55b9a9, #53b4a9, #53aea9, #54a9a8, #56a3a6);
+    --ion-text-color: var(--ion-color-customone-contrast);
+
+    ion-toolbar {
+        --background: var(--ion-color-customone);
+    }
+
+    ion-list {/* optional, but it needs when you use gradient as a background color.*/
+        --background: white;
+    }
+}
+
+// NOTE https://stackoverflow.com/a/47481244
+//=============================================================================
+// Anclar el boton al final del menu
+//=============================================================================
+.fix-bottom-menu {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    right: 0;
+}
