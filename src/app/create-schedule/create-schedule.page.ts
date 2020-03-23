@@ -121,7 +121,7 @@ export class CreateSchedulePage implements OnInit {
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
       this.cardList[cardIndex].pictogram = dataReturned.data;
-      console.log('Icon received: ' + dataReturned);
+      console.log('Icon received: ' + dataReturned.data);
     });
 
     return await modal.present()
