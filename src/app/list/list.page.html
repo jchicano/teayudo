@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="customone">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
       <!-- <ion-back-button defaultHref="home" text=""></ion-back-button> -->
@@ -8,7 +8,7 @@
       Alumnos
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [color]="filterSelected ? 'primary' : ''" shape="round" (click)="orderList()">
+      <ion-button [color]="filterSelected ? 'customthree' : ''" shape="round" (click)="orderList()">
         <ion-icon name="funnel"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -44,7 +44,7 @@
     </ion-item-sliding>
   </ion-list>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addStudent()">
-    <ion-fab-button color="tertiary">
+    <ion-fab-button color="customtwo">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

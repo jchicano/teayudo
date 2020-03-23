@@ -1,9 +1,14 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="customone">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="list" text=""></ion-back-button>
     </ion-buttons>
     <ion-title class="ion-text-uppercase">Mi horario</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [color]="autoScroll ? '' : 'customthree'" shape="round" (click)="toggleAutoScroll()">
+        <ion-icon name="hand"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -39,7 +44,7 @@
   <ion-grid class="ion-text-center">
     <ion-row class="ion-margin-bottom">
       <ion-col size="12">
-        <ion-button (click)="toggleAutoScroll()" color="tertiary" shape="round" [fill]="autoScroll? 'solid':'outline'">
+        <ion-button (click)="toggleAutoScroll()" color="customtwo" shape="round" [fill]="autoScroll? 'solid':'outline'">
           <span *ngIf="autoScroll">
             <ion-icon name="hand"></ion-icon>&nbsp;Manual
           </span>
