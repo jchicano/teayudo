@@ -16,11 +16,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content pullingIcon="arrow-down" spinner="none">
+  <ion-refresher color="customtwo" slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="arrow-down" spinner="null" refreshingSpinner="null">
     </ion-refresher-content>
   </ion-refresher>
-  <app-spinner *ngIf="showSpinner"></app-spinner>
+  <!-- <app-spinner *ngIf="showSpinner"></app-spinner> -->
   <ion-text *ngIf="!studentsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No
     hay alumnos creados. Pulsa en el botón para añadirlos</ion-text>
   <ion-list #list>

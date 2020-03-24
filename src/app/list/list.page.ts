@@ -1,3 +1,5 @@
+import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
+import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { Subscription } from 'rxjs';
 import { CardService } from './../services/card.service';
 import { ToastService } from './../services/ui/toast.service';
@@ -28,9 +30,10 @@ export class ListPage implements OnInit {
     private modalController: ModalController,
     private toastS: ToastService,
     private navCtrl: NavController,
-    private platform: Platform
+    private platform: Platform,
+    private loadingC: CustomLoadingModule
   ) {
-    this.showSpinner = false;
+    this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
     this.filterSelected = false;
   }
@@ -53,7 +56,10 @@ export class ListPage implements OnInit {
 
   // Refresco de la lista
   async refresh($event?) {
-    if (!$event) this.showSpinner = true; // Si se usa el ion-refresher no se muestra spinner central
+    if (!$event){
+      this.showSpinner = true; // Si se usa el ion-refresher no se muestra spinner central
+    }
+    this.loadingC.show("");
     //this.studentList = [];
     console.log("Cargando alumnos");
     try {
@@ -63,12 +69,14 @@ export class ListPage implements OnInit {
         this.studentList = list;
         this.studentListBackup = this.studentList.slice(0); // Clono el array para poder restablecer el filtro
         this.showSpinner = false;
+        this.loadingC.hide();
         if ($event) $event.target.complete();
         console.log('Alumnos cargados');
         // console.log(this.studentList);
       });
     } catch (error) {
       this.showSpinner = false;
+      this.loadingC.hide();
       this.toastS.showOnceToast('Error al cargar alumnos');
       console.log(error);
     }
