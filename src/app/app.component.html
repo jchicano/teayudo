@@ -19,7 +19,7 @@
               <ion-list class="sidemenu-list" lines="none">
                 <div *ngFor="let p of appPages">
                   <ion-menu-toggle auto-hide="false" *ngIf="p.url">
-                    <ion-item class="sidemenu-item" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active">
+                    <ion-item detail="false" class="sidemenu-item" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active">
                       <ion-icon slot="start" [name]="p.icon"></ion-icon>
                       <ion-label>
                         {{ p.title }}
