@@ -1,3 +1,5 @@
+import { DefaultAlertModule } from './custom-modules/default-alert/default-alert.module';
+import { DefaultLoadingModule } from './custom-modules/default-loading/default-loading.module';
 import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
 import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
 import { NgModule } from '@angular/core';
@@ -25,7 +27,9 @@ import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     CustomToastModule,
-    CustomLoadingModule
+    CustomLoadingModule,
+    DefaultLoadingModule,
+    DefaultAlertModule
   ],
   providers: [
     StatusBar,
