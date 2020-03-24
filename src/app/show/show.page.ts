@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs';
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { card } from './../model/card';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -30,10 +29,11 @@ export class ShowPage implements OnInit {
   public displayTime: string[];
   public autoScroll: boolean;
   public scrollAutomaticValue: number; // Almaceno el scroll que tendra la barra
+  private previousUrl: string;
 
   constructor(
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
   ) {
     this.cardList = [];
     this.cardsTime = [];
@@ -54,6 +54,7 @@ export class ShowPage implements OnInit {
 
   ngOnInit() {
     console.log('Tarjetas recibidas');
+    this.previousUrl = this.router.getCurrentNavigation().extras.state.previousUrl;
     this.cardList = this.router.getCurrentNavigation().extras.state.cards;
     this.cardList.forEach((card, index) => {
       console.log('Card ' + index + ':');
@@ -80,19 +81,6 @@ export class ShowPage implements OnInit {
       this.scroll.nativeElement.scrollLeft = 0; // Establezco el comienzo a 0
       this.executeFirstTimeOnly = false; // Bajo la bandera
     }
-  }
-
-  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-    // For simplicity we use a flag. You should implement the logic to figure out if there are any unsaved changes or not
-    const areUnsavedChanges = true;
-
-    let canDeactivate = true;
-
-    if (areUnsavedChanges) {
-      canDeactivate = window.confirm('Are you sure you want to leave this page?');
-    }
-
-    return canDeactivate;
   }
 
   scrollInfo() {

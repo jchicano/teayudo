@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { ShowPageRoutingModule } from './show-routing.module';
 
 import { ShowPage } from './show.page';
-import { CanDeactivateGuard } from './can-deactivate.guard';
 
 @NgModule({
   imports: [
@@ -17,6 +16,5 @@ import { CanDeactivateGuard } from './can-deactivate.guard';
     ShowPageRoutingModule
   ],
   declarations: [ShowPage],
-  providers: [CanDeactivateGuard]
 })
 export class ShowPageModule {}
