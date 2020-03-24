@@ -1,5 +1,5 @@
+import { Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
-import { element } from 'protractor';
 import { card } from './../model/card';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -80,6 +80,19 @@ export class ShowPage implements OnInit {
       this.scroll.nativeElement.scrollLeft = 0; // Establezco el comienzo a 0
       this.executeFirstTimeOnly = false; // Bajo la bandera
     }
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    // For simplicity we use a flag. You should implement the logic to figure out if there are any unsaved changes or not
+    const areUnsavedChanges = true;
+
+    let canDeactivate = true;
+
+    if (areUnsavedChanges) {
+      canDeactivate = window.confirm('Are you sure you want to leave this page?');
+    }
+
+    return canDeactivate;
   }
 
   scrollInfo() {
