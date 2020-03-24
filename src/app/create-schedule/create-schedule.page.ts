@@ -26,8 +26,8 @@ export class CreateSchedulePage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private cardS: CardService,
-    private alertM: DefaultAlertModule,
-    private loadingM: DefaultLoadingModule,
+    private alertD: DefaultAlertModule,
+    private loadingD: DefaultLoadingModule,
     private router: Router,
     private toastC: CustomToastModule
   ) {
@@ -143,13 +143,13 @@ export class CreateSchedulePage implements OnInit {
       }
     });
     if (cardsWithoutConfirmation) {
-      this.alertM.show('Guardar tarjetas', '', 'Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
+      this.alertD.show('Guardar tarjetas', '', 'Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
     }
     else if (this.cardList.length === 0) {
-      this.alertM.show('Guardar tarjetas', '', 'No hay tarjetas creadas');
+      this.alertD.show('Guardar tarjetas', '', 'No hay tarjetas creadas');
     }
     else {
-      this.loadingM.show('Guardando');
+      this.loadingD.show('Guardando');
       this.cardS.editArray(this.receivedParams.get('id'), this.cardList)
         .then((data) => {
           console.log('Tarjetas guardadas');
@@ -161,7 +161,7 @@ export class CreateSchedulePage implements OnInit {
           console.log(error);
         })
         .finally(() => {
-          this.loadingM.close();
+          this.loadingD.close();
         });
     }
   }

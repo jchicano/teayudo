@@ -24,7 +24,7 @@ export class StudentModalPage implements OnInit {
     private studentS: StudentService,
     private cardS: CardService,
     private toastC: CustomToastModule,
-    private alertM: DefaultAlertModule
+    private alertD: DefaultAlertModule
   ) {
   }
 
@@ -93,7 +93,7 @@ export class StudentModalPage implements OnInit {
           });
       }
       else {
-        this.alertM.show('Guardar alumno', '', 'Rellena correctamente el campo');
+        this.alertD.show('Guardar alumno', '', 'Rellena correctamente el campo');
       }
     }
   }
