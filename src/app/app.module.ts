@@ -1,3 +1,5 @@
+import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
+import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -21,7 +23,9 @@ import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
     AppRoutingModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    CustomToastModule,
+    CustomLoadingModule
   ],
   providers: [
     StatusBar,
