@@ -1,5 +1,5 @@
-import { AlertService } from './../../services/ui/alert.service';
-import { ToastService } from './../../services/ui/toast.service';
+import { DefaultAlertModule } from './../../custom-modules/default-alert/default-alert.module';
+import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../../services/card.service';
 import { student } from './../../model/student';
 import { StudentService } from './../../services/student.service';
@@ -23,8 +23,8 @@ export class StudentModalPage implements OnInit {
     private modalController: ModalController,
     private studentS: StudentService,
     private cardS: CardService,
-    private toastS: ToastService,
-    private alertS: AlertService
+    private toastC: CustomToastModule,
+    private alertM: DefaultAlertModule
   ) {
   }
 
@@ -58,11 +58,11 @@ export class StudentModalPage implements OnInit {
       }
       this.studentS.updateStudent(this.studentObject.id, updatedStudent)
         .then(() => {
-          this.toastS.showOnceToast('Alumno editado correctamente');
+          this.toastC.show('Alumno editado correctamente');
           this.closeModal();
         })
         .catch((error) => {
-          this.toastS.showOnceToast('Error al editar alumno');
+          this.toastC.show('Error al editar alumno');
           console.log(error);
         });
     }
@@ -78,22 +78,22 @@ export class StudentModalPage implements OnInit {
             };
             this.studentS.addStudent(myStudent)
               .then(() => {
-                this.toastS.showOnceToast('Alumno creado correctamente');
+                this.toastC.show('Alumno creado correctamente');
                 console.log(myStudent);
                 this.closeModal();
               })
               .catch((error) => {
-                this.toastS.showOnceToast('Error al crear alumno');
+                this.toastC.show('Error al crear alumno');
                 console.log(error);
               })
           })
           .catch((err) => {
-            this.toastS.showOnceToast('Error al guardar alumno');
+            this.toastC.show('Error al guardar alumno');
             console.log(err);
           });
       }
       else {
-        this.alertS.presentAlert('Guardar alumno', '', 'Rellena correctamente el campo');
+        this.alertM.show('Guardar alumno', '', 'Rellena correctamente el campo');
       }
     }
   }

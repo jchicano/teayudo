@@ -1,16 +1,20 @@
 import { AlertController } from '@ionic/angular';
-import { Injectable } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-@Injectable({
-  providedIn: 'root'
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule
+  ]
 })
-export class AlertService {
+export class DefaultAlertModule {
 
   constructor(
     private alertController: AlertController
   ) { }
 
-  async presentAlert(title: string, subtitle: string, msg: string, buttons: string[] = ['OK']) {
+  async show(title: string, subtitle: string, msg: string, buttons: string[] = ['OK']) {
     const alert = await this.alertController.create({
       header: title,
       subHeader: subtitle,
@@ -20,4 +24,5 @@ export class AlertService {
 
     await alert.present();
   }
+
 }

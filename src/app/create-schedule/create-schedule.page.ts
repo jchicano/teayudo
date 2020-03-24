@@ -1,7 +1,7 @@
-import { LoadingService } from './../services/ui/loading.service';
-import { AlertService } from './../services/ui/alert.service';
+import { DefaultAlertModule } from './../custom-modules/default-alert/default-alert.module';
+import { DefaultLoadingModule } from './../custom-modules/default-loading/default-loading.module';
+import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../services/card.service';
-import { ToastService } from './../services/ui/toast.service';
 import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
 import { card } from './../model/card';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
@@ -26,10 +26,10 @@ export class CreateSchedulePage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private cardS: CardService,
-    private alertS: AlertService,
-    private toastS: ToastService,
-    private loadingS: LoadingService,
-    private router: Router
+    private alertM: DefaultAlertModule,
+    private loadingM: DefaultLoadingModule,
+    private router: Router,
+    private toastC: CustomToastModule
   ) {
     this.cardsChecker = [];
     this.cardList = [];
@@ -143,25 +143,25 @@ export class CreateSchedulePage implements OnInit {
       }
     });
     if (cardsWithoutConfirmation) {
-      this.alertS.presentAlert('Guardar tarjetas', '', 'Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
+      this.alertM.show('Guardar tarjetas', '', 'Hay tarjetas sin confirmar. Confírmalas o bórralas para continuar');
     }
     else if (this.cardList.length === 0) {
-      this.alertS.presentAlert('Guardar tarjetas', '', 'No hay tarjetas creadas');
+      this.alertM.show('Guardar tarjetas', '', 'No hay tarjetas creadas');
     }
     else {
-      this.loadingS.show('Guardando');
+      this.loadingM.show('Guardando');
       this.cardS.editArray(this.receivedParams.get('id'), this.cardList)
         .then((data) => {
           console.log('Tarjetas guardadas');
-          this.toastS.showOnceToast('Tarjetas guardadas');
+          this.toastC.show('Tarjetas guardadas');
           // this.router.navigateByUrl('/list');
         })
         .catch((error) => {
-          this.toastS.showOnceToast('Error al guardar las tarjetas');
+          this.toastC.show('Error al guardar las tarjetas');
           console.log(error);
         })
         .finally(() => {
-          this.loadingS.close();
+          this.loadingM.close();
         });
     }
   }

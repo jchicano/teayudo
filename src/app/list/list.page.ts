@@ -2,7 +2,6 @@ import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast
 import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { Subscription } from 'rxjs';
 import { CardService } from './../services/card.service';
-import { ToastService } from './../services/ui/toast.service';
 import { StudentModalPage } from './../modals/student-modal/student-modal.page';
 import { StudentService } from './../services/student.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -28,7 +27,7 @@ export class ListPage implements OnInit {
     private studentS: StudentService,
     private cardS: CardService,
     private modalController: ModalController,
-    private toastS: ToastService,
+    private toastC: CustomToastModule,
     private navCtrl: NavController,
     private platform: Platform,
     private loadingC: CustomLoadingModule
@@ -77,7 +76,7 @@ export class ListPage implements OnInit {
     } catch (error) {
       this.showSpinner = false;
       this.loadingC.hide();
-      this.toastS.showOnceToast('Error al cargar alumnos');
+      this.toastC.show('Error al cargar alumnos');
       console.log(error);
     }
     console.log('Peticion de carga solicitada');
@@ -104,7 +103,7 @@ export class ListPage implements OnInit {
     this.studentS.deleteStudent(currentStudent.id)
       .then(() => {
         console.log('Alumno eliminado')
-        this.toastS.showOnceToast('Alumno eliminado');
+        this.toastC.show('Alumno eliminado');
         this.refresh();
       })
       .catch((error) => {
