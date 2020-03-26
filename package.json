@@ -26,7 +26,6 @@
     "@ionic/angular": "^4.7.1",
     "angularfire2": "^5.2.3",
     "cordova-android": "^8.1.0",
-    "cordova-plugin-lottie-splashscreen": "^0.8.0",
     "core-js": "^2.5.4",
     "firebase": "^7.6.1",
     "rxjs": "~6.5.1",
