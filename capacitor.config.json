@@ -1,0 +1,8 @@
+{
+  "appId": "com.teayudo.jesus",
+  "appName": "TEAyudo",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}
