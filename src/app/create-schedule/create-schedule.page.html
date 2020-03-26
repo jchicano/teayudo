@@ -16,10 +16,10 @@
   <app-spinner *ngIf="showSpinner"></app-spinner>
   <ion-text *ngIf="!cardsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No hay
     tarjetas creadas. Pulsa en el botón para añadirlas</ion-text>
-  <ion-grid>
+  <!-- <ion-grid>
     <ion-row class="center-custom">
       <ion-col class="ion-hide-xl-down" size="2"></ion-col>
-      <ion-col size="auto">
+      <ion-col size="auto"> -->
         <ion-card *ngFor="let item of cardList; let i=index">
           <ion-card-header>
             <ion-grid>
@@ -84,10 +84,10 @@
             </ion-item>
           </ion-card-content>
         </ion-card>
-      </ion-col>
+      <!-- </ion-col>
       <ion-col class="ion-hide-xl-down" size="2"></ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addCard()">
     <ion-fab-button color="customtwo">
       <ion-icon name="add"></ion-icon>
