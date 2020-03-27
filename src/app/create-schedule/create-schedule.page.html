@@ -88,14 +88,17 @@
       <ion-col class="ion-hide-xl-down" size="2"></ion-col>
     </ion-row>
   </ion-grid> -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addCard()">
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button color="customtwo">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="radio-button-on"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
-  <ion-fab horizontal="start" vertical="bottom" slot="fixed" (click)="showSchedule()">
-    <ion-fab-button color="medium">
-      <ion-icon name="play"></ion-icon>
-    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button color="customtwo" (click)="addCard()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="customtwo" (click)="showSchedule()">
+        <ion-icon name="play"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 </ion-content>
