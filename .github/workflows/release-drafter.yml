@@ -8,10 +8,7 @@ on:
 
 jobs:
   update_release_draft:
-    runs-on: ubuntu-latesttemplate: |
-  ## What’s Changed
-
-  $CHANGES
+    runs-on: ubuntu-latest
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "master"
       - uses: release-drafter/release-drafter@v5
@@ -20,9 +17,3 @@ jobs:
           # config-name: my-config.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-          
-template: |
-  ## What’s Changed
-
-  $CHANGES
