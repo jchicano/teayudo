@@ -15,7 +15,8 @@ export const environment = {
     card: "card",
     student: "student"
   },
-  timemaxloading:10000, //Tiempo máximo que puede estar cargando la aplicación, supera deja de cargar y muestra error en carga
+  timemaxloading:10000, //Tiempo máximo que puede estar cargando la aplicación, supera deja de cargar y muestra error en carga,
+  appVersion: "0.3",
 };
 
 /*
