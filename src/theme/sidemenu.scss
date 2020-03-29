@@ -64,6 +64,14 @@ ion-menu {
 .fix-bottom-menu {
     position: fixed;
     left: 0;
-    bottom: 10px;
+    bottom: 20px;
     right: 0;
+}
+
+.fix-bottom-menu-appversion {
+    position: fixed;
+    left: 0;
+    bottom: 1px;
+    right: 0;
+    font-size: 10px;
 }
