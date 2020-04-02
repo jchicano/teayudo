@@ -3,6 +3,14 @@
     <!-- Oculto siempre el menu lateral -->
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
+        <div *ngIf="!this.network.isConnected">
+          <div class="no-internet-icon">
+            <img src="assets/network.svg" />
+          </div>
+          <ion-text color="light" class="no-internet-info">
+            Modo sin conexión
+          </ion-text>
+        </div>
         <div class="center-custom user-image">
           <ion-avatar>
             <img src="assets/img/avatar.svg" />
@@ -19,7 +27,8 @@
               <ion-list class="sidemenu-list" lines="none">
                 <div *ngFor="let p of appPages">
                   <ion-menu-toggle auto-hide="false" *ngIf="p.url">
-                    <ion-item detail="false" class="sidemenu-item" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active">
+                    <ion-item detail="false" class="sidemenu-item" [routerDirection]="'root'" [routerLink]="[p.url]"
+                      routerLinkActive="active">
                       <ion-icon slot="start" [name]="p.icon"></ion-icon>
                       <ion-label>
                         {{ p.title }}
@@ -35,7 +44,7 @@
         </ion-grid>
 
         <ion-button class="fix-bottom-menu">Logout</ion-button>
-        <ion-text class="fix-bottom-menu-appversion center-custom">v{{ appVersion }}</ion-text>
+        <ion-text class="fix-bottom-menu-appversion center-custom">v{{ showVersion }}</ion-text>
       </ion-content>
       <!-- <ion-footer class="bar-stable">
         <ion-list>

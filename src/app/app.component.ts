@@ -1,4 +1,5 @@
-import { environment } from 'src/environments/environment.prod';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+import { NetworkService } from './services/network.service';
 import { Plugins } from '@capacitor/core';
 import { Component } from '@angular/core';
 import { Platform, Events } from '@ionic/angular';
@@ -30,12 +31,14 @@ export class AppComponent {
     }
   ];
   public fontFamilyClass = '';
-  private appVersion: string;
+  protected showVersion: string;
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
     private events: Events,
+    public network: NetworkService,
+    private appVersion: AppVersion
   ) {
     SplashScreen.show({
       showDuration: 5000,
@@ -48,7 +51,7 @@ export class AppComponent {
         this.fontFamilyClass = className;
       }
     );
-    this.appVersion = environment.appVersion;
+    this.appVersion.getVersionNumber().then(v => this.showVersion = v);
   }
 
   initializeApp() {
@@ -58,9 +61,9 @@ export class AppComponent {
       // NOTE icon & splash android: https://www.joshmorony.com/adding-icons-splash-screens-launch-images-to-capacitor-projects/ && https://apetools.webprofusion.com/#/tools/imagegorilla
       console.log(
         "%cTEAyudo",
-        "color:#233E82;font-family:Roboto;font-size:4rem;font-weight:bold"
+        "color:#56a3a6;font-family:Roboto;font-size:4rem;font-weight:bold"
       );
-      console.log("%cApp version: " + this.appVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
+      console.log("%cApp version: " + this.showVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
     });
   }
 }
