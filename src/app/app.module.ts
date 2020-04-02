@@ -1,3 +1,5 @@
+import { NetworkService } from './services/network.service';
+import { Network } from '@ionic-native/network/ngx';
 import { DefaultAlertModule } from './custom-modules/default-alert/default-alert.module';
 import { DefaultLoadingModule } from './custom-modules/default-loading/default-loading.module';
 import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
@@ -31,7 +33,9 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
   ],
   providers: [
     StatusBar,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Network,
+    NetworkService
   ],
   bootstrap: [AppComponent]
 })

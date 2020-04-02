@@ -1,3 +1,4 @@
+import { NetworkService } from './services/network.service';
 import { environment } from 'src/environments/environment.prod';
 import { Plugins } from '@capacitor/core';
 import { Component } from '@angular/core';
@@ -30,12 +31,13 @@ export class AppComponent {
     }
   ];
   public fontFamilyClass = '';
-  private appVersion: string;
+  public appVersion: string;
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
     private events: Events,
+    public network: NetworkService
   ) {
     SplashScreen.show({
       showDuration: 5000,
@@ -58,7 +60,7 @@ export class AppComponent {
       // NOTE icon & splash android: https://www.joshmorony.com/adding-icons-splash-screens-launch-images-to-capacitor-projects/ && https://apetools.webprofusion.com/#/tools/imagegorilla
       console.log(
         "%cTEAyudo",
-        "color:#233E82;font-family:Roboto;font-size:4rem;font-weight:bold"
+        "color:#56a3a6;font-family:Roboto;font-size:4rem;font-weight:bold"
       );
       console.log("%cApp version: " + this.appVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
     });

@@ -12,5 +12,5 @@ export const environment = {
     student: "student"
   },
   timemaxloading:10000, //Tiempo máximo que puede estar cargando la aplicación, supera deja de cargar y muestra error en carga
-  appVersion: "0.3",
+  appVersion: "0.3.1",
 };
