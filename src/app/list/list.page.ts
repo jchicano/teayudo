@@ -22,6 +22,7 @@ export class ListPage implements OnInit {
   public studentsAvailable: boolean;
   public filterSelected: boolean;
   private subscription: Subscription;
+  public searchText: string;
 
   constructor(
     private studentS: StudentService,
@@ -35,6 +36,7 @@ export class ListPage implements OnInit {
     this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
     this.filterSelected = false;
+    this.searchText = "";
   }
 
   ngOnInit() {
@@ -153,6 +155,11 @@ export class ListPage implements OnInit {
       this.studentList.sort((a, b) => a.fullname.localeCompare(b.fullname));
     }
     this.filterSelected = !this.filterSelected;
+  }
+
+  search ($event) {
+    // console.log($event);
+    this.searchText = $event.detail.value;
   }
 
 }
