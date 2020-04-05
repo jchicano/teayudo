@@ -17,7 +17,6 @@ export class ListPage implements OnInit {
   @ViewChild('list', { static: false }) list: IonList;
 
   public studentList: any[];
-  public studentListBackup: any[];
   public showSpinner: boolean;
   public studentsAvailable: boolean;
   private subscription: Subscription;
@@ -66,7 +65,6 @@ export class ListPage implements OnInit {
         if (list.length <= 0) this.studentsAvailable = false;
         else this.studentsAvailable = true;
         this.studentList = list;
-        this.studentListBackup = this.studentList.slice(0); // Clono el array para poder restablecer el filtro
         this.showSpinner = false;
         this.loadingC.hide();
         if ($event) $event.target.complete();
