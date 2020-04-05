@@ -7,7 +7,7 @@ export class StudentFilterPipe implements PipeTransform {
 
   transform(array: any[], text: string, field: string): any[] {
 
-    if(text === '') {
+    if (text === '') {
       return array;
     }
 
