@@ -21,6 +21,7 @@ export class CreateSchedulePage implements OnInit {
   public receivedParams: any;
   public showSpinner: boolean;
   public cardsAvailable: boolean;
+  public totalTime: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,7 @@ export class CreateSchedulePage implements OnInit {
     this.cardList = [];
     this.showSpinner = false;
     this.cardsAvailable = false;
+    this.totalTime = 0;
   }
 
   ngOnInit() {
@@ -52,7 +54,7 @@ export class CreateSchedulePage implements OnInit {
   }
 
   // NOTE https://forum.ionicframework.com/t/ion-datetime-binding-through-ngmodel-ionic-v4/137187/7
-  // Para pillar el evento de cuando se cambia la hora
+  // Para pillar el evento de cuando se cambia la hora, no usado
   updateMyDate(index, $event) {
     console.log($event); // --> wil contains $event.day.value, $event.month.value and $event.year.value
     this.cardList[index].duration = $event;
@@ -76,6 +78,7 @@ export class CreateSchedulePage implements OnInit {
       completed: false
     };
     this.cardList.push(newCard);
+    this.getTotalTimeRaw();
   }
 
   //=============================================================================
@@ -170,24 +173,26 @@ export class CreateSchedulePage implements OnInit {
     // Elimino 1 elemento a partir del indice dado
     this.cardList.splice(cardIndex, 1);
     this.cardsChecker.splice(cardIndex, 1);
+    this.getTotalTimeRaw();
   }
 
   loadCardsForCurrentUser() {
     console.log('Cargando tarjetas del alumno...');
     this.cardS.readCardsByID(this.receivedParams.get('id'))
-    .subscribe((list) => {
-      console.log('Tarjetas recibidas');
-      if(list.data().data === undefined) { // No hay tarjetas creadas
-        this.cardsAvailable = false;
-      }
-      else{ // Cargamos las tarjetas
-        this.cardsAvailable = true;
-        this.cardList = list.data().data;
-        // this.cardList.forEach((element, index) => { // Actualizo el valor de la confimacion de la tarjeta
-        //   this.cardsChecker[index] = element.confirmed+'';
-        // });
-      }
-    });
+      .subscribe((list) => {
+        console.log('Tarjetas recibidas');
+        if (list.data().data === undefined) { // No hay tarjetas creadas
+          this.cardsAvailable = false;
+        }
+        else { // Cargamos las tarjetas
+          this.cardsAvailable = true;
+          this.cardList = list.data().data;
+          // this.cardList.forEach((element, index) => { // Actualizo el valor de la confimacion de la tarjeta
+          //   this.cardsChecker[index] = element.confirmed+'';
+          // });
+          this.getTotalTimeRaw();
+        }
+      });
   }
 
   showSchedule() {
@@ -199,6 +204,23 @@ export class CreateSchedulePage implements OnInit {
       }
     };
     this.router.navigate(['/show'], navigationExtras);
+  }
+
+  getTotalTimeRaw() {
+    console.log("llamando");
+    this.totalTime = 0;
+    this.cardList.forEach(e => {
+      let onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
+      var timeMillis = Number(onlyTime.split(':')[0]) * 60 + Number(onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
+      console.log('Duration millis: ' + timeMillis);
+      this.totalTime += timeMillis;
+    });
+  }
+
+
+  // NOTE https://stackoverflow.com/a/35890816/10387022
+  getTotalTimeFormatted(ms) {
+    return new Date(ms).toISOString().slice(11, -5);
   }
 
 }
