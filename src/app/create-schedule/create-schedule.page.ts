@@ -1,5 +1,5 @@
+import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { DefaultAlertModule } from './../custom-modules/default-alert/default-alert.module';
-import { DefaultLoadingModule } from './../custom-modules/default-loading/default-loading.module';
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../services/card.service';
 import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
@@ -28,7 +28,7 @@ export class CreateSchedulePage implements OnInit {
     private modalController: ModalController,
     private cardS: CardService,
     private alertD: DefaultAlertModule,
-    private loadingD: DefaultLoadingModule,
+    private loadingC: CustomLoadingModule,
     private router: Router,
     private toastC: CustomToastModule
   ) {
@@ -152,7 +152,7 @@ export class CreateSchedulePage implements OnInit {
       this.alertD.show('Guardar tarjetas', '', 'No hay tarjetas creadas');
     }
     else {
-      this.loadingD.show('Guardando');
+      this.loadingC.show('');
       this.cardS.editArray(this.receivedParams.get('id'), this.cardList)
         .then((data) => {
           console.log('Tarjetas guardadas');
@@ -164,7 +164,7 @@ export class CreateSchedulePage implements OnInit {
           console.log(error);
         })
         .finally(() => {
-          this.loadingD.close();
+          this.loadingC.hide();
         });
     }
   }
