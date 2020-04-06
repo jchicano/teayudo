@@ -14,7 +14,6 @@ export class ShowPage implements OnInit {
   public slideOpts: any;
   @ViewChild('scroll', { static: false }) scroll: ElementRef;
   @ViewChild('progressBar', { static: false }) progressBar: ElementRef;
-
   public cardsTime: number[];
   public cardsTimeNew: number[]; // TODO error lo he creado porque como le resto 1000 a cardsTime no podia ser asi
   public totalTime: number;
