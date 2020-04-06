@@ -140,7 +140,7 @@ export class ShowPage implements OnInit {
         this.scheduleRunning = false;
         console.log('Fin del horario');
       }
-      if (this.cardList[this.currentIndex].completed !== true) {
+      if (this.cardList[this.currentIndex] && this.cardList[this.currentIndex].completed !== true) {
         this.cardsTimeNew[this.currentIndex] -= 1000;
         this.displayTime[this.currentIndex] = this.millisToTime(this.cardsTimeNew[this.currentIndex]);
         // console.log('comprobando si '+counter+'>='+this.cardsTime[indexTmp]);
