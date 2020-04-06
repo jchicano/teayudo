@@ -1,3 +1,4 @@
+import { PipesModule } from './pipes/pipes.module';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Network } from '@ionic-native/network/ngx';

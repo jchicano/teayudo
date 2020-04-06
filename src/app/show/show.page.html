@@ -22,6 +22,7 @@
           <span class="">{{ millisToTime(cardsTime[currentCardCountDownIndex]) }}</span>
         </div> -->
         <div *ngFor="let item of cardList; let i=index">
+          <app-bouncing-arrow *ngIf="!item.completed && cardsTime[i] !== 0 && cardsTime[i] !== cardsTimeNew[i]"></app-bouncing-arrow>
           <div class="card" [ngClass]="{ 'card-completed': cardList[i].completed }"
             [ngStyle]="{'background-color': item.color}">
             <!-- <div class="card_time ion-text-uppercase">
@@ -56,8 +57,7 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-button [disabled]="scheduleRunning" (click)="comenzarHorario()" size="large" shape="round"
-        fill="outline">
+        <ion-button [disabled]="scheduleRunning" (click)="comenzarHorario()" size="large" shape="round" fill="outline">
           <span *ngIf="scheduleRunning">Ejecutando</span>
           <span *ngIf="!scheduleRunning">Comenzar</span>
         </ion-button>

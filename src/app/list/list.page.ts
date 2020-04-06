@@ -17,11 +17,10 @@ export class ListPage implements OnInit {
   @ViewChild('list', { static: false }) list: IonList;
 
   public studentList: any[];
-  public studentListBackup: any[];
   public showSpinner: boolean;
   public studentsAvailable: boolean;
-  public filterSelected: boolean;
   private subscription: Subscription;
+  public searchText: string;
 
   constructor(
     private studentS: StudentService,
@@ -34,7 +33,7 @@ export class ListPage implements OnInit {
   ) {
     this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
-    this.filterSelected = false;
+    this.searchText = "";
   }
 
   ngOnInit() {
@@ -66,7 +65,6 @@ export class ListPage implements OnInit {
         if (list.length <= 0) this.studentsAvailable = false;
         else this.studentsAvailable = true;
         this.studentList = list;
-        this.studentListBackup = this.studentList.slice(0); // Clono el array para poder restablecer el filtro
         this.showSpinner = false;
         this.loadingC.hide();
         if ($event) $event.target.complete();
@@ -142,17 +140,9 @@ export class ListPage implements OnInit {
       });
   }
 
-  orderList() {
-    console.log('Aplicando filtro');
-    if (this.filterSelected) { // Ya estaba pulsado el filtro
-      // this.refresh();
-      this.studentList = this.studentListBackup;
-    }
-    else { // No estaba pulsado el filtro
-      // NOTE https://stackoverflow.com/a/35092754/10387022
-      this.studentList.sort((a, b) => a.fullname.localeCompare(b.fullname));
-    }
-    this.filterSelected = !this.filterSelected;
+  search ($event) {
+    // console.log($event);
+    this.searchText = $event.detail.value;
   }
 
 }
