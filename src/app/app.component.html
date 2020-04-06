@@ -1,7 +1,7 @@
 <ion-app [ngClass]="fontFamilyClass">
   <ion-split-pane contentId="main-content" [when]="false">
     <!-- Oculto siempre el menu lateral -->
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu contentId="main-content" type="push" swipeGesture="false">
       <ion-content>
         <div *ngIf="!this.network.isConnected">
           <div class="no-internet-icon">
