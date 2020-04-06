@@ -29,7 +29,6 @@ export class ShowPage implements OnInit {
   public displayTime: string[];
   public autoScroll: boolean;
   public scrollAutomaticValue: number; // Almaceno el scroll que tendra la barra
-  private previousUrl: string;
 
   constructor(
     private router: Router,
@@ -54,7 +53,6 @@ export class ShowPage implements OnInit {
 
   ngOnInit() {
     console.log('Tarjetas recibidas');
-    this.previousUrl = this.router.getCurrentNavigation().extras.state.previousUrl;
     this.cardList = this.router.getCurrentNavigation().extras.state.cards;
     this.cardList.forEach((card, index) => {
       console.log('Card ' + index + ':');
