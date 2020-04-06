@@ -1,3 +1,4 @@
+import { PipesModule } from './../pipes/pipes.module';
 import { ComponentsModule } from './../components/components.module';
 import { StudentModalPage } from './../modals/student-modal/student-modal.page';
 import { NgModule } from '@angular/core';
@@ -20,7 +21,8 @@ import { ListPage } from './list.page';
         path: '',
         component: ListPage
       }
-    ])
+    ]),
+    PipesModule
   ],
   declarations: [ListPage, StudentModalPage],
   entryComponents: [StudentModalPage]

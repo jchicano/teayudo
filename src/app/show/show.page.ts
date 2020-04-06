@@ -14,7 +14,6 @@ export class ShowPage implements OnInit {
   public slideOpts: any;
   @ViewChild('scroll', { static: false }) scroll: ElementRef;
   @ViewChild('progressBar', { static: false }) progressBar: ElementRef;
-
   public cardsTime: number[];
   public cardsTimeNew: number[]; // TODO error lo he creado porque como le resto 1000 a cardsTime no podia ser asi
   public totalTime: number;
@@ -29,7 +28,6 @@ export class ShowPage implements OnInit {
   public displayTime: string[];
   public autoScroll: boolean;
   public scrollAutomaticValue: number; // Almaceno el scroll que tendra la barra
-  private previousUrl: string;
 
   constructor(
     private router: Router,
@@ -54,7 +52,6 @@ export class ShowPage implements OnInit {
 
   ngOnInit() {
     console.log('Tarjetas recibidas');
-    this.previousUrl = this.router.getCurrentNavigation().extras.state.previousUrl;
     this.cardList = this.router.getCurrentNavigation().extras.state.cards;
     this.cardList.forEach((card, index) => {
       console.log('Card ' + index + ':');

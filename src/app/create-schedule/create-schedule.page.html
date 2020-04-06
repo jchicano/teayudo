@@ -14,6 +14,9 @@
 
 <ion-content>
   <!-- <app-spinner *ngIf="showSpinner"></app-spinner> -->
+  <ion-text class="ion-text-center">
+    <h5>Tiempo total {{ getTotalTimeFormatted(totalTime) }}</h5>
+  </ion-text>
   <ion-text *ngIf="!cardsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No hay
     tarjetas creadas. Pulsa en el botón para añadirlas</ion-text>
   <!-- <ion-grid>
@@ -66,7 +69,7 @@
             <ion-item>
               <ion-label position="fixed">Duración</ion-label>
               <ion-button slot="end" fill="clear"></ion-button>
-              <ion-datetime [(ngModel)]="cardList[i].duration" displayFormat="HH:mm" pickerFormat="HH:mm"
+              <ion-datetime (ionChange)="getTotalTimeRaw()" [(ngModel)]="cardList[i].duration" displayFormat="HH:mm" pickerFormat="HH:mm"
                 placeholder="SELECCIONAR" doneText="OK" cancelText="Cancelar">
               </ion-datetime>
             </ion-item>

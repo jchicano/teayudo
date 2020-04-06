@@ -7,15 +7,11 @@
     <ion-title>
       Alumnos
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button [color]="filterSelected ? 'customthree' : ''" shape="round" (click)="orderList()">
-        <ion-icon name="funnel"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-searchbar animated placeholder="Filtrar alumnos" (ionChange)="search($event)"></ion-searchbar>
   <ion-refresher color="customtwo" slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content pullingIcon="arrow-down" spinner="null" refreshingSpinner="null">
     </ion-refresher-content>
@@ -24,7 +20,7 @@
   <ion-text *ngIf="!studentsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No
     hay alumnos creados. Pulsa en el botón para añadirlos</ion-text>
   <ion-list #list>
-    <ion-item-sliding *ngFor="let student of studentList">
+    <ion-item-sliding *ngFor="let student of studentList | studentFilter: searchText: 'fullname'">
       <ion-item-options side="start" (ionSwipe)="editStudent(student)">
         <ion-item-option expandable (click)="editStudent(student)">
           <ion-icon slot="icon-only" name="create"></ion-icon>
