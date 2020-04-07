@@ -1,4 +1,4 @@
-import { PipesModule } from './pipes/pipes.module';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Network } from '@ionic-native/network/ngx';
@@ -38,7 +38,8 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Network,
     NetworkService,
-    AppVersion
+    AppVersion,
+    ScreenOrientation
   ],
   bootstrap: [AppComponent]
 })
