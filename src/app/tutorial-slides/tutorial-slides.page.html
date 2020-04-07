@@ -1,0 +1,52 @@
+<ion-header no-border>
+  <ion-toolbar color="customone ion-text-center">
+    <ion-text color="white">
+      <img style="vertical-align: middle;" width="72px" src="../../assets/img/icon_logo_white.png" />
+      <span style="font-size: larger;" >TEAyudo</span>
+    </ion-text>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides #slidesElement (ionSlideWillChange)="doCheck()" pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let slide of slides; let i = index">
+      <img [src]="slide.img" />
+      <ion-text color="white">
+        <h2>{{ slide.title }}</h2>
+        <p></p>
+      </ion-text>
+      <!-- TODO lo de abajo del boton continuar cuando este logueado -->
+      <!-- <ion-button color="customthree" fill="clear" routerLink="/home">Continuar <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button> -->
+      <ion-grid fixed="true" *ngIf="i === slides.length-1" class="ion-margin-top">
+        <ion-row>
+          <ion-col>
+            <ion-button color="customtwo" expand="block" fill="solid" size="large" shape="round" mode="md">Inicia sesión
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button color="white" expand="block" fill="clear" mode="md" routerLink="/home">Ahora no</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar color="customone">
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-button *ngIf="!disablePrevBtn" (click)="previousSlide()" color="white" fill="clear" mode="md">Anterior</ion-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-button *ngIf="!disableNextBtn" (click)="nextSlide()" color="white" fill="clear" mode="md">Siguiente</ion-button>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+
+
