@@ -1,5 +1,6 @@
-import { Platform, IonSlides } from '@ionic/angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-tutorial-slides',
@@ -38,10 +39,12 @@ export class TutorialSlidesPage implements OnInit {
   public disableNextBtn = false;
 
   constructor(
-    public platform: Platform
+    private screenOrientation: ScreenOrientation
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+  }
 
   // NOTE https://stackoverflow.com/a/55480623/10387022
   doCheck() {
