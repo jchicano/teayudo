@@ -49,6 +49,10 @@ export class TutorialSlidesPage implements OnInit {
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 
+  ionViewDidEnter() {
+    this.ionSlides.slideTo(0);
+  }
+
   // NOTE https://stackoverflow.com/a/55480623/10387022
   doCheck() {
     let prom1 = this.ionSlides.isBeginning();
