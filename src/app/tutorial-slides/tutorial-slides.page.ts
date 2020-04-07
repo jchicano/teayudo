@@ -1,3 +1,4 @@
+import { DefaultAlertModule } from './../custom-modules/default-alert/default-alert.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
@@ -39,10 +40,12 @@ export class TutorialSlidesPage implements OnInit {
   public disableNextBtn = false;
 
   constructor(
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private alertD: DefaultAlertModule
   ) { }
 
   ngOnInit() {
+    console.log('Fijando orientación a Portrait...');
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 
@@ -63,6 +66,10 @@ export class TutorialSlidesPage implements OnInit {
 
   previousSlide() {
     this.ionSlides.slidePrev();
+  }
+
+  confirmation() {
+    this.alertD.showNavigateOnOk('¿Estás seguro?', '', 'Si no inicias sesión algunas características no estarán disponibles', '/home');
   }
 
 }
