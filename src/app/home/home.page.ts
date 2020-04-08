@@ -2,6 +2,9 @@ import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Plugins } from '@capacitor/core';
+
+const { Storage } = Plugins;
 
 @Component({
   selector: 'app-home',
@@ -13,7 +16,8 @@ export class HomePage {
   private subscription: Subscription;
 
   constructor(
-    private platform: Platform
+    private platform: Platform,
+    private router: Router
   ) { }
 
   ngOnInit() { }
@@ -28,6 +32,11 @@ export class HomePage {
 
   ionViewWillLeave() {
     this.subscription.unsubscribe();
+  }
+
+  openTutorial() {
+    // Storage.set({ key: 'did_tutorial', value: 'false' });
+    this.router.navigateByUrl('/tutorial');
   }
 
 }
