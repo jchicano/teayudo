@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
   },
   {
+    path: 'tutorial',
+    loadChildren: () => import('./tutorial-slides/tutorial-slides.module').then( m => m.TutorialSlidesPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }
