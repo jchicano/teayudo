@@ -1,7 +1,12 @@
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DefaultAlertModule } from './../custom-modules/default-alert/default-alert.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, Platform, AlertController } from '@ionic/angular';
+import { Plugins } from '@capacitor/core';
+
+const { Storage } = Plugins;
 
 @Component({
   selector: 'app-tutorial-slides',
@@ -38,19 +43,43 @@ export class TutorialSlidesPage implements OnInit {
   @ViewChild('slidesElement', { static: false }) ionSlides: IonSlides;
   public disablePrevBtn = true;
   public disableNextBtn = false;
+  private subscription: Subscription;
 
   constructor(
     private screenOrientation: ScreenOrientation,
-    private alertD: DefaultAlertModule
+    private alertD: DefaultAlertModule,
+    private platform: Platform,
+    private alertController: AlertController,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    console.log('Fijando orientación a Portrait...');
+    console.log('Fijando orientacion a Portrait...');
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 
-  ionViewDidEnter() {
+
+  ionViewWillEnter() {
     this.ionSlides.slideTo(0);
+  }
+
+  ionViewDidEnter() {
+    // NOTE https://stackoverflow.com/a/58736680
+    // Para que funcione el boton atras al salir de la app
+    this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
+      const ret = Storage.get({ key: 'did_tutorial' });
+      console.log('this:' + ret);
+      ret.then((e) => {
+        if (e.value === 'true') { // Si ya se ha visto antes el tutorial se volverá atrás
+          this.router.navigate(['/home'])
+        }
+        else navigator['app'].exitApp(); // Si es la primera vez que se abre la app se cerrara
+      })
+    });
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
   }
 
   // NOTE https://stackoverflow.com/a/55480623/10387022
@@ -72,8 +101,36 @@ export class TutorialSlidesPage implements OnInit {
     this.ionSlides.slidePrev();
   }
 
-  confirmation() {
-    this.alertD.showNavigateOnOk('¿Estás seguro?', '', 'Si no inicias sesión algunas características no estarán disponibles', '/home');
+  startApp() {
+    this.router
+      .navigate(['/home'])
+      .then(() => Storage.set({ key: 'did_tutorial', value: 'true' }));
+  }
+
+  async confirmation() {
+    const alert = await this.alertController.create({
+      header: '¿Estás seguro?',
+      message: 'Si no inicias sesión algunas características no estarán disponibles',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            console.log('Dialog Okay');
+            this.startApp();
+          }
+        }, {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Dialog Cancel');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

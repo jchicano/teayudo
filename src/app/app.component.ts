@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Plugins } from '@capacitor/core';
@@ -6,6 +7,7 @@ import { Platform, Events } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 const { SplashScreen } = Plugins;
+const { Storage } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -38,7 +40,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private events: Events,
     public network: NetworkService,
-    private appVersion: AppVersion
+    private appVersion: AppVersion,
+    private router: Router
   ) {
     SplashScreen.show({
       showDuration: 5000,
@@ -52,6 +55,7 @@ export class AppComponent {
       }
     );
     this.appVersion.getVersionNumber().then(v => this.showVersion = v);
+    this.checkTutorial();
   }
 
   initializeApp() {
@@ -66,4 +70,26 @@ export class AppComponent {
       console.log("%cApp version: " + this.showVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
     });
   }
+
+  // NOTE https://forum.ionicframework.com/t/how-to-show-only-on-first-time-opening-app-localstorage/79059/3
+  // Mostramos el tutorial la primera vez que se abre la app
+  async checkTutorial() {
+    const ret = await Storage.get({ key: 'did_tutorial' });
+    if (ret.value === 'true') {
+      console.log('Tutorial already seen');
+    }
+    else if (ret.value === 'false') {
+      console.log('Tutorial should open 1');
+      this.router.navigate(['/tutorial']);
+    }
+    else if (ret.value === null) {
+      console.log('Tutorial should open 2');
+      this.router.navigate(['/tutorial']);
+      await Storage.set({
+        key: 'did_tutorial',
+        value: 'false'
+      });
+    }
+  }
+
 }
