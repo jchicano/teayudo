@@ -28,31 +28,4 @@ export class DefaultAlertModule {
     await alert.present();
   }
 
-  async showNavigateOnOk(title: string, subtitle: string, msg: string, url: string) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: subtitle,
-      message: msg,
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Dialog Cancel');
-          }
-        }, {
-          text: 'OK',
-          handler: () => {
-            console.log('Dialog Okay');
-            this.router.navigate([url]);
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
 }
