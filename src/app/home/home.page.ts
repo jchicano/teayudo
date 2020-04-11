@@ -2,9 +2,6 @@ import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Plugins } from '@capacitor/core';
-
-const { Storage } = Plugins;
 
 @Component({
   selector: 'app-home',
