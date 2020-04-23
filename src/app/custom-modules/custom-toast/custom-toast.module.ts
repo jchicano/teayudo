@@ -17,10 +17,17 @@ export class CustomToastModule {
   async show(msg) {
     const toast = await this.toastCtrl.create({
       message: msg,
-      showCloseButton: true,
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+          handler: () => {
+            console.log('Toast dismissed');
+          }
+        }
+      ],
       animated: true,
       position: 'bottom',
-      closeButtonText: 'OK',
       duration: 3000
     });
     toast.present();
@@ -32,19 +39,24 @@ export class CustomToastModule {
     if (!time) {
       this.toast = await this.toastCtrl.create({
         message: msg,
-        showCloseButton: true,
+        buttons: [
+          {
+            text: 'OK',
+            role: 'cancel',
+            handler: () => {
+              console.log('Toast dismissed');
+            }
+          }
+        ],
         animated: true,
-        position: 'top',
-        closeButtonText: 'OK',
+        position: 'top'
       });
       this.toast.present();
     } else {
       this.toast = await this.toastCtrl.create({
         message: msg,
-        showCloseButton: false,
         animated: true,
         position: 'top',
-        closeButtonText: 'OK',
         duration: time
       });
       this.toast.present();

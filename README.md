@@ -10,4 +10,7 @@ generar shields en https://shields.io/
 
 poner estructura del repositorio a lo tree en windows
 
+
+tomar ideas de https://github.com/chartjs/Chart.js/blob/master/README.md
+
 https://stackoverflow.com/a/55421870/10387022
