@@ -3,7 +3,7 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Plugins } from '@capacitor/core';
 import { Component } from '@angular/core';
-import { Platform, Events } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 const { SplashScreen } = Plugins;
@@ -38,22 +38,15 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
-    private events: Events,
     public network: NetworkService,
     private appVersion: AppVersion,
-    private router: Router
+    public router: Router
   ) {
     SplashScreen.show({
       showDuration: 5000,
       autoHide: true
     });
     this.initializeApp();
-    this.events.subscribe(
-      'update:font-family',
-      (className) => {
-        this.fontFamilyClass = className;
-      }
-    );
     this.appVersion.getVersionNumber().then(v => this.showVersion = v);
     this.checkTutorial();
   }
