@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs';
-import { FontService } from './../services/font.service';
 import { Component, OnInit } from '@angular/core';
-import { Events, Platform, NavController } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -10,20 +9,14 @@ import { Events, Platform, NavController } from '@ionic/angular';
 })
 export class SettingsPage implements OnInit {
 
-  // NOTE https://commentedcoding.com/how-to-create-a-settings-page-with-customizable-font-family-in-ionic-5-steps/
+  // NOTE no usado en ionic 5 https://commentedcoding.com/how-to-create-a-settings-page-with-customizable-font-family-in-ionic-5-steps/
 
-  public fontFamily: string;
-  public fontList: any[];
   private subscription: Subscription;
 
   constructor(
-    private events: Events,
-    private fontS: FontService,
     private platform: Platform,
     private navCtrl: NavController
-  ) {
-    this.fontList = fontS.getAvailableFonts();
-  }
+  ) { }
 
   ngOnInit() {
   }
@@ -38,19 +31,6 @@ export class SettingsPage implements OnInit {
 
   ionViewWillLeave() {
     this.subscription.unsubscribe();
-  }
-
-  ionViewWillEnter() {
-    this.fontFamily = this.fontS.getCurrentFont();
-  }
-
-  onFontFamilyChange(ev: CustomEvent) {
-    const val = ev.detail.value;
-    this.events.publish(
-      'update:font-family',
-      val
-    );
-    this.fontS.setCurrentFont(val);
   }
 
 }
