@@ -1,3 +1,4 @@
+import { CelebrateModule } from './custom-modules/celebrate/celebrate.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
@@ -31,7 +32,8 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     CustomToastModule,
     CustomLoadingModule,
     DefaultLoadingModule,
-    DefaultAlertModule
+    DefaultAlertModule,
+    CelebrateModule
   ],
   providers: [
     StatusBar,

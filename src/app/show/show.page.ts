@@ -1,3 +1,4 @@
+import { CelebrateModule } from './../custom-modules/celebrate/celebrate.module';
 import { Platform, AlertController } from '@ionic/angular';
 import { card } from './../model/card';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
@@ -28,10 +29,12 @@ export class ShowPage implements OnInit {
   public displayTime: string[];
   public autoScroll: boolean;
   public scrollAutomaticValue: number; // Almaceno el scroll que tendra la barra
+  public endedSchedule: boolean;
 
   constructor(
     private router: Router,
     private platform: Platform,
+    private celebrate: CelebrateModule
   ) {
     this.cardList = [];
     this.cardsTime = [];
@@ -48,6 +51,7 @@ export class ShowPage implements OnInit {
     this.deviceInitialWidth = 0; // Anchura de la pantalla cuando se carga la pagina
     this.autoScroll = true;
     this.scrollAutomaticValue = 0;
+    this.endedSchedule = false;
   }
 
   ngOnInit() {
@@ -139,6 +143,8 @@ export class ShowPage implements OnInit {
         clearInterval(interval); // Paro el intervalo
         this.scheduleRunning = false;
         console.log('Fin del horario');
+        this.endedSchedule = true;
+        this.celebrate.showOnce();
       }
       if (this.cardList[this.currentIndex] && this.cardList[this.currentIndex].completed !== true) {
         this.cardsTimeNew[this.currentIndex] -= 1000;
