@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { LoginModalPage } from './../modals/login-modal/login-modal.page';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -52,7 +53,8 @@ export class TutorialSlidesPage implements OnInit {
     private platform: Platform,
     private alertController: AlertController,
     private router: Router,
-    private modalController: ModalController
+    private modalController: ModalController,
+    protected auth: AuthService
   ) { }
 
   ngOnInit() {
