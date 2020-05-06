@@ -10,17 +10,20 @@
           <ion-text color="light" class="no-internet-info">
             Modo sin conexión
           </ion-text>
+          <ion-text *ngIf="auth.isAuthenticated()" color="light" class="no-internet-info">
+            {{ auth.UID }}
+          </ion-text>
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img *ngIf="auth.currentUser" [src]="auth.currentUser.imageUrl" />
-            <img *ngIf="!auth.currentUser" src="assets/img/avatar.svg" />
+            <img *ngIf="auth.isAuthenticated()" src="{{ auth.currentUser.imageUrl }}" />
+            <img *ngIf="!auth.isAuthenticated()" src="assets/img/roto2.png" />
           </ion-avatar>
         </div>
         <div class="center-custom user-name">
           <ion-text>
-            <h2 *ngIf="auth.currentUser">{{ auth.currentUser.displayName }}</h2>
-            <h2 *ngIf="!auth.currentUser">Anónimo</h2>
+            <h2 *ngIf="auth.isAuthenticated()">{{ auth.currentUser.displayName }}</h2>
+            <h2 *ngIf="!auth.isAuthenticated()">Anónimo</h2>
           </ion-text>
         </div>
         <ion-grid>
