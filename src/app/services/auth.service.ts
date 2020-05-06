@@ -16,55 +16,11 @@ export class AuthService {
 
   constructor(
     private local: NativeStorage,
-    // private google: GooglePlus,
     private router: Router,
     private db: AngularFirestore,
     private userS: UserService,
     private AFauth: AngularFireAuth
   ) { }
-
-  // public isAuthenticated(): boolean {
-  //   return this.user ? true : false;
-  // }
-
-
-
-
-
-  // public loginGoogle(): Promise<boolean> {
-  //   console.log("En el servicio");
-  //   return new Promise((resolve, reject) => {
-  //     // Logica
-  //     this.google.login({}) // Config basica
-  //       .then((d) => {
-  //         console.log(d);
-  //         if (d && d.email) {
-  //           let user: User = {
-  //             email: d.email,
-  //             displayName: d.displayName,
-  //             imageUrl: d.imageUrl,
-  //             userId: d.userId
-  //           }
-  //           this.user = user;
-  //           this.saveSession(user);
-  //           resolve(true);
-  //           // Ya esta guardado
-  //         }
-  //         else resolve(false);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         resolve(false);
-  //       });
-  //   });
-  // }
-
-  // public async logout() {
-  //   await this.google.logout();
-  //   this.user = null;
-  //   await this.saveSession();
-  //   this.router.navigate(['login']);
-  // }
 
   register(userdata): Promise<boolean> {
     // firebase.auth().createUserWithEmailAndPassword(userdata.email, userdata.password)
