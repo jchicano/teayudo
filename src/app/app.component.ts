@@ -54,7 +54,7 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       // NOTE contenido eliminado https://medium.com/@prashantg9912/how-to-add-beautiful-lottie-splashsceen-to-ionic-app-7fdbc00f6cea
       // NOTE icon & splash android: https://www.joshmorony.com/adding-icons-splash-screens-launch-images-to-capacitor-projects/ && https://apetools.webprofusion.com/#/tools/imagegorilla
@@ -63,6 +63,7 @@ export class AppComponent {
         "color:#56a3a6;font-family:Roboto;font-size:4rem;font-weight:bold"
       );
       console.log("%cApp version: " + this.showVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
+      await this.auth.checkSession();
     });
   }
 
