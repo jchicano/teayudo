@@ -1,3 +1,5 @@
+import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
+import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { AppVersion } from '@ionic-native/app-version/ngx';
@@ -39,10 +41,12 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
-    public network: NetworkService,
+    protected network: NetworkService,
     private appVersion: AppVersion,
-    public router: Router,
-    public auth: AuthService
+    protected router: Router,
+    protected auth: AuthService,
+    private loadingC: CustomLoadingModule,
+    private toastC: CustomToastModule
   ) {
     SplashScreen.show({
       showDuration: 5000,
@@ -88,8 +92,16 @@ export class AppComponent {
     }
   }
 
-  public logout() {
-    this.auth.logout();
+  public async logout() {
+    this.loadingC.show('');
+    await this.auth.logout()
+      .then(() => {
+        this.toastC.show('Sesión cerrada');
+      })
+      .catch(() => {
+        this.toastC.show('Error al cerrar sesión');
+      })
+      .finally(() => this.loadingC.hide());
   }
 
 }

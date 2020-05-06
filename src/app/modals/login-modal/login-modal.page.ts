@@ -1,3 +1,4 @@
+import { CustomLoadingModule } from './../../custom-modules/custom-loading/custom-loading.module';
 import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { Router } from '@angular/router';
 import { ConfirmPasswordValidator } from './../../custom-validators/confirm-password.validator';
@@ -24,7 +25,8 @@ export class LoginModalPage implements OnInit {
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private toastC: CustomToastModule
+    private toastC: CustomToastModule,
+    private loadingC: CustomLoadingModule
   ) { }
 
   ngOnInit() {
@@ -71,11 +73,12 @@ export class LoginModalPage implements OnInit {
   }
 
   onSubmitLogin() {
+    this.loadingC.show('');
     this.userdata = this.saveLoginUserdata();
     this.auth.login(this.userdata)
       .then(() => {
         console.log('Redirecting to home...');
-        this.toastC.showTop('Sesión iniciada', 2000);
+        this.toastC.show('Sesión iniciada');
         this.dismiss();
         this.router.navigate(['/home'])
           .catch((e) => {
@@ -84,23 +87,26 @@ export class LoginModalPage implements OnInit {
           });
       })
       .catch(() => {
-        this.toastC.showTop('Error al iniciar sesión');
-      });
+        this.toastC.show('Error al iniciar sesión');
+      })
+      .finally(() => { this.loadingC.hide(); });
   }
 
   onSubmitRegister() {
+    this.loadingC.show('');
     this.userdata = this.saveRegisterUserdata();
     console.log('Al registrarnos:');
     console.log(this.userdata);
     this.auth.register(this.userdata)
       .then(() => {
-        this.toastC.showTop('Registrado con éxito', 2000);
+        this.toastC.show('Registrado con éxito');
         this.dismiss();
         this.router.navigate(['/home']);
       })
       .catch(() => {
-        this.toastC.showTop('Error al realizar el registro');
-      });
+        this.toastC.show('Error al realizar el registro');
+      })
+      .finally(() => { this.loadingC.hide(); });
   }
 
   saveLoginUserdata() {
