@@ -4,7 +4,7 @@
 }
 
 .active {
-    --ion-text-color: #4c8f92;
+    --ion-text-color: var(--ion-color-customone-shade);
     font-weight: bold;
 
     ion-icon {
@@ -91,9 +91,9 @@ ion-menu {
 //=============================================================================
 .fix-bottom-menu {
     position: fixed;
-    left: 0;
+    // left: 0;
     bottom: 20px;
-    right: 0;
+    // right: 0;
 }
 
 .fix-bottom-menu-appversion {
