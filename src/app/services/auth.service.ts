@@ -12,7 +12,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class AuthService {
 
-  protected currentUser: User;
+  private currentUser: User;
 
   constructor(
     private local: NativeStorage,
@@ -29,15 +29,7 @@ export class AuthService {
 
 
 
-  // public async checkSession(): Promise<void> {
-  //   if (!this.user) { // Todavia no se ha iniciado sesion
-  //     try {
-  //       this.user = await this.local.getItem('user'); // Recuperamos el usuario de local storage
-  //     } catch (error) {
-  //       this.user = null;
-  //     }
-  //   }
-  // }
+
 
   // public loginGoogle(): Promise<boolean> {
   //   console.log("En el servicio");
@@ -117,23 +109,23 @@ export class AuthService {
 
     return new Promise((resolve, reject) => {
       this.AFauth.auth.signInWithEmailAndPassword(userdata.email, userdata.password)
-        .then((d) => {
+        .then(async (d) => {
           // console.log(d);
           if (d && d.user) {
-            let name = null;
-            this.userS.getUserByID(d.user.uid)
+            await this.userS.getUserByID(d.user.uid)
               .subscribe((r) => {
-                name = r.data;
+                const name = r.data().name;
+                // console.log(r.data());
+                const user: User = {
+                  email: d.user.email,
+                  displayName: name,
+                  imageUrl: 'assets/img/avatar.svg',
+                  userId: d.user.uid
+                };
+                this.currentUser = user;
+                this.saveSession(user);
+                resolve(true);
               });
-            let user: User = {
-              email: d.user.email,
-              displayName: name,
-              imageUrl: 'assets/img/avatar.svg',
-              userId: d.user.uid
-            };
-            this.currentUser = user;
-            this.saveSession(user);
-            resolve(true);
           }
           else reject(false);
         })
@@ -144,13 +136,8 @@ export class AuthService {
     });
   }
 
-  isAuthenticated() {
-    const user = this.AFauth.auth.currentUser;
-    if (user) {
-      return true;
-    } else {
-      return false;
-    }
+  public isAuthenticated(): boolean {
+    return this.currentUser ? true : false;
   }
 
   /**
@@ -179,4 +166,34 @@ export class AuthService {
     }
   }
 
+  public async checkSession(): Promise<void> {
+    if (!this.currentUser) { // Todavia no se ha iniciado sesion
+      try {
+        this.currentUser = await this.local.getItem('user'); // Recuperamos el usuario de local storage
+      } catch (error) {
+        this.currentUser = null;
+      }
+    }
+  }
+
+  get UID(): string {
+    return this.currentUser.userId;
+  }
+
+  get email(): string {
+    return this.currentUser.userId;
+  }
+
+  get displayName(): string {
+    return this.currentUser.userId;
+  }
+
+  get imageUrl(): string {
+    return this.currentUser.userId;
+  }
+
+  showLocalVariableValue() {
+    this.local.getItem('user').then((val) => alert(JSON.stringify(val)));
+  }
+  
 }
