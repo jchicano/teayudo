@@ -88,4 +88,8 @@ export class AppComponent {
     }
   }
 
+  public logout() {
+    this.auth.logout();
+  }
+
 }
