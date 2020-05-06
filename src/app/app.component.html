@@ -10,19 +10,16 @@
           <ion-text color="light" class="no-internet-info">
             Modo sin conexión
           </ion-text>
-          <ion-text *ngIf="auth.isAuthenticated()" color="light" class="no-internet-info">
-            {{ auth.UID }}
-          </ion-text>
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img *ngIf="auth.isAuthenticated()" src="{{ auth.currentUser.imageUrl }}" />
+            <img *ngIf="auth.isAuthenticated()" src="{{ auth.imageUrl }}" />
             <img *ngIf="!auth.isAuthenticated()" src="assets/img/avatar.svg" />
           </ion-avatar>
         </div>
         <div class="center-custom user-name">
           <ion-text>
-            <h2 *ngIf="auth.isAuthenticated()">{{ auth.currentUser.displayName }}</h2>
+            <h2 *ngIf="auth.isAuthenticated()">{{ auth.displayName }}</h2>
             <h2 *ngIf="!auth.isAuthenticated()">Anónimo</h2>
           </ion-text>
         </div>
@@ -47,7 +44,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <div class="center-custom">
+        <div *ngIf="auth.isAuthenticated()" class="center-custom">
           <ion-button color="black" fill="clear" shape="round" mode="ios" (click)="logout()" class="fix-bottom-menu">
             <ion-icon name="power"></ion-icon>&nbsp;Cerrar sesión
           </ion-button>
