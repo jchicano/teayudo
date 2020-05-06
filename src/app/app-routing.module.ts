@@ -48,6 +48,10 @@ const routes: Routes = [
     path: 'colors-modal',
     loadChildren: () => import('./modals/colors-modal/colors-modal.module').then( m => m.ColorsModalPageModule)
   }
+  {
+    path: 'login-modal',
+    loadChildren: () => import('./modals/login-modal/login-modal.module').then( m => m.LoginModalPageModule)
+  }
   */
 ];
 

@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
@@ -40,7 +41,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     public network: NetworkService,
     private appVersion: AppVersion,
-    public router: Router
+    public router: Router,
+    public auth: AuthService
   ) {
     SplashScreen.show({
       showDuration: 5000,

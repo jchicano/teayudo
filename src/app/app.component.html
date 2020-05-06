@@ -13,12 +13,14 @@
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img src="assets/img/avatar.svg" />
+            <img *ngIf="auth.currentUser" [src]="auth.currentUser.imageUrl" />
+            <img *ngIf="!auth.currentUser" src="assets/img/avatar.svg" />
           </ion-avatar>
         </div>
         <div class="center-custom user-name">
           <ion-text>
-            <h2>Nombre Apellidos</h2>
+            <h2 *ngIf="auth.currentUser">{{ auth.currentUser.displayName }}</h2>
+            <h2 *ngIf="!auth.currentUser">Anónimo</h2>
           </ion-text>
         </div>
         <ion-grid>
