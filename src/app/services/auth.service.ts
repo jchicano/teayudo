@@ -92,8 +92,10 @@ export class AuthService {
     });
   }
 
-  public logout() {
+  public async logout() {
     this.AFauth.auth.signOut();
+    this.currentUser = null;
+    await this.saveSession();
   }
 
   public isAuthenticated(): boolean {
@@ -141,15 +143,15 @@ export class AuthService {
   }
 
   get email(): string {
-    return this.currentUser.userId;
+    return this.currentUser.email;
   }
 
   get displayName(): string {
-    return this.currentUser.userId;
+    return this.currentUser.displayName;
   }
 
   get imageUrl(): string {
-    return this.currentUser.userId;
+    return this.currentUser.imageUrl;
   }
 
   showLocalVariableValue() {
