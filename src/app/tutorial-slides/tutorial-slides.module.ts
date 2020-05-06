@@ -1,6 +1,7 @@
+import { LoginModalPage } from './../modals/login-modal/login-modal.page';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,8 +14,10 @@ import { TutorialSlidesPage } from './tutorial-slides.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    TutorialSlidesPageRoutingModule
+    TutorialSlidesPageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [TutorialSlidesPage]
+  declarations: [TutorialSlidesPage, LoginModalPage],
+  entryComponents: [LoginModalPage]
 })
 export class TutorialSlidesPageModule {}

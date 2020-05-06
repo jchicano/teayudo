@@ -1,3 +1,6 @@
+import { AngularFireAuth } from '@angular/fire/auth';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { CelebrateModule } from './custom-modules/celebrate/celebrate.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
@@ -33,7 +36,9 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     CustomLoadingModule,
     DefaultLoadingModule,
     DefaultAlertModule,
-    CelebrateModule
+    CelebrateModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
@@ -41,7 +46,9 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     Network,
     NetworkService,
     AppVersion,
-    ScreenOrientation
+    ScreenOrientation,
+    AngularFireAuth,
+    NativeStorage
   ],
   bootstrap: [AppComponent]
 })
