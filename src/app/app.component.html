@@ -17,7 +17,7 @@
         <div class="center-custom user-image">
           <ion-avatar>
             <img *ngIf="auth.isAuthenticated()" src="{{ auth.currentUser.imageUrl }}" />
-            <img *ngIf="!auth.isAuthenticated()" src="assets/img/roto2.png" />
+            <img *ngIf="!auth.isAuthenticated()" src="assets/img/avatar.svg" />
           </ion-avatar>
         </div>
         <div class="center-custom user-name">
@@ -47,8 +47,11 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-
-        <ion-button class="fix-bottom-menu">Logout</ion-button>
+        <div class="center-custom">
+          <ion-button color="black" fill="clear" shape="round" mode="ios" (click)="logout()" class="fix-bottom-menu">
+            <ion-icon name="power"></ion-icon>&nbsp;Cerrar sesión
+          </ion-button>
+        </div>
         <ion-text class="fix-bottom-menu-appversion center-custom">v{{ showVersion }}</ion-text>
       </ion-content>
       <!-- <ion-footer class="bar-stable">

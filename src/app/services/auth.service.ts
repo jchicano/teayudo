@@ -136,6 +136,10 @@ export class AuthService {
     });
   }
 
+  public logout() {
+    this.AFauth.auth.signOut();
+  }
+
   public isAuthenticated(): boolean {
     return this.currentUser ? true : false;
   }
@@ -195,5 +199,5 @@ export class AuthService {
   showLocalVariableValue() {
     this.local.getItem('user').then((val) => alert(JSON.stringify(val)));
   }
-  
+
 }
