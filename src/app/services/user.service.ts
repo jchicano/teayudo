@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService { // User is Teacher
 
   myCollection: AngularFirestoreCollection;
 
@@ -22,11 +22,12 @@ export class UserService {
     return this.myCollection.doc(id).set({
       uid: id,
       name: inputName,
-      avatar: 'assets/img/avatar.svg'
+      avatar: ''
     });
   }
 
   getUserByID(id: string): Observable<firebase.firestore.DocumentSnapshot> {
     return this.myCollection.doc(id).get();
   }
+
 }

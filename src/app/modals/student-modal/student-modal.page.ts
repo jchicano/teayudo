@@ -1,3 +1,6 @@
+import { Plugins } from '@capacitor/core';
+import { CustomLoadingModule } from './../../custom-modules/custom-loading/custom-loading.module';
+import { AuthService } from './../../services/auth.service';
 import { DefaultAlertModule } from './../../custom-modules/default-alert/default-alert.module';
 import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../../services/card.service';
@@ -6,6 +9,8 @@ import { StudentService } from './../../services/student.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
+const { Device } = Plugins;
 
 @Component({
   selector: 'app-student-modal',
@@ -24,7 +29,9 @@ export class StudentModalPage implements OnInit {
     private studentS: StudentService,
     private cardS: CardService,
     private toastC: CustomToastModule,
-    private alertD: DefaultAlertModule
+    private alertD: DefaultAlertModule,
+    private auth: AuthService,
+    private loadingC: CustomLoadingModule
   ) {
   }
 
@@ -68,8 +75,9 @@ export class StudentModalPage implements OnInit {
     }
     else { // Estamos creando un usuario
       console.log('Se va a crear un alumno');
+      this.loadingC.show('');
       if (this.studentForm.valid) {
-        this.cardS.createCollection()
+        this.cardS.createCollection() // TODO no deberia crear antes el alumno y luego la coleccion de tarjetas?
           .then((ok) => {
             console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
             let myStudent: student = {
@@ -77,15 +85,28 @@ export class StudentModalPage implements OnInit {
               collectionId: ok.id
             };
             this.studentS.addStudent(myStudent)
-              .then(() => {
-                this.toastC.show('Alumno creado correctamente');
+              .then(async (r) => {
+                console.log('Alumno creado con exito: ' + r.id);
                 console.log(myStudent);
-                this.closeModal();
+                const teacherId = this.auth.UID;//TODO modificado aqui
+                console.log('profe id a asignar: '+teacherId);
+                this.studentS.assignTeacher(r.id, teacherId)
+                  .then((r) => {
+                    this.toastC.show('Alumno creado correctamente');
+                  })
+                  .catch((r) => {
+                    this.toastC.show('Error al asignar alumno');
+                    console.log(r);
+                  })
+                  .finally(() => {
+                    this.loadingC.hide();
+                    this.closeModal();
+                  });
               })
               .catch((error) => {
                 this.toastC.show('Error al crear alumno');
                 console.log(error);
-              })
+              });
           })
           .catch((err) => {
             this.toastC.show('Error al guardar alumno');

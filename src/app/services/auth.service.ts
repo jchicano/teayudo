@@ -1,11 +1,11 @@
+import { Plugins } from '@capacitor/core';
 import { UserService } from './user.service';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { User } from '../model/User';
-import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 
+const { Device } = Plugins;
 
 @Injectable({
   providedIn: 'root'
@@ -16,18 +16,11 @@ export class AuthService {
 
   constructor(
     private local: NativeStorage,
-    private router: Router,
-    private db: AngularFirestore,
     private userS: UserService,
     private AFauth: AngularFireAuth
   ) { }
 
   register(userdata): Promise<boolean> {
-    // firebase.auth().createUserWithEmailAndPassword(userdata.email, userdata.password)
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-
     return new Promise((resolve, reject) => {
       this.AFauth.auth.createUserWithEmailAndPassword(userdata.email, userdata.password)
         .then((d) => {
@@ -38,8 +31,9 @@ export class AuthService {
             let user: User = {
               email: d.user.email,
               displayName: userdata.name,
-              imageUrl: 'assets/img/avatar.svg',
-              userId: d.user.uid
+              imageUrl: '',
+              userId: d.user.uid,
+              guest: false
             };
             this.currentUser = user;
             this.saveSession(user);
@@ -55,14 +49,6 @@ export class AuthService {
   }
 
   login(userdata) {
-    // firebase.auth().signInWithEmailAndPassword(userdata.email, userdata.password)
-    //   .then(response => {
-    //     console.log(response);
-    //     this.router.navigate(['/home']);
-    //   }).catch(
-    //     error => { console.log(error); }
-    //   );
-
     return new Promise((resolve, reject) => {
       this.AFauth.auth.signInWithEmailAndPassword(userdata.email, userdata.password)
         .then(async (d) => {
@@ -75,8 +61,9 @@ export class AuthService {
                 const user: User = {
                   email: d.user.email,
                   displayName: name,
-                  imageUrl: 'assets/img/avatar.svg',
-                  userId: d.user.uid
+                  imageUrl: '',
+                  userId: d.user.uid,
+                  guest: false
                 };
                 this.currentUser = user;
                 this.saveSession(user);
@@ -94,12 +81,21 @@ export class AuthService {
 
   public async logout() {
     this.AFauth.auth.signOut();
-    this.currentUser = null;
+    // this.currentUser = null;
+    const uuid = await (await Device.getInfo()).uuid;
+    this.currentUser = {
+      email: '',
+      displayName: '',
+      imageUrl: '',
+      userId: uuid,
+      guest: true
+    };
     await this.saveSession();
   }
 
-  public isAuthenticated(): boolean {
-    return this.currentUser ? true : false;
+  public isGuest(): boolean {
+    // return this.currentUser ? true : false;
+    return this.currentUser.guest;
   }
 
   /**
@@ -133,7 +129,15 @@ export class AuthService {
       try {
         this.currentUser = await this.local.getItem('user'); // Recuperamos el usuario de local storage
       } catch (error) {
-        this.currentUser = null;
+        // this.currentUser = null;
+        const uuid = await (await Device.getInfo()).uuid;
+        this.currentUser = {
+          email: '',
+          displayName: '',
+          imageUrl: '',
+          userId: uuid,
+          guest: true
+        };
       }
     }
   }

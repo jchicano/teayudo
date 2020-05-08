@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { Subscription } from 'rxjs';
@@ -29,7 +30,8 @@ export class ListPage implements OnInit {
     private toastC: CustomToastModule,
     private navCtrl: NavController,
     private platform: Platform,
-    private loadingC: CustomLoadingModule
+    private loadingC: CustomLoadingModule,
+    private auth: AuthService
   ) {
     this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
@@ -61,7 +63,7 @@ export class ListPage implements OnInit {
     //this.studentList = [];
     console.log("Cargando alumnos");
     try {
-      this.studentS.readStudentsObsv().subscribe((list) => {
+      this.studentS.readStudentsObsvForTeacher(this.auth.UID).subscribe((list) => { // Si esta logueado pasamos el UDI, si es invitado pasamos 'anonymous'
         if (list.length <= 0) this.studentsAvailable = false;
         else this.studentsAvailable = true;
         this.studentList = list;
@@ -69,7 +71,7 @@ export class ListPage implements OnInit {
         this.loadingC.hide();
         if ($event) $event.target.complete();
         console.log('Alumnos cargados');
-        // console.log(this.studentList);
+        console.log(this.studentList);
       });
     } catch (error) {
       this.showSpinner = false;
