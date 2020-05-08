@@ -126,10 +126,6 @@ export class LoginModalPage implements OnInit {
     return saveUserdata;
   }
 
-  isAuth() {
-    return this.auth.isAuthenticated();
-  }
-
   dismiss() {
     this.modalController.dismiss();
   }

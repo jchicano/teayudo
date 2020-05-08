@@ -3,4 +3,5 @@ export interface User {
     displayName: string;
     imageUrl: string;
     userId: string;
+    guest: boolean;
 }

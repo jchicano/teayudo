@@ -14,7 +14,7 @@
         <h2>{{ slide.title }}</h2>
         <p></p>
       </ion-text>
-      <ion-grid fixed="true" *ngIf="i === slides.length-1 && !auth.isAuthenticated()">
+      <ion-grid fixed="true" *ngIf="i === slides.length-1 && auth.isGuest()">
         <ion-row>
           <ion-col>
             <ion-button (click)="showModalLogin()" color="customtwo" expand="block" fill="solid" size="large" shape="round" mode="md">Inicia sesión
@@ -27,8 +27,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <!-- TODO lo de abajo del boton continuar cuando este logueado -->
-      <ion-button *ngIf="i === slides.length-1 && auth.isAuthenticated()" color="customthree" fill="clear" routerLink="/home">Continuar <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+      <ion-button *ngIf="i === slides.length-1 && !auth.isGuest()" color="customthree" fill="clear" routerLink="/home">Continuar <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
     </ion-slide>
   </ion-slides>
 </ion-content>
