@@ -1,3 +1,5 @@
+import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
+import { AuthService } from './../services/auth.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Platform, NavController } from '@ionic/angular';
@@ -15,7 +17,9 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private platform: Platform,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private auth: AuthService,
+    private toastC: CustomToastModule
   ) { }
 
   ngOnInit() {
@@ -31,6 +35,20 @@ export class SettingsPage implements OnInit {
 
   ionViewWillLeave() {
     this.subscription.unsubscribe();
+  }
+
+  public isEmailVerified(): boolean {
+    return this.auth.isEmailAddressVerified();
+  }
+
+  public sendEmail(): void {
+    this.auth.sendVerificationEmail()
+      .then(() => {
+        this.toastC.show('Email de recuperación enviado');
+      })
+      .catch(() => {
+        this.toastC.show('Error al enviar email de recuperación');
+      });
   }
 
 }
