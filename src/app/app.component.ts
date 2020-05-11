@@ -99,6 +99,9 @@ export class AppComponent {
     await this.auth.logout()
       .then(() => {
         this.toastC.show('Sesión cerrada');
+        if (this.router.url === '/list') {
+          this.router.navigate(['/home']); // Para que el usuario anónimo no vea los alumnos del que estaba logueado
+        }
       })
       .catch(() => {
         this.toastC.show('Error al cerrar sesión');
