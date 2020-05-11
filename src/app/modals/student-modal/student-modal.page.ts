@@ -77,19 +77,18 @@ export class StudentModalPage implements OnInit {
       console.log('Se va a crear un alumno');
       this.loadingC.show('');
       if (this.studentForm.valid) {
-        this.cardS.createCollection() // TODO no deberia crear antes el alumno y luego la coleccion de tarjetas?
+        this.cardS.createCollection()
           .then((ok) => {
-            console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
-            let myStudent: student = {
+            // console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
+            const myStudent: student = {
               fullname: this.studentForm.get('nombre').value,
               collectionId: ok.id
             };
             this.studentS.addStudent(myStudent)
               .then(async (r) => {
-                console.log('Alumno creado con exito: ' + r.id);
-                console.log(myStudent);
-                const teacherId = this.auth.UID;//TODO modificado aqui
-                console.log('profe id a asignar: '+teacherId);
+                // console.log('Alumno creado con exito: ' + r.id);
+                // console.log(myStudent);
+                const teacherId = this.auth.UID;
                 this.studentS.assignTeacher(r.id, teacherId)
                   .then((r) => {
                     this.toastC.show('Alumno creado correctamente');

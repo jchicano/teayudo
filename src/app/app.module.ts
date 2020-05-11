@@ -1,3 +1,4 @@
+import { LoginModalPage } from './modals/login-modal/login-modal.page';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
@@ -23,8 +24,8 @@ import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, LoginModalPage],
+  entryComponents: [LoginModalPage],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
