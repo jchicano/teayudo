@@ -71,7 +71,7 @@ export class ListPage implements OnInit {
         this.loadingC.hide();
         if ($event) $event.target.complete();
         console.log('Alumnos cargados');
-        console.log(this.studentList);
+        // console.log(this.studentList);
       });
     } catch (error) {
       this.showSpinner = false;
