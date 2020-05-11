@@ -23,7 +23,7 @@
           <div class="sign-in-htm">
             <div class="group">
               <label for="email1" class="label">Email</label>
-              <input id="email1" type="text" class="input" formControlName="loginEmail">
+              <input id="email1" type="email" class="input" formControlName="loginEmail">
             </div>
             <div class="group">
               <label for="pass1" class="label">Contraseña</label>
@@ -40,7 +40,8 @@
               [disabled]="!loginForm.valid">Entrar</ion-button>
             <div class="hr"></div>
             <div class="foot-lnk">
-              <a href="#forgot">Forgot Password?</a>
+              <!-- <a href="#forgot">Forgot Password?</a> -->
+              <a (click)="resetPassword()">¿Has olvidado la contraseña?</a>
             </div>
           </div>
         </form>
@@ -52,7 +53,7 @@
             </div>
             <div class="group">
               <label for="email2" class="label">Email</label>
-              <input id="email2" type="text" class="input" formControlName="registerEmail">
+              <input id="email2" type="email" class="input" formControlName="registerEmail">
             </div>
             <div class="group">
               <label for="pass2" class="label">Contraseña</label>

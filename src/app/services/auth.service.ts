@@ -18,7 +18,9 @@ export class AuthService {
     private local: NativeStorage,
     private userS: UserService,
     private AFauth: AngularFireAuth
-  ) { }
+  ) {
+    this.AFauth.auth.useDeviceLanguage(); // Los mensajes de firebase cambiaran segun el idioma del dispositivo
+  }
 
   register(userdata): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -37,6 +39,7 @@ export class AuthService {
             };
             this.currentUser = user;
             this.saveSession(user);
+            this.sendVerificationEmail();
             resolve(true);
           }
           else reject(false);
@@ -140,6 +143,36 @@ export class AuthService {
         };
       }
     }
+  }
+
+  resetPassword(email: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.AFauth.auth.sendPasswordResetEmail(email)
+        .then(() => {
+          // Email sent.
+          resolve(true);
+        }).catch((error) => {
+          // An error happened.
+          reject(false);
+        });
+    });
+  }
+
+  isEmailAddressVerified() {
+    return this.AFauth.auth.currentUser.emailVerified;
+  }
+
+  sendVerificationEmail(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.AFauth.auth.currentUser.sendEmailVerification()
+        .then(() => {
+          resolve(true);
+        })
+        .catch((e) => {
+          console.log(e);
+          reject(false);
+        });
+    });
   }
 
   get UID(): string {
