@@ -56,7 +56,7 @@ export class ListPage implements OnInit {
 
   // Refresco de la lista
   async refresh($event?) {
-    if (!$event){
+    if (!$event) {
       this.showSpinner = true; // Si se usa el ion-refresher no se muestra spinner central
     }
     this.loadingC.show("");
@@ -95,16 +95,16 @@ export class ListPage implements OnInit {
     this.list.closeSlidingItems();
     this.cardS.deleteCard(currentStudent.collectionId)
       .then(() => {
-        console.log('Horario del alumno eliminado')
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    this.studentS.deleteStudent(currentStudent.id)
-      .then(() => {
-        console.log('Alumno eliminado')
-        this.toastC.show('Alumno eliminado');
-        this.refresh();
+        console.log('Horario del alumno eliminado');
+        this.studentS.deleteStudent(currentStudent.id)
+          .then(() => {
+            console.log('Alumno eliminado');
+            this.toastC.show('Alumno eliminado');
+            this.refresh();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -142,7 +142,7 @@ export class ListPage implements OnInit {
       });
   }
 
-  search ($event) {
+  search($event) {
     // console.log($event);
     this.searchText = $event.detail.value;
   }
