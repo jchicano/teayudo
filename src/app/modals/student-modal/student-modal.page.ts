@@ -88,8 +88,7 @@ export class StudentModalPage implements OnInit {
               .then(async (r) => {
                 // console.log('Alumno creado con exito: ' + r.id);
                 // console.log(myStudent);
-                const teacherId = this.auth.UID;
-                this.studentS.assignTeacher(r.id, teacherId)
+                this.studentS.assignTeacher(r.id, this.auth.UID)
                   .then((r) => {
                     this.toastC.show('Alumno creado correctamente');
                   })
