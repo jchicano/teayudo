@@ -1,3 +1,4 @@
+import { LoginModalPage } from './modals/login-modal/login-modal.page';
 import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
 import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
 import { AuthService } from './services/auth.service';
@@ -6,7 +7,7 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Plugins } from '@capacitor/core';
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 const { SplashScreen } = Plugins;
@@ -46,7 +47,8 @@ export class AppComponent {
     protected router: Router,
     protected auth: AuthService,
     private loadingC: CustomLoadingModule,
-    private toastC: CustomToastModule
+    private toastC: CustomToastModule,
+    private modalController: ModalController
   ) {
     SplashScreen.show({
       showDuration: 5000,
@@ -102,6 +104,15 @@ export class AppComponent {
         this.toastC.show('Error al cerrar sesión');
       })
       .finally(() => this.loadingC.hide());
+  }
+
+  async login() {
+    const modal = await this.modalController.create({
+      component: LoginModalPage,
+      swipeToClose: true,
+      mode: 'ios'
+    });
+    return await modal.present();
   }
 
 }
