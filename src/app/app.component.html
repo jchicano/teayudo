@@ -13,7 +13,7 @@
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img *ngIf="auth.isGuest() || auth.imageUrl == ''" src="assets/img/avatar.svg" />
+            <img *ngIf="auth.isGuest() || auth.imageUrl == ''" src="assets/img/user.svg" />
             <img *ngIf="!auth.isGuest() && auth.imageUrl != ''" src="{{ auth.imageUrl }}" />
           </ion-avatar>
         </div>
@@ -47,6 +47,11 @@
         <div *ngIf="!auth.isGuest()" class="center-custom">
           <ion-button color="black" fill="clear" shape="round" mode="ios" (click)="logout()" class="fix-bottom-menu">
             <ion-icon name="power"></ion-icon>&nbsp;Cerrar sesión
+          </ion-button>
+        </div>
+        <div *ngIf="auth.isGuest()" class="center-custom">
+          <ion-button color="black" fill="clear" shape="round" mode="ios" (click)="login()" class="fix-bottom-menu">
+            <ion-icon name="log-in"></ion-icon>&nbsp;Iniciar sesión
           </ion-button>
         </div>
         <ion-text class="fix-bottom-menu-appversion center-custom">v{{ showVersion }}</ion-text>

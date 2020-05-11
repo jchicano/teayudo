@@ -1,4 +1,3 @@
-import { LoginModalPage } from './../modals/login-modal/login-modal.page';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +16,6 @@ import { TutorialSlidesPage } from './tutorial-slides.page';
     TutorialSlidesPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [TutorialSlidesPage, LoginModalPage],
-  entryComponents: [LoginModalPage]
+  declarations: [TutorialSlidesPage]
 })
 export class TutorialSlidesPageModule {}
