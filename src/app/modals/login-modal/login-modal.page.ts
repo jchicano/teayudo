@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ConfirmPasswordValidator } from './../../custom-validators/confirm-password.validator';
 import { AuthService } from './../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 import * as firebase from 'firebase';
@@ -26,7 +26,8 @@ export class LoginModalPage implements OnInit {
     private auth: AuthService,
     private router: Router,
     private toastC: CustomToastModule,
-    private loadingC: CustomLoadingModule
+    private loadingC: CustomLoadingModule,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -125,6 +126,45 @@ export class LoginModalPage implements OnInit {
     };
     return saveUserdata;
   }
+
+  async resetPassword() {
+    const alert = await this.alertController.create({
+      header: 'Restablecer contraseña',
+      inputs: [
+        {
+          name: 'emailReset',
+          type: 'email',
+          placeholder: 'Dirección de correo electrónico'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (alertData) => {
+            console.log('Confirm Ok: ' + alertData.emailReset);
+            this.auth.resetPassword(alertData.emailReset)
+              .then(() => {
+                this.toastC.show('Email de recuperación enviado');
+              })
+              .catch((e) => {
+                this.toastC.show('Error al enviar email de recuperación');
+                console.log(e);
+              });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
   dismiss() {
     this.modalController.dismiss();
