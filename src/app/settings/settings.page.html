@@ -8,6 +8,20 @@
 </ion-header>
 
 <ion-content>
+  <ion-header *ngIf="!isEmailVerified()" class="ion-no-border" class="line-bottom">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button disabled>
+          <ion-icon name="alert-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title size="small">
+        Por favor verifica tu dirección de correo electrónico&nbsp;
+        <ion-button (click)="sendEmail();" class="resend-button" size="small" mode="ios" fill="outline">Reenviar</ion-button>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <hr>
   <ion-list>
     <!-- <ion-radio-group [(ngModel)]="fontFamily" (ionChange)="onFontFamilyChange($event)">
       <ion-list-header>
