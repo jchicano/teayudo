@@ -1,3 +1,4 @@
+import { SettingsService } from './services/settings.service';
 import { LoginModalPage } from './modals/login-modal/login-modal.page';
 import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
 import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
@@ -37,7 +38,6 @@ export class AppComponent {
     }
   ];
   public fontFamilyClass = '';
-  protected showVersion: string;
 
   constructor(
     private platform: Platform,
@@ -48,14 +48,14 @@ export class AppComponent {
     protected auth: AuthService,
     private loadingC: CustomLoadingModule,
     private toastC: CustomToastModule,
-    private modalController: ModalController
+    private modalController: ModalController,
+    public settings: SettingsService
   ) {
     SplashScreen.show({
       showDuration: 5000,
       autoHide: true
     });
     this.initializeApp();
-    this.appVersion.getVersionNumber().then(v => this.showVersion = v);
     this.checkTutorial();
   }
 
@@ -68,7 +68,7 @@ export class AppComponent {
         "%cTEAyudo",
         "color:#56a3a6;font-family:Roboto;font-size:4rem;font-weight:bold"
       );
-      console.log("%cApp version: " + this.showVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
+      console.log("%cApp version: " + this.settings.version, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
       await this.auth.checkSession();
     });
   }

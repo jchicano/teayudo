@@ -48,6 +48,7 @@ export class ListPage implements OnInit {
     this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
       this.navCtrl.navigateBack('/home');
     });
+    this.refresh();
   }
 
   ionViewWillLeave() {

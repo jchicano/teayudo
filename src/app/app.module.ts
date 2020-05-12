@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from "src/environments/environment";
 import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 @NgModule({
   declarations: [AppComponent, LoginModalPage],
@@ -49,7 +50,8 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     AppVersion,
     ScreenOrientation,
     AngularFireAuth,
-    NativeStorage
+    NativeStorage,
+    Clipboard
   ],
   bootstrap: [AppComponent]
 })
