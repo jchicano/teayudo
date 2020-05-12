@@ -98,7 +98,9 @@ export class AuthService {
 
   public isGuest(): boolean {
     // return this.currentUser ? true : false;
-    return this.currentUser.guest;
+    // return this.currentUser.guest;
+    return this.currentUser ? this.currentUser.guest : false;
+    // return this.currentUser ? this.currentUser.guest : false;
   }
 
   /**
@@ -159,7 +161,8 @@ export class AuthService {
   }
 
   isEmailAddressVerified() {
-    return this.AFauth.auth.currentUser.emailVerified;
+    // return this.AFauth.auth.currentUser.emailVerified;
+    return this.AFauth.auth.currentUser ? this.AFauth.auth.currentUser.emailVerified : false;
   }
 
   sendVerificationEmail(): Promise<boolean> {
@@ -176,19 +179,19 @@ export class AuthService {
   }
 
   get UID(): string {
-    return this.currentUser.userId;
+    return this.currentUser ? this.currentUser.userId : '';
   }
 
   get email(): string {
-    return this.currentUser.email;
+    return this.currentUser ? this.currentUser.email : '';
   }
 
   get displayName(): string {
-    return this.currentUser.displayName;
+    return this.currentUser ? this.currentUser.displayName : '';
   }
 
   get imageUrl(): string {
-    return this.currentUser.imageUrl;
+    return this.currentUser ? this.currentUser.imageUrl : '';
   }
 
   showLocalVariableValue() {
