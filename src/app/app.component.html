@@ -54,7 +54,7 @@
             <ion-icon name="log-in"></ion-icon>&nbsp;Iniciar sesión
           </ion-button>
         </div>
-        <ion-text class="fix-bottom-menu-appversion center-custom">v{{ showVersion }}</ion-text>
+        <ion-text *ngIf="settings.debugMode" class="fix-bottom-menu-appversion center-custom">v{{ settings.version }}</ion-text>
       </ion-content>
       <!-- <ion-footer class="bar-stable">
         <ion-list>

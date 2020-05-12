@@ -178,20 +178,44 @@ export class AuthService {
     });
   }
 
+  get user(): User {
+    return this.currentUser;
+  }
+
+  set user(value: User) {
+    this.currentUser = value;
+  }
+
   get UID(): string {
     return this.currentUser ? this.currentUser.userId : '';
+  }
+
+  set UID(value: string) {
+    this.UID = value;
   }
 
   get email(): string {
     return this.currentUser ? this.currentUser.email : '';
   }
 
+  set email(value: string) {
+    this.email = value;
+  }
+
   get displayName(): string {
     return this.currentUser ? this.currentUser.displayName : '';
   }
 
+  set displayName(value: string) {
+    this.displayName = value;
+  }
+
   get imageUrl(): string {
     return this.currentUser ? this.currentUser.imageUrl : '';
+  }
+
+  set imageUrl(value: string) {
+    this.imageUrl = value;
   }
 
   showLocalVariableValue() {
