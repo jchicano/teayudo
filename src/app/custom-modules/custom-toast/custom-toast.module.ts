@@ -22,7 +22,7 @@ export class CustomToastModule {
           text: 'OK',
           role: 'cancel',
           handler: () => {
-            console.log('Toast dismissed');
+            // console.log('Toast dismissed');
           }
         }
       ],
