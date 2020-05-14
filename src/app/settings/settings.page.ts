@@ -44,10 +44,10 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.accountData = {
-      displayName: this.auth.displayName,
-      email: this.auth.email,
-      userId: this.auth.UID,
-      imageUrl: this.auth.imageUrl,
+      displayName: this.auth.user.displayName,
+      email: this.auth.user.email,
+      userId: this.auth.user.userId,
+      imageUrl: this.auth.user.imageUrl,
       guest: this.auth.isGuest()
     };
     this.initAccountForm();
@@ -72,7 +72,7 @@ export class SettingsPage implements OnInit {
       ],
       accountEmail: ['',
         [Validators.required,
-        Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]
+        Validators.pattern(this.auth.emailRegex)]
       ],
       accountUUID: [
         { value: this.accountData.userId, disabled: true },
@@ -91,7 +91,7 @@ export class SettingsPage implements OnInit {
   }
 
   saveAccountData() {
-    let uuid = this.auth.UID;
+    let uuid = this.auth.user.userId;
     if (this.accountForm.get('accountUUID')) {
       uuid = this.accountForm.get('accountUUID').value;
     }
@@ -146,7 +146,7 @@ export class SettingsPage implements OnInit {
   }
 
   public copyUUID() {
-    this.clipboard.copy(this.auth.UID);
+    this.clipboard.copy(this.auth.user.userId);
   }
 
   async openModal(whatToDo: string) {

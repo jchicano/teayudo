@@ -67,11 +67,11 @@
     <ion-item (click)="openModal('updateEmail')" button detail="true">
       <ion-label>Actualizar dirección de correo electrónico</ion-label>
     </ion-item>
-    <ion-item (click)="openModal('updateName')" button detail="true">
-      <ion-label>Cambiar nombre</ion-label>
-    </ion-item>
     <ion-item (click)="openModal('updatePassword')" button detail="true">
       <ion-label>Cambiar contraseña</ion-label>
+    </ion-item>
+    <ion-item (click)="openModal('updateName')" button detail="true">
+      <ion-label>Cambiar nombre</ion-label>
     </ion-item>
     <ion-item (click)="openModal('updateAvatar')" button detail="true">
       <ion-label>Cambiar foto de perfil</ion-label>
@@ -96,7 +96,7 @@
     </ion-item>
     <ion-item *ngIf="this.settings.debugMode && this.auth.isGuest()" (click)="copyUUID()" button detail="false">
       <ion-label>UUID del dispositivo</ion-label>
-      <ion-note color="medium" slot="end">{{ this.auth.UID }}</ion-note>
+      <ion-note color="medium" slot="end">{{ this.auth.user.userId }}</ion-note>
     </ion-item>
   </ion-list>
 
