@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import * as firebase from 'firebase/app';
 import { Plugins } from '@capacitor/core';
 import { UserService } from './user.service';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
@@ -30,7 +32,7 @@ export class AuthService {
           if (d && d.user) {
             this.userS.createUser(d.user.uid, userdata.name);
             //////
-            let user: User = {
+            const user: User = {
               email: d.user.email,
               displayName: userdata.name,
               imageUrl: '',
@@ -176,6 +178,96 @@ export class AuthService {
           reject(false);
         });
     });
+  }
+
+  updateEmail(newEmail: string, currentPassword: string): Observable<string> {
+    return new Observable((observer) => {
+      const cpUser = firebase.auth().currentUser;
+
+      const credentials = this.createCredential(cpUser.email, currentPassword);
+
+      // Contrasena valida
+      if (/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(currentPassword)) {
+        // Reauthenticating here with the data above
+        cpUser.reauthenticateWithCredential(credentials)
+          .then((e) => {
+            // Email valido
+            if (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email)) {
+              cpUser.updateEmail(newEmail)
+                .then((e) => {
+                  // Update successful.
+                  observer.next('updating-success');
+                  observer.complete();
+                }).catch((e) => {
+                  // An error happened.
+                  console.log(e);
+                  observer.error('updating-error');
+                });
+            } else {
+              observer.error('email-format');
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            observer.error('credential-error');
+          });
+        // console.log(credentials);
+      } else {
+        observer.error('password-format');
+      }
+    });
+  }
+
+  // NOTE https://stackoverflow.com/a/52075631
+  updatePassword(oldPassword: string, newPassword: string): Observable<string> {
+    return new Observable((observer) => {
+      // First you get the current logged in user
+      const cpUser = firebase.auth().currentUser;
+
+      // TODO if pass nueva o antigua o confirmacion no cumplen regex
+      // Contrasena valida
+      if (/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(oldPassword)) { }
+
+
+
+
+
+
+      /*Then you set credentials to be the current logged in user's email
+          and the password the user typed in the input named "old password"
+          where he is basically confirming his password just like facebook for example.*/
+
+      const credentials = this.createCredential(cpUser.email, oldPassword);
+
+      // Reauthenticating here with the data above
+      cpUser.reauthenticateWithCredential(credentials)
+        .then((e) => {
+          // TODO Comprobar validaciones contraseña confirmada
+          /* Update the password to the password the user typed into the
+            new password input field */
+          cpUser.updatePassword(newPassword)
+            .then((e) => {
+              //Success
+            })
+            .catch((e) => {
+              //Failed
+              console.log(e);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      // console.log(credentials);
+
+
+
+
+    });
+  }
+
+  createCredential(email: string, password: string): firebase.auth.AuthCredential {
+    const credentials = firebase.auth.EmailAuthProvider.credential(email, password);
+    return credentials;
   }
 
   get user(): User {
