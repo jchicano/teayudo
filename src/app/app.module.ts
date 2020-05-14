@@ -23,10 +23,11 @@ import { environment } from "src/environments/environment";
 import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { SettingsModalPage } from './modals/settings-modal/settings-modal.page';
 
 @NgModule({
-  declarations: [AppComponent, LoginModalPage],
-  entryComponents: [LoginModalPage],
+  declarations: [AppComponent, LoginModalPage, SettingsModalPage],
+  entryComponents: [LoginModalPage, SettingsModalPage],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
