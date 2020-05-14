@@ -52,6 +52,7 @@
       <ion-item>
         <ion-label position="fixed">Email</ion-label>
         <ion-input formControlName="accountEmail" [value]="accountData.email" inputmode="email"></ion-input>
+        <ion-icon name="eye" slot="end"></ion-icon>
       </ion-item>
       <ion-item *ngIf="settings.debugMode">
         <ion-label position="fixed">UUID</ion-label>
@@ -63,13 +64,16 @@
       <ion-button mode="md" type="submit" class="space-on-top" shape="round" size="default" color="customfour"
         [disabled]="!accountForm.valid">Guardar</ion-button>
     </form> -->
-    <ion-item button detail="true">
-      <ion-label>Cambiar dirección de correo electrónico</ion-label>
+    <ion-item (click)="openModal('updateEmail')" button detail="true">
+      <ion-label>Actualizar dirección de correo electrónico</ion-label>
     </ion-item>
-    <ion-item button detail="true">
+    <ion-item (click)="openModal('updateName')" button detail="true">
       <ion-label>Cambiar nombre</ion-label>
     </ion-item>
-    <ion-item button detail="true">
+    <ion-item (click)="openModal('updatePassword')" button detail="true">
+      <ion-label>Cambiar contraseña</ion-label>
+    </ion-item>
+    <ion-item (click)="openModal('updateAvatar')" button detail="true">
       <ion-label>Cambiar foto de perfil</ion-label>
     </ion-item>
 

@@ -7,7 +7,8 @@ import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast
 import { AuthService } from './../services/auth.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, ModalController } from '@ionic/angular';
+import { SettingsModalPage } from '../modals/settings-modal/settings-modal.page';
 
 @Component({
   selector: 'app-settings',
@@ -33,7 +34,8 @@ export class SettingsPage implements OnInit {
     private formBuilder: FormBuilder,
     private loadingC: CustomLoadingModule,
     public settings: SettingsService,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
+    private modalController: ModalController
   ) {
     this.accountSelected = true;
     this.generalSelected = false;
@@ -145,6 +147,20 @@ export class SettingsPage implements OnInit {
 
   public copyUUID() {
     this.clipboard.copy(this.auth.UID);
+  }
+
+  async openModal(whatToDo: string) {
+    const modal = await this.modalController.create({
+      component: SettingsModalPage,
+      componentProps: {
+        'action': whatToDo
+      },
+      animated: true,
+      mode: 'ios',
+      swipeToClose: true,
+      cssClass: 'roundedModal'
+    });
+    return await modal.present();
   }
 
 }
