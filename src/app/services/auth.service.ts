@@ -14,7 +14,10 @@ const { Device } = Plugins;
 })
 export class AuthService {
 
-  private currentUser: User;
+  public user: User;
+
+  public emailRegex: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  public passRegex: RegExp = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 
   constructor(
     private local: NativeStorage,
@@ -39,7 +42,7 @@ export class AuthService {
               userId: d.user.uid,
               guest: false
             };
-            this.currentUser = user;
+            this.user = user;
             this.saveSession(user);
             this.sendVerificationEmail();
             resolve(true);
@@ -70,7 +73,7 @@ export class AuthService {
                   userId: d.user.uid,
                   guest: false
                 };
-                this.currentUser = user;
+                this.user = user;
                 this.saveSession(user);
                 resolve(true);
               });
@@ -86,9 +89,9 @@ export class AuthService {
 
   public async logout() {
     this.AFauth.auth.signOut();
-    // this.currentUser = null;
+    // this.user = null;
     const uuid = await (await Device.getInfo()).uuid;
-    this.currentUser = {
+    this.user = {
       email: '',
       displayName: '',
       imageUrl: '',
@@ -99,10 +102,10 @@ export class AuthService {
   }
 
   public isGuest(): boolean {
-    // return this.currentUser ? true : false;
-    // return this.currentUser.guest;
-    return this.currentUser ? this.currentUser.guest : false;
-    // return this.currentUser ? this.currentUser.guest : false;
+    // return this.user ? true : false;
+    // return this.user.guest;
+    return this.user ? this.user.guest : false;
+    // return this.user ? this.user.guest : false;
   }
 
   /**
@@ -132,13 +135,13 @@ export class AuthService {
   }
 
   public async checkSession(): Promise<void> {
-    if (!this.currentUser) { // Todavia no se ha iniciado sesion
+    if (!this.user) { // Todavia no se ha iniciado sesion
       try {
-        this.currentUser = await this.local.getItem('user'); // Recuperamos el usuario de local storage
+        this.user = await this.local.getItem('user'); // Recuperamos el usuario de local storage
       } catch (error) {
-        // this.currentUser = null;
+        // this.user = null;
         const uuid = await (await Device.getInfo()).uuid;
-        this.currentUser = {
+        this.user = {
           email: '',
           displayName: '',
           imageUrl: '',
@@ -182,86 +185,84 @@ export class AuthService {
 
   updateEmail(newEmail: string, currentPassword: string): Observable<string> {
     return new Observable((observer) => {
-      const cpUser = firebase.auth().currentUser;
-
-      const credentials = this.createCredential(cpUser.email, currentPassword);
-
-      // Contrasena valida
-      if (/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(currentPassword)) {
-        // Reauthenticating here with the data above
-        cpUser.reauthenticateWithCredential(credentials)
-          .then((e) => {
-            // Email valido
-            if (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email)) {
+      // Email & contrasena validos
+      if (this.emailRegex.test(newEmail)) {
+        if (this.passRegex.test(currentPassword)) {
+          const cpUser = firebase.auth().currentUser;
+          const credentials = this.createCredential(cpUser.email, currentPassword);
+          // Reauthenticating here with the data above
+          cpUser.reauthenticateWithCredential(credentials)
+            .then((e) => {
               cpUser.updateEmail(newEmail)
                 .then((e) => {
                   // Update successful.
-                  observer.next('updating-success');
+                  observer.next('update-success');
                   observer.complete();
                 }).catch((e) => {
                   // An error happened.
                   console.log(e);
-                  observer.error('updating-error');
+                  observer.error('update-error');
                 });
-            } else {
-              observer.error('email-format');
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-            observer.error('credential-error');
-          });
-        // console.log(credentials);
+            })
+            .catch((e) => {
+              console.log(e);
+              observer.error('credential-error');
+            });
+          // console.log(credentials);
+        } else {
+          observer.error('password-format');
+        }
+
       } else {
-        observer.error('password-format');
+        observer.error('email-format');
       }
     });
   }
 
   // NOTE https://stackoverflow.com/a/52075631
-  updatePassword(oldPassword: string, newPassword: string): Observable<string> {
+  updatePassword(oldPassword: string, newPassword: string, newPasswordConfirm: string): Observable<string> {
     return new Observable((observer) => {
-      // First you get the current logged in user
-      const cpUser = firebase.auth().currentUser;
+      // Contrasenas validas
+      if (this.passRegex.test(oldPassword) && this.passRegex.test(newPassword)) {
+        if (newPassword === newPasswordConfirm) {
+          // First you get the current logged in user
+          const cpUser = firebase.auth().currentUser;
 
-      // TODO if pass nueva o antigua o confirmacion no cumplen regex
-      // Contrasena valida
-      if (/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(oldPassword)) { }
-
-
-
-
-
-
-      /*Then you set credentials to be the current logged in user's email
+          /*Then you set credentials to be the current logged in user's email
           and the password the user typed in the input named "old password"
           where he is basically confirming his password just like facebook for example.*/
 
-      const credentials = this.createCredential(cpUser.email, oldPassword);
+          const credentials = this.createCredential(cpUser.email, oldPassword);
 
-      // Reauthenticating here with the data above
-      cpUser.reauthenticateWithCredential(credentials)
-        .then((e) => {
-          // TODO Comprobar validaciones contraseña confirmada
-          /* Update the password to the password the user typed into the
-            new password input field */
-          cpUser.updatePassword(newPassword)
+          // Reauthenticating here with the data above
+          cpUser.reauthenticateWithCredential(credentials)
             .then((e) => {
-              //Success
+              // TODO Comprobar validaciones contraseña confirmada
+              /* Update the password to the password the user typed into the
+                new password input field */
+              cpUser.updatePassword(newPassword)
+                .then((e) => {
+                  //Success
+                  observer.next('update-success');
+                  observer.complete();
+                })
+                .catch((e) => {
+                  //Failed
+                  console.log(e);
+                  observer.error('update-error');
+                });
             })
             .catch((e) => {
-              //Failed
               console.log(e);
+              observer.error('credential-error');
             });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      // console.log(credentials);
-
-
-
-
+          // console.log(credentials);
+        } else {
+          observer.error('password-mismatch');
+        }
+      } else {
+        observer.error('password-format');
+      }
     });
   }
 
@@ -270,48 +271,48 @@ export class AuthService {
     return credentials;
   }
 
-  get user(): User {
-    return this.currentUser;
-  }
+  // get user(): User {
+  //   return this.user;
+  // }
 
-  set user(value: User) {
-    this.currentUser = value;
-  }
+  // set user(value: User) {
+  //   this.user = value;
+  // }
 
-  get UID(): string {
-    return this.currentUser ? this.currentUser.userId : '';
-  }
+  // get UID(): string {
+  //   return this.user ? this.user.userId : '';
+  // }
 
-  set UID(value: string) {
-    this.UID = value;
-  }
+  // set UID(value: string) {
+  //   this.UID = value;
+  // }
 
-  get email(): string {
-    return this.currentUser ? this.currentUser.email : '';
-  }
+  // get email(): string {
+  //   return this.user ? this.user.email : '';
+  // }
 
-  set email(value: string) {
-    this.email = value;
-  }
+  // set email(value: string) {
+  //   this.email = value;
+  // }
 
   get displayName(): string {
-    return this.currentUser ? this.currentUser.displayName : '';
+    return this.user ? this.user.displayName : '';
   }
 
-  set displayName(value: string) {
-    this.displayName = value;
-  }
+  // set displayName(value: string) {
+  //   this.displayName = value;
+  // }
 
   get imageUrl(): string {
-    return this.currentUser ? this.currentUser.imageUrl : '';
+    return this.user ? this.user.imageUrl : '';
   }
 
-  set imageUrl(value: string) {
-    this.imageUrl = value;
-  }
+  // set imageUrl(value: string) {
+  //   this.imageUrl = value;
+  // }
 
-  showLocalVariableValue() {
-    this.local.getItem('user').then((val) => alert(JSON.stringify(val)));
+  getLocalVariableValue() {
+    return this.local.getItem('user').then((val) => val);
   }
 
 }

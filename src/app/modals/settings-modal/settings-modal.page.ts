@@ -1,3 +1,4 @@
+import { User } from './../../model/User';
 import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from './../../services/auth.service';
@@ -23,6 +24,8 @@ export class SettingsModalPage implements OnInit {
 
   public email: string;
   public currentPassword: string;
+  public newPassword: string;
+  public newPasswordConfirm: string;
 
 
   constructor(
@@ -47,6 +50,8 @@ export class SettingsModalPage implements OnInit {
 
     this.email = '';
     this.currentPassword = '';
+    this.newPassword = '';
+    this.newPasswordConfirm = '';
   }
 
   checkAction() {
@@ -77,38 +82,84 @@ export class SettingsModalPage implements OnInit {
     }
   }
 
-  saveEmail() {
-    console.log('Save email');
-    console.log('email a guardar: ' + this.email);
-    if (this.email === '' || this.currentPassword === '') {
-      this.toastC.show('Rellena todos los campos');
-    } else {
-      this.auth.updateEmail(this.email, this.currentPassword)
-        .subscribe((e) => {
-          switch (e) {
-            case 'password-format':
-              this.toastC.show('La contraseña no cumple los requisitos de seguridad');
-              console.log('La contraseña no cumple los requisitos de seguridad');
-              break;
-            case 'credential-error':
-              console.log('Error al re-autenticar el usuario');
-              break;
-            case 'email-format':
-              this.toastC.show('El correo electrónico no es válido');
-              console.log('Formato de email no valido');
-              break;
-            case 'updating-error':
-              this.toastC.show('Error al actualizar el correo electrónico');
-              console.log('Error al actualizar el email');
-              break;
-            case 'updating-success':
-              this.toastC.show('Correo electrónico actualizado con éxito');
-              console.log('Email actualizado correctamente');
-              break;
-            default: break;
-          }
-        });
+  saveData() {
+    if (this.showEmailForm) {
+      this.saveEmail();
     }
+    if (this.showPasswordForm) {
+      this.savePassword();
+    }
+  }
+
+  saveEmail() {
+    console.log('Saving email...');
+    // console.log('Email a guardar:', this.email);
+    this.auth.updateEmail(this.email, this.currentPassword)
+      .subscribe((e) => {
+        switch (e) {
+          case 'email-format':
+            this.toastC.show('El correo electrónico no es válido');
+            console.log('Formato de email no valido');
+            break;
+          case 'password-format':
+            this.toastC.show('La contraseña no cumple los requisitos de seguridad');
+            console.log('La contraseña no cumple los requisitos de seguridad');
+            break;
+          case 'credential-error':
+            console.log('Error al re-autenticar el usuario');
+            break;
+          case 'update-error':
+            this.toastC.show('Error al actualizar el correo electrónico');
+            console.log('Error al actualizar el email');
+            break;
+          case 'update-success':
+            this.toastC.show('Correo electrónico actualizado con éxito');
+            console.log('Email actualizado correctamente');
+            // Guardo el usuario en local storage
+            const user: User = {
+              email: this.email,
+              displayName: this.auth.user.displayName,
+              imageUrl: this.auth.user.imageUrl,
+              userId: this.auth.user.userId,
+              guest: this.auth.isGuest(),
+            };
+            this.auth.saveSession(user)
+              .then(() => {
+                this.auth.user.email = this.email;
+              });
+            break;
+          default: break;
+        }
+      });
+  }
+
+  savePassword() {
+    console.log('Saving password...');
+    this.auth.updatePassword(this.currentPassword, this.newPassword, this.newPasswordConfirm)
+      .subscribe((e) => {
+        switch (e) {
+          case 'password-format':
+            this.toastC.show('La contraseña no cumple los requisitos de seguridad');
+            console.log('La contraseña no cumple los requisitos de seguridad');
+            break;
+          case 'password-mismatch':
+            this.toastC.show('Las contraseñas no coinciden');
+            console.log('Las contraseñas no coinciden');
+            break;
+          case 'credential-error':
+            console.log('Error al re-autenticar el usuario');
+            break;
+          case 'update-error':
+            this.toastC.show('Error al actualizar la contraseña');
+            console.log('Error al actualizar la contraseña');
+            break;
+          case 'update-success':
+            this.toastC.show('Contraseña actualizada con éxito');
+            console.log('Contraseña actualizada correctamente');
+            break;
+          default: break;
+        }
+      });
   }
 
   dismiss() {
