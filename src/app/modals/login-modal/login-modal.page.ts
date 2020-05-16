@@ -96,10 +96,9 @@ export class LoginModalPage implements OnInit {
   }
 
   onSubmitRegister() {
+    console.log('Registering user...');
     this.loadingC.show('');
     this.userdata = this.saveRegisterUserdata();
-    console.log('Al registrarnos:');
-    console.log(this.userdata);
     this.auth.register(this.userdata)
       .then(() => {
         this.toastC.show('Registrado con éxito');
