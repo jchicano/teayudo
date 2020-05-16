@@ -38,9 +38,7 @@ export class ListPage implements OnInit {
     this.searchText = "";
   }
 
-  ngOnInit() {
-    this.refresh();
-  }
+  ngOnInit() { }
 
   // NOTE https://stackoverflow.com/a/58736680
   // Para que funcione el boton atras al salir de la app
@@ -64,7 +62,7 @@ export class ListPage implements OnInit {
     //this.studentList = [];
     console.log("Cargando alumnos");
     try {
-      this.studentS.readStudentsObsvForTeacher(this.auth.UID).subscribe((list) => { // Si esta logueado pasamos el UDI, si es invitado pasamos 'anonymous'
+      this.studentS.readStudentsObsvForTeacher(this.auth.user.userId).subscribe((list) => { // Si esta logueado pasamos el UID, si es invitado pasamos el UID del dispositivo
         if (list.length <= 0) this.studentsAvailable = false;
         else this.studentsAvailable = true;
         this.studentList = list;
@@ -94,21 +92,40 @@ export class ListPage implements OnInit {
   deleteStudent(currentStudent: any) {
     console.log('deleteStudent');
     this.list.closeSlidingItems();
-    this.cardS.deleteCard(currentStudent.collectionId)
-      .then(() => {
-        console.log('Horario del alumno eliminado');
-        this.studentS.deleteStudent(currentStudent.id)
-          .then(() => {
-            console.log('Alumno eliminado');
-            this.toastC.show('Alumno eliminado');
+    // this.cardS.deleteCard(currentStudent.collectionId)
+    //   .then(() => {
+    //     console.log('Horario del alumno eliminado');
+    //     this.studentS.deleteStudent(currentStudent.id)
+    //       .then(() => {
+    //         console.log('Alumno eliminado');
+    //         this.toastC.show('Alumno eliminado');
+    //         this.refresh();
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    this.studentS.deleteStudentObs(currentStudent.id, currentStudent.collectionId)
+      .subscribe((e) => {
+        switch (e) {
+          case 'error-deleting-schedule':
+            this.toastC.show('Error al eliminar el horario del alumno');
+            console.log('Error al eliminar el horario del alumno');
+            break;
+          case 'error-deleting-student':
+            this.toastC.show('Error al eliminar el alumno');
+            console.log('Error al eliminar el alumno');
+            break;
+          case 'success-deleting-student':
+            this.toastC.show('Alumno eliminado con éxito');
+            console.log('Alumno eliminado correctamente');
             this.refresh();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
+            break;
+          default: break;
+        }
       });
   }
 

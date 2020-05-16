@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import { User } from './../model/User';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SettingsService } from './../services/settings.service';
@@ -30,6 +31,7 @@ export class SettingsPage implements OnInit {
     private platform: Platform,
     private navCtrl: NavController,
     public auth: AuthService,
+    private userS: UserService,
     private toastC: CustomToastModule,
     private formBuilder: FormBuilder,
     private loadingC: CustomLoadingModule,
@@ -72,37 +74,13 @@ export class SettingsPage implements OnInit {
       ],
       accountEmail: ['',
         [Validators.required,
-        Validators.pattern(this.auth.emailRegex)]
+        Validators.pattern(this.userS.emailRegex)]
       ],
       accountUUID: [
         { value: this.accountData.userId, disabled: true },
         [Validators.required]
       ]
     });
-  }
-
-  onSubmitAccount() {
-    this.loadingC.show('');
-    this.accountData = this.saveAccountData();
-    this.auth.user = this.accountData;
-    this.auth.saveSession(this.auth.user);
-    // TODO actualizar en firebase
-    this.loadingC.hide();
-  }
-
-  saveAccountData() {
-    let uuid = this.auth.user.userId;
-    if (this.accountForm.get('accountUUID')) {
-      uuid = this.accountForm.get('accountUUID').value;
-    }
-    const accountData: User = {
-      displayName: this.accountForm.get('accountName').value,
-      email: this.accountForm.get('accountEmail').value,
-      userId: uuid,
-      imageUrl: '', // TODO con la imagen que seleccione el usuario
-      guest: false
-    };
-    return accountData;
   }
 
   public isEmailVerified(): boolean {
@@ -112,10 +90,10 @@ export class SettingsPage implements OnInit {
   public sendEmail(): void {
     this.auth.sendVerificationEmail()
       .then(() => {
-        this.toastC.show('Email de recuperación enviado');
+        this.toastC.show('Email de verificación enviado');
       })
       .catch(() => {
-        this.toastC.show('Error al enviar email de recuperación');
+        this.toastC.show('Error al enviar email de verificación');
       });
   }
 

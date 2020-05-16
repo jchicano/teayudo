@@ -42,28 +42,7 @@
     </ion-segment-button>
   </ion-segment>
 
-  <ion-list *ngIf="accountSelected"> <!-- *ngIf="accountSelected && !auth.isGuest()" -->
-    <!-- <form [formGroup]="accountForm" (ngSubmit)="onSubmitAccount()">
-      <ion-item>
-        <ion-label position="fixed">Nombre</ion-label>
-        <ion-input formControlName="accountName" [value]="accountData.displayName" autocapitalize="on" inputmode="text">
-        </ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="fixed">Email</ion-label>
-        <ion-input formControlName="accountEmail" [value]="accountData.email" inputmode="email"></ion-input>
-        <ion-icon name="eye" slot="end"></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="settings.debugMode">
-        <ion-label position="fixed">UUID</ion-label>
-        <ion-input formControlName="accountUUID" inputmode="text" readonly></ion-input>
-      </ion-item>
-
-      imageurl
-      // TODO guardar en auth.currentUser y saveSession cuando se validen los datos. Para el UUID debo hacer un select por si ya existía o algo
-      <ion-button mode="md" type="submit" class="space-on-top" shape="round" size="default" color="customfour"
-        [disabled]="!accountForm.valid">Guardar</ion-button>
-    </form> -->
+  <ion-list *ngIf="accountSelected && !auth.isGuest()">
     <ion-item (click)="openModal('updateEmail')" button detail="true">
       <ion-label>Actualizar dirección de correo electrónico</ion-label>
     </ion-item>
@@ -76,10 +55,13 @@
     <ion-item (click)="openModal('updateAvatar')" button detail="true">
       <ion-label>Cambiar foto de perfil</ion-label>
     </ion-item>
+    <ion-item (click)="openModal('deleteUser')" button detail="true">
+      <ion-label>Eliminar usuario</ion-label>
+    </ion-item>
 
   </ion-list>
-  <!-- <ion-text *ngIf="accountSelected && auth.isGuest()" color="medium" class="center-middle-screen ion-text-center">Para
-    modificar tus datos debes iniciar sesión</ion-text> -->
+  <ion-text *ngIf="accountSelected && auth.isGuest()" color="medium" class="center-middle-screen ion-text-center">Para
+    modificar tus datos debes iniciar sesión</ion-text>
 
   <ion-list *ngIf="generalSelected">
     <ion-item>

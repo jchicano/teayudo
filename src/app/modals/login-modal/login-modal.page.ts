@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { CustomLoadingModule } from './../../custom-modules/custom-loading/custom-loading.module';
 import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { Router } from '@angular/router';
@@ -24,6 +25,7 @@ export class LoginModalPage implements OnInit {
     private modalController: ModalController,
     private formBuilder: FormBuilder,
     private auth: AuthService,
+    private userS: UserService,
     private router: Router,
     private toastC: CustomToastModule,
     private loadingC: CustomLoadingModule,
@@ -39,11 +41,11 @@ export class LoginModalPage implements OnInit {
     this.loginForm = this.formBuilder.group({
       loginEmail: ['', [
         Validators.required,
-        Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]
+        Validators.pattern(this.userS.emailRegex)]
       ],
       loginPassword: ['', [
         Validators.required,
-        Validators.pattern(/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/),
+        Validators.pattern(this.userS.passRegex),
         Validators.minLength(6)]
       ]
     });
@@ -56,16 +58,16 @@ export class LoginModalPage implements OnInit {
       ],
       registerEmail: ['', [
         Validators.required,
-        Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]
+        Validators.pattern(this.userS.emailRegex)]
       ],
       registerPassword: ['', [
         Validators.required,
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.pattern(this.userS.passRegex),
         Validators.minLength(6)]
       ],
       registerPasswordConfirm: ['', [
         Validators.required,
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.pattern(this.userS.passRegex),
         Validators.minLength(6)]
       ]
     }, {

@@ -1,3 +1,4 @@
+import { CardService } from './card.service';
 import { student } from './../model/student';
 import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
@@ -11,7 +12,10 @@ export class StudentService {
 
   myCollection: AngularFirestoreCollection;
 
-  constructor(private fireStore: AngularFirestore) {
+  constructor(
+    private fireStore: AngularFirestore,
+    private cardS: CardService
+  ) {
     this.myCollection = this.fireStore.collection<any>(environment.collection.student);
   }
 
@@ -44,6 +48,38 @@ export class StudentService {
 
   deleteStudent(id: string): Promise<void> {
     return this.myCollection.doc(id).delete();
+  }
+
+  deleteStudentObs(id: string, collectionId?: string): Observable<string> {
+    return new Observable((observer) => {
+      if (collectionId) {
+        this.cardS.deleteCard(collectionId)
+          .then(() => {
+            console.log('Horario del alumno eliminado');
+            this.deleteStudent(id)
+              .then(() => {
+                observer.next('success-deleting-student');
+                observer.complete();
+              })
+              .catch((e) => {
+                console.log(e);
+                observer.error('error-deleting-student');
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+            observer.error('error-deleting-schedule');
+          });
+      }
+      this.deleteStudent(id)
+        .then(() => {
+          observer.next('success-deleting-student');
+          observer.complete();
+        })
+        .catch(() => {
+          observer.error('error-deleting-student');
+        });
+    });
   }
 
   // Creando un observable
