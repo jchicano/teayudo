@@ -1,6 +1,6 @@
 import { CelebrateModule } from './../custom-modules/celebrate/celebrate.module';
 import { Platform, AlertController } from '@ionic/angular';
-import { card } from './../model/card';
+import { Card } from '../model/Card';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ShowPage implements OnInit {
 
-  public cardList: card[];
+  public cardList: Card[];
   public slideOpts: any;
   @ViewChild('scroll', { static: false }) scroll: ElementRef;
   @ViewChild('progressBar', { static: false }) progressBar: ElementRef;

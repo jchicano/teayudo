@@ -1,4 +1,4 @@
-export interface card {
+export interface Card {
     title: string;
     pictogram: string;
     color: string;

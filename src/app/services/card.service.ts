@@ -1,4 +1,4 @@
-import { card } from './../model/card';
+import { Card } from '../model/Card';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
@@ -21,7 +21,7 @@ export class CardService {
   }
 
   // Creando un observable
-  readCard(timer: number = 10000,): Observable<card[]> { //NOTE antiguo readTODO2
+  readCard(timer: number = 10000,): Observable<Card[]> { //NOTE antiguo readTODO2
     return new Observable((observer) => {
       // observer.next // Devolver valor
       // observer.error() // Devolver error
@@ -47,15 +47,15 @@ export class CardService {
     return this.myCollection.add({});
   }
 
-  editArray(docId: string, data: card[]): Promise<void> {
+  editArray(docId: string, data: Card[]): Promise<void> {
     return this.myCollection.doc(docId).set({data}); // Aunque le pase el array hay que encapsularlo en un objeto
   }
 
-  addArray(data: card[]): Promise<firebase.firestore.DocumentReference> {
+  addArray(data: Card[]): Promise<firebase.firestore.DocumentReference> {
     return this.myCollection.add({data}); // Aunque le pase el array hay que encapsularlo en un objeto
   }
 
-  addCard(myCard: card): Promise<firebase.firestore.DocumentReference> {
+  addCard(myCard: Card): Promise<firebase.firestore.DocumentReference> {
     return this.myCollection.add(myCard);
   }
 
@@ -64,7 +64,7 @@ export class CardService {
   }
 
   // Se podria haber hecho mejor creando un campo id opcional en el tipo note
-  updateCard(id: string, data: card): Promise<void> {
+  updateCard(id: string, data: Card): Promise<void> {
     return this.myCollection.doc(id).set(data); // TODO usar data.id y cuando devolvamos desde firebase los objetos les metemos el id
   }
 
