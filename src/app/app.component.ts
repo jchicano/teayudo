@@ -100,7 +100,8 @@ export class AppComponent {
       .then(() => {
         this.toastC.show('Sesión cerrada');
         if (this.router.url === '/list') {
-          this.router.navigate(['/home']); // Para que el usuario anónimo no vea los alumnos del que estaba logueado
+          this.router.navigate(['/home']) // Para que el usuario anónimo no vea los alumnos del que estaba logueado
+            .then(() => this.loadingC.hide());
         }
       })
       .catch(() => {
