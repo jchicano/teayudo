@@ -52,9 +52,6 @@ export class UserService { // User is Teacher
   }
 
   deleteUserCascade(id: string, currentPassword: string): Observable<string> {
-    // return this.myCollection.doc(id).delete();
-    // return this.fireStore.collection(environment.collection.student, ref => ref.where('teacherId', '==', teacherID)).get();
-    // return this.fireStore.collection(environment.collection.student, ref => ref.where('teacherId', '==', id)).get(); use este
     return new Observable((observer) => {
       if (this.passRegex.test(currentPassword)) {
         const cpUser = firebase.auth().currentUser;
@@ -67,36 +64,6 @@ export class UserService { // User is Teacher
                 if (students.size !== 0) { // Si el profesor tiene alumnos creados
                   students.forEach((student) => { // Obtengo los alumnos del profesor
                     console.log('student.data():', student.data());
-                    // this.cardS.deleteCard(student.data().collectionId) // Elimino el horario del alumno
-                    //   .then((e) => {
-                    //     this.studentS.deleteStudent(student.id) // TODO usar deleteStudentObs que ahi tambien se borra el schedule? y luego con un if compruebo el string success-deleting noseque y sigo anidando
-                    //       .then((e) => {
-                    //         this.deleteDBUser(id)
-                    //           .then((e) => {
-                    //             this.deleteAuthUser()
-                    //               .then((e) => {
-                    //                 observer.next('success-deleting-user');
-                    //                 observer.complete();
-                    //               })
-                    //               .catch(() => {
-                    //                 observer.error('error-deleting-user');
-                    //               });
-                    //           })
-                    //           .catch((e) => {
-                    //             console.log(e);
-                    //             observer.error('error-deleting-teacher');
-                    //           });
-                    //       })
-                    //       .catch((e) => {
-                    //         console.log(e);
-                    //         observer.error('error-deleting-student');
-                    //       });
-                    //   })
-                    //   .catch((e) => {
-                    //     console.log(e);
-                    //     observer.error('error-deleting-schedule');
-                    //   });
-                    // NUEVO
                     this.studentS.deleteStudentObs(student.id, student.data().collectionId).toPromise()
                       .then((e) => {
                         if (e === 'success-deleting-student') {
@@ -122,7 +89,6 @@ export class UserService { // User is Teacher
                       .catch((e) => {
                         observer.error(e);
                       });
-                    // FIN NUEVO
                   });
                 } else { // El profesor no tiene alumnos
                   this.deleteDBUser(id)
@@ -154,6 +120,7 @@ export class UserService { // User is Teacher
     });
   }
 
+  // NOTE https://firebase.google.com/docs/auth/web/manage-users#re-authenticate_a_user
   deleteAuthUser(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const user = firebase.auth().currentUser;
