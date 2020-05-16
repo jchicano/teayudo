@@ -4,7 +4,7 @@ import { AuthService } from './../../services/auth.service';
 import { DefaultAlertModule } from './../../custom-modules/default-alert/default-alert.module';
 import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../../services/card.service';
-import { student } from './../../model/student';
+import { Student } from '../../model/Student';
 import { StudentService } from './../../services/student.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -59,7 +59,7 @@ export class StudentModalPage implements OnInit {
     console.log('Guardando alumno...');
     if (this.studentObject !== undefined) { // Estamos editando un usuario
       console.log('Se va a editar un alumno');
-      let updatedStudent: student = {
+      let updatedStudent: Student = {
         fullname: this.studentForm.get('nombre').value,
         collectionId: this.studentObject.collectionId
       }
@@ -80,7 +80,7 @@ export class StudentModalPage implements OnInit {
         this.cardS.createCollection()
           .then((ok) => {
             // console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
-            const myStudent: student = {
+            const myStudent: Student = {
               fullname: this.studentForm.get('nombre').value,
               collectionId: ok.id
             };
