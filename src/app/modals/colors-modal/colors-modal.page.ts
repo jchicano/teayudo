@@ -10,7 +10,6 @@ import { ModalController } from '@ionic/angular';
 export class ColorsModalPage implements OnInit {
 
   public selectedColor: string;
-  public colorList: any[];
 
   constructor(
     private modalController: ModalController,
@@ -26,9 +25,11 @@ export class ColorsModalPage implements OnInit {
     await this.modalController.dismiss(this.selectedColor);
   }
 
-  radioChecked(color) {
-    this.selectedColor = color;
-    console.log('Color seleccionado: ' + color);
+  radioChecked($event) {
+    const indexSelected = $event.detail.value.slice(-1);
+    console.log('Seleccionado radio con index:', indexSelected);
+    this.selectedColor = this.colorS.colorList[indexSelected].hex;
+    console.log('Color seleccionado:', this.selectedColor);
   }
 
 }
