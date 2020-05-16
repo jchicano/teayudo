@@ -1,7 +1,7 @@
 <ion-app [class.escolar-font]="router.url=='/show'">
   <ion-split-pane contentId="main-content" [when]="false">
     <!-- Oculto siempre el menu lateral -->
-    <ion-menu contentId="main-content" type="push" swipeGesture="false">
+    <ion-menu contentId="main-content" type="push" [swipeGesture]="router.url === '/home' || router.url === '/list' || router.url === '/settings'">
       <ion-content>
         <div *ngIf="!this.network.isConnected">
           <div class="no-internet-icon">
@@ -13,7 +13,7 @@
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img *ngIf="auth.isGuest() || auth.imageUrl == ''" src="assets/img/user.svg" />
+            <img *ngIf="auth.isGuest() || auth.imageUrl === ''" src="assets/img/user.svg" />
             <img *ngIf="!auth.isGuest() && auth.imageUrl != ''" src="{{ auth.imageUrl }}" />
           </ion-avatar>
         </div>
