@@ -5,7 +5,6 @@ import { UserService } from './user.service';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { User } from '../model/User';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 
 const { Device } = Plugins;
 
@@ -18,15 +17,14 @@ export class AuthService {
 
   constructor(
     private local: NativeStorage,
-    private userS: UserService,
-    private AFauth: AngularFireAuth
+    private userS: UserService
   ) {
-    this.AFauth.auth.useDeviceLanguage(); // Los mensajes de firebase cambiaran segun el idioma del dispositivo
+    firebase.auth().useDeviceLanguage(); // Los mensajes de firebase cambiaran segun el idioma del dispositivo
   }
 
   register(userdata): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.AFauth.auth.createUserWithEmailAndPassword(userdata.email, userdata.password)
+      firebase.auth().createUserWithEmailAndPassword(userdata.email, userdata.password)
         .then((d) => {
           // console.log(d);
           if (d && d.user) {
@@ -55,7 +53,7 @@ export class AuthService {
 
   login(userdata) {
     return new Promise((resolve, reject) => {
-      this.AFauth.auth.signInWithEmailAndPassword(userdata.email, userdata.password)
+      firebase.auth().signInWithEmailAndPassword(userdata.email, userdata.password)
         .then(async (d) => {
           // console.log(d);
           if (d && d.user) {
@@ -85,7 +83,7 @@ export class AuthService {
   }
 
   public async logout() {
-    this.AFauth.auth.signOut();
+    firebase.auth().signOut();
     // this.user = null;
     const uuid = await (await Device.getInfo()).uuid;
     this.user = {
@@ -151,7 +149,7 @@ export class AuthService {
 
   resetPassword(email: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.AFauth.auth.sendPasswordResetEmail(email)
+      firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
           // Email sent.
           resolve(true);
@@ -163,13 +161,12 @@ export class AuthService {
   }
 
   isEmailAddressVerified() {
-    // return this.AFauth.auth.currentUser.emailVerified;
-    return this.AFauth.auth.currentUser ? this.AFauth.auth.currentUser.emailVerified : false;
+    return firebase.auth().currentUser ? firebase.auth().currentUser.emailVerified : false;
   }
 
   sendVerificationEmail(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.AFauth.auth.currentUser.sendEmailVerification()
+      firebase.auth().currentUser.sendEmailVerification()
         .then(() => {
           resolve(true);
         })
