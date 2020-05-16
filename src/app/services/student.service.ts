@@ -1,5 +1,5 @@
 import { CardService } from './card.service';
-import { student } from './../model/student';
+import { Student } from '../model/Student';
 import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
@@ -23,7 +23,7 @@ export class StudentService {
     return this.myCollection.get();
   }
 
-  addStudent(myStudent: student): Promise<firebase.firestore.DocumentReference> {
+  addStudent(myStudent: Student): Promise<firebase.firestore.DocumentReference> {
     return this.myCollection.add(myStudent);
   }
 
@@ -42,7 +42,7 @@ export class StudentService {
   }
 
   // Se podria haber hecho mejor creando un campo id opcional en el tipo note
-  updateStudent(id: string, data: student): Promise<void> {
+  updateStudent(id: string, data: Student): Promise<void> {
     return this.myCollection.doc(id).set(data);
   }
 
@@ -83,7 +83,7 @@ export class StudentService {
   }
 
   // Creando un observable
-  readStudentsObsv(timer: number = 10000): Observable<student[]> {
+  readStudentsObsv(timer: number = 10000): Observable<Student[]> {
     return new Observable((observer) => {
       // observer.next // Devolver valor
       // observer.error() // Devolver error
@@ -105,7 +105,7 @@ export class StudentService {
     });
   }
 
-  readStudentsObsvForTeacher(teacherID: string, timer: number = 10000): Observable<student[]> {
+  readStudentsObsvForTeacher(teacherID: string, timer: number = 10000): Observable<Student[]> {
     return new Observable((observer) => {
       let subscription: Subscription;
       const tempo = setTimeout(() => {
