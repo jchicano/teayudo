@@ -11,7 +11,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-radio-group allow-empty-selection>
+    <ion-radio-group (ionChange)="radioChecked($event)">
       <ion-item *ngFor="let icon of iconS.iconList">
         <ion-grid>
           <ion-row style="align-items: center;">
