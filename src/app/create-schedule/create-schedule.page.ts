@@ -114,7 +114,7 @@ export class CreateSchedulePage implements OnInit {
   }
 
   //=============================================================================
-  // Para abrir el modal de colores
+  // Para abrir el modal de pictogramas
   //=============================================================================
   async openIconsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
@@ -207,7 +207,7 @@ export class CreateSchedulePage implements OnInit {
   }
 
   getTotalTimeRaw() {
-    console.log("llamando");
+    console.log('Getting total time...');
     this.totalTime = 0;
     this.cardList.forEach(e => {
       let onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
