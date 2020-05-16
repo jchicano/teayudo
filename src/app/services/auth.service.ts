@@ -16,9 +16,6 @@ export class AuthService {
 
   public user: User;
 
-  public emailRegex: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  public passRegex: RegExp = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
-
   constructor(
     private local: NativeStorage,
     private userS: UserService,
@@ -186,10 +183,10 @@ export class AuthService {
   updateEmail(newEmail: string, currentPassword: string): Observable<string> {
     return new Observable((observer) => {
       // Email & contrasena validos
-      if (this.emailRegex.test(newEmail)) {
-        if (this.passRegex.test(currentPassword)) {
+      if (this.userS.emailRegex.test(newEmail)) {
+        if (this.userS.passRegex.test(currentPassword)) {
           const cpUser = firebase.auth().currentUser;
-          const credentials = this.createCredential(cpUser.email, currentPassword);
+          const credentials = this.userS.createCredential(cpUser.email, currentPassword);
           // Reauthenticating here with the data above
           cpUser.reauthenticateWithCredential(credentials)
             .then((e) => {
@@ -223,7 +220,7 @@ export class AuthService {
   updatePassword(oldPassword: string, newPassword: string, newPasswordConfirm: string): Observable<string> {
     return new Observable((observer) => {
       // Contrasenas validas
-      if (this.passRegex.test(oldPassword) && this.passRegex.test(newPassword)) {
+      if (this.userS.passRegex.test(oldPassword) && this.userS.passRegex.test(newPassword)) {
         if (newPassword === newPasswordConfirm) {
           // First you get the current logged in user
           const cpUser = firebase.auth().currentUser;
@@ -232,12 +229,11 @@ export class AuthService {
           and the password the user typed in the input named "old password"
           where he is basically confirming his password just like facebook for example.*/
 
-          const credentials = this.createCredential(cpUser.email, oldPassword);
+          const credentials = this.userS.createCredential(cpUser.email, oldPassword);
 
           // Reauthenticating here with the data above
           cpUser.reauthenticateWithCredential(credentials)
             .then((e) => {
-              // TODO Comprobar validaciones contraseña confirmada
               /* Update the password to the password the user typed into the
                 new password input field */
               cpUser.updatePassword(newPassword)
@@ -266,9 +262,19 @@ export class AuthService {
     });
   }
 
-  createCredential(email: string, password: string): firebase.auth.AuthCredential {
-    const credentials = firebase.auth.EmailAuthProvider.credential(email, password);
-    return credentials;
+
+
+  updateDisplayName(name: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      return this.userS.updateName(this.user.userId, name)
+        .then((e) => {
+          resolve(true);
+        })
+        .catch((e) => {
+          console.log(e);
+          reject(false);
+        });
+    });
   }
 
   // get user(): User {
