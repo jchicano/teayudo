@@ -1,9 +1,8 @@
 import { Card } from '../model/Card';
-import { environment } from './../../environments/environment';
+import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Observable, Subscription } from 'rxjs';
-import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
