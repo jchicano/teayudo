@@ -64,15 +64,15 @@
     modificar tus datos debes iniciar sesión</ion-text>
 
   <ion-list *ngIf="generalSelected">
-    <ion-item>
+    <!-- <ion-item>
       <ion-icon name="warning"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <ion-label>Modo depuración</ion-label>
       <ion-toggle (ionChange)="debugSwitched()" color="customtwo" [(ngModel)]="settings.debugMode"></ion-toggle>
-    </ion-item>
+    </ion-item> -->
   </ion-list>
 
   <ion-list *ngIf="aboutSelected">
-    <ion-item button detail="false">
+    <ion-item (click)="enableDebugMode()" button detail="false">
       <ion-label>Versión</ion-label>
       <ion-note color="medium" slot="end">{{ this.settings.version }}</ion-note>
     </ion-item>

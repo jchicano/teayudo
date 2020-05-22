@@ -26,6 +26,7 @@ export class SettingsPage implements OnInit {
   public aboutSelected: boolean;
   public accountForm: FormGroup;
   public accountData: User;
+  private cliksEnableDebug: number;
 
   constructor(
     private platform: Platform,
@@ -42,6 +43,7 @@ export class SettingsPage implements OnInit {
     this.accountSelected = true;
     this.generalSelected = false;
     this.aboutSelected = false;
+    this.cliksEnableDebug = 0;
   }
 
   ngOnInit() {
@@ -97,8 +99,20 @@ export class SettingsPage implements OnInit {
       });
   }
 
-  debugSwitched() {
-    console.log('Debug mode switched to ' + this.settings.debugMode);
+  // debugSwitched() {
+  //   console.log('Debug mode switched to ' + this.settings.debugMode);
+  // }
+
+  enableDebugMode() {
+    this.cliksEnableDebug++;
+    if (this.cliksEnableDebug < this.settings.DEBUG_MODE_NECESSARY_CLICKS) {
+      this.toastC.show(this.settings.DEBUG_MODE_NECESSARY_CLICKS - this.cliksEnableDebug + ' pasos restantes del modo debug'); // X steps away from debug mode
+    }
+    if (this.cliksEnableDebug >= this.settings.DEBUG_MODE_NECESSARY_CLICKS) {
+      console.log('Debug mode switched to ' + this.settings.debugMode);
+      this.settings.debugMode = true;
+      this.toastC.show('Modo debug activado');
+    }
   }
 
   segmentChanged($ev: any) {
