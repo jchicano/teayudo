@@ -21,22 +21,26 @@
       <ion-input inputmode="email" placeholder="Nueva dirección de correo" [(ngModel)]="email"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input inputmode="text" type="password" placeholder="Contraseña de TEAyudo" [(ngModel)]="currentPassword"></ion-input>
+      <ion-input inputmode="text" type="password" placeholder="Contraseña de TEAyudo" [(ngModel)]="currentPassword">
+      </ion-input>
     </ion-item>
   </ion-list>
 
   <ion-list *ngIf="showPasswordForm">
     <ion-item lines="none">
-      <ion-label class="ion-text-wrap">La contraseña debe tener como mínimo 8 caracteres y al menos un número</ion-label>
+      <ion-label class="ion-text-wrap">La contraseña debe tener como mínimo 8 caracteres y al menos un número
+      </ion-label>
     </ion-item>
     <ion-item>
-      <ion-input inputmode="text" type="password" placeholder="Contraseña actual" [(ngModel)]="currentPassword"></ion-input>
+      <ion-input inputmode="text" type="password" placeholder="Contraseña actual" [(ngModel)]="currentPassword">
+      </ion-input>
     </ion-item>
     <ion-item>
       <ion-input inputmode="text" type="password" placeholder="Nueva contraseña" [(ngModel)]="newPassword"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input inputmode="text" type="password" placeholder="Confirma tu nueva contraseña" [(ngModel)]="newPasswordConfirm"></ion-input>
+      <ion-input inputmode="text" type="password" placeholder="Confirma tu nueva contraseña"
+        [(ngModel)]="newPasswordConfirm"></ion-input>
     </ion-item>
   </ion-list>
 
@@ -49,9 +53,26 @@
     </ion-item>
   </ion-list>
 
+  <div *ngIf="showAvatarForm">
+    <ion-list>
+      <ion-item lines="none" class="ion-text-center">
+        <ion-label class="ion-text-wrap">Toca en la imagen para ver las opciones</ion-label>
+      </ion-item>
+    </ion-list>
+    <div class="user-image center-custom">
+      <ion-avatar class="pulse" (click)="presentActionSheet()">
+        <img #imagen [src]="auth.user.imageUrl">
+      </ion-avatar>
+    </div>
+
+    <input #inputFile type="file" accept="image/*" (change)="getFile(inputFile.files)">
+
+  </div>
+
   <ion-list *ngIf="showDeleteForm">
     <ion-item lines="none">
-      <ion-label class="ion-text-wrap">AVISO: Esta acción no se puede deshacer. Desaparecerán todos los datos vinculados a tu cuenta</ion-label>
+      <ion-label class="ion-text-wrap">AVISO: Esta acción no se puede deshacer. Desaparecerán todos los datos vinculados
+        a tu cuenta</ion-label>
     </ion-item>
     <ion-item>
       <ion-input inputmode="text" type="password" placeholder="Contraseña" [(ngModel)]="currentPassword"></ion-input>

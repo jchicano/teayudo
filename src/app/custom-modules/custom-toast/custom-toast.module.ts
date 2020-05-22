@@ -15,6 +15,7 @@ export class CustomToastModule {
   constructor(private toastCtrl: ToastController) { }
 
   async show(msg) {
+    this.toastCtrl.dismiss(); // Descarto el toast anterior para que no se solapen
     const toast = await this.toastCtrl.create({
       message: msg,
       buttons: [
