@@ -1,11 +1,16 @@
+import { Plugins } from '@capacitor/core';
+import { CustomLoadingModule } from './../../custom-modules/custom-loading/custom-loading.module';
+import { AuthService } from './../../services/auth.service';
 import { DefaultAlertModule } from './../../custom-modules/default-alert/default-alert.module';
 import { CustomToastModule } from './../../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../../services/card.service';
-import { student } from './../../model/student';
+import { Student } from '../../model/Student';
 import { StudentService } from './../../services/student.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
+const { Device } = Plugins;
 
 @Component({
   selector: 'app-student-modal',
@@ -24,7 +29,9 @@ export class StudentModalPage implements OnInit {
     private studentS: StudentService,
     private cardS: CardService,
     private toastC: CustomToastModule,
-    private alertD: DefaultAlertModule
+    private alertD: DefaultAlertModule,
+    private auth: AuthService,
+    private loadingC: CustomLoadingModule
   ) {
   }
 
@@ -52,7 +59,7 @@ export class StudentModalPage implements OnInit {
     console.log('Guardando alumno...');
     if (this.studentObject !== undefined) { // Estamos editando un usuario
       console.log('Se va a editar un alumno');
-      let updatedStudent: student = {
+      let updatedStudent: Student = {
         fullname: this.studentForm.get('nombre').value,
         collectionId: this.studentObject.collectionId
       }
@@ -68,24 +75,36 @@ export class StudentModalPage implements OnInit {
     }
     else { // Estamos creando un usuario
       console.log('Se va a crear un alumno');
+      this.loadingC.show('');
       if (this.studentForm.valid) {
         this.cardS.createCollection()
           .then((ok) => {
-            console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
-            let myStudent: student = {
+            // console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
+            const myStudent: Student = {
               fullname: this.studentForm.get('nombre').value,
               collectionId: ok.id
             };
             this.studentS.addStudent(myStudent)
-              .then(() => {
-                this.toastC.show('Alumno creado correctamente');
-                console.log(myStudent);
-                this.closeModal();
+              .then(async (r) => {
+                // console.log('Alumno creado con exito: ' + r.id);
+                // console.log(myStudent);
+                this.studentS.assignTeacher(r.id, this.auth.user.userId)
+                  .then((r) => {
+                    this.toastC.show('Alumno creado correctamente');
+                  })
+                  .catch((r) => {
+                    this.toastC.show('Error al asignar alumno');
+                    console.log(r);
+                  })
+                  .finally(() => {
+                    this.loadingC.hide();
+                    this.closeModal();
+                  });
               })
               .catch((error) => {
                 this.toastC.show('Error al crear alumno');
                 console.log(error);
-              })
+              });
           })
           .catch((err) => {
             this.toastC.show('Error al guardar alumno');

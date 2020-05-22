@@ -1,9 +1,14 @@
+import { SettingsService } from './services/settings.service';
+import { LoginModalPage } from './modals/login-modal/login-modal.page';
+import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
+import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
+import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Plugins } from '@capacitor/core';
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 const { SplashScreen } = Plugins;
@@ -33,26 +38,29 @@ export class AppComponent {
     }
   ];
   public fontFamilyClass = '';
-  protected showVersion: string;
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
-    public network: NetworkService,
+    protected network: NetworkService,
     private appVersion: AppVersion,
-    public router: Router
+    protected router: Router,
+    protected auth: AuthService,
+    private loadingC: CustomLoadingModule,
+    private toastC: CustomToastModule,
+    private modalController: ModalController,
+    public settings: SettingsService
   ) {
     SplashScreen.show({
       showDuration: 5000,
       autoHide: true
     });
     this.initializeApp();
-    this.appVersion.getVersionNumber().then(v => this.showVersion = v);
     this.checkTutorial();
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       // NOTE contenido eliminado https://medium.com/@prashantg9912/how-to-add-beautiful-lottie-splashsceen-to-ionic-app-7fdbc00f6cea
       // NOTE icon & splash android: https://www.joshmorony.com/adding-icons-splash-screens-launch-images-to-capacitor-projects/ && https://apetools.webprofusion.com/#/tools/imagegorilla
@@ -60,7 +68,8 @@ export class AppComponent {
         "%cTEAyudo",
         "color:#56a3a6;font-family:Roboto;font-size:4rem;font-weight:bold"
       );
-      console.log("%cApp version: " + this.showVersion, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
+      console.log("%cApp version: " + this.settings.version, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
+      await this.auth.checkSession();
     });
   }
 
@@ -83,6 +92,31 @@ export class AppComponent {
         value: 'false'
       });
     }
+  }
+
+  public async logout() {
+    this.loadingC.show('');
+    await this.auth.logout()
+      .then(() => {
+        this.toastC.show('Sesión cerrada');
+        if (this.router.url === '/list') {
+          this.router.navigate(['/home']) // Para que el usuario anónimo no vea los alumnos del que estaba logueado
+            .then(() => this.loadingC.hide());
+        }
+      })
+      .catch(() => {
+        this.toastC.show('Error al cerrar sesión');
+      })
+      .finally(() => this.loadingC.hide());
+  }
+
+  async login() {
+    const modal = await this.modalController.create({
+      component: LoginModalPage,
+      swipeToClose: true,
+      mode: 'ios'
+    });
+    return await modal.present();
   }
 
 }

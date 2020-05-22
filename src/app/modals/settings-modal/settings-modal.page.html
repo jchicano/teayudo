@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon class="dismiss-button" color="medium" slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveData()" class="modal-end-button-text" color="primary">Guardar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="showEmailForm">
+    <ion-item lines="none">
+      <ion-label class="ion-text-wrap">Asegúrate de verificar tu nueva dirección de correo</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="email" placeholder="Nueva dirección de correo" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="text" type="password" placeholder="Contraseña de TEAyudo" [(ngModel)]="currentPassword">
+      </ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="showPasswordForm">
+    <ion-item lines="none">
+      <ion-label class="ion-text-wrap">La contraseña debe tener como mínimo 8 caracteres y al menos un número
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="text" type="password" placeholder="Contraseña actual" [(ngModel)]="currentPassword">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="text" type="password" placeholder="Nueva contraseña" [(ngModel)]="newPassword"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="text" type="password" placeholder="Confirma tu nueva contraseña"
+        [(ngModel)]="newPasswordConfirm"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="showNameForm">
+    <ion-item lines="none">
+      <ion-label class="ion-text-wrap"></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="text" placeholder="Nuevo nombre" [(ngModel)]="name"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="showAvatarForm">
+    <ion-list>
+      <ion-item lines="none" class="ion-text-center">
+        <ion-label class="ion-text-wrap">Toca en la imagen para ver las opciones</ion-label>
+      </ion-item>
+    </ion-list>
+    <div class="user-image center-custom">
+      <ion-avatar class="pulse" (click)="presentActionSheet()">
+        <img #imagen [src]="auth.user.imageUrl">
+      </ion-avatar>
+    </div>
+
+    <input #inputFile type="file" accept="image/*" (change)="getFile(inputFile.files)">
+
+  </div>
+
+  <ion-list *ngIf="showDeleteForm">
+    <ion-item lines="none">
+      <ion-label class="ion-text-wrap">AVISO: Esta acción no se puede deshacer. Desaparecerán todos los datos vinculados
+        a tu cuenta</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input inputmode="text" type="password" placeholder="Contraseña" [(ngModel)]="currentPassword"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <!-- // TODO Para el UUID debo hacer un select por si ya existía o algo -->
+</ion-content>

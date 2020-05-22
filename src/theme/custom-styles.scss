@@ -13,7 +13,7 @@
 
 // NOTE https://github.com/carloseducacion/BlueBike
 /* Para personalizar el loading */
-.test .loading-wrapper {
+.loading-custom .loading-wrapper {
     background: url("/assets/dots.svg") !important;
     background-size: 64px 64px!important;
     background-repeat: no-repeat!important;
@@ -35,4 +35,19 @@
 /* color del spinner del loading */
 ion-spinner {
     color: var(--ion-color-customtwo) !important;
+}
+
+.roundedModal {
+    padding-top: 50px;
+    div.modal-wrapper[role="dialog"] {
+        border-radius: 10px 10px 0 0 !important;
+    }
+    div.modal-shadow {
+        display: none;
+    }
+    .modal-end-button-text {
+        font-size: smaller;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 }
