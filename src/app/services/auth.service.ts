@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment.prod';
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase/app';
 import { Plugins } from '@capacitor/core';
@@ -33,7 +34,7 @@ export class AuthService {
             const user: User = {
               email: d.user.email,
               displayName: userdata.name,
-              imageUrl: '',
+              imageUrl: environment.defaultAvatarURL,
               userId: d.user.uid,
               guest: false
             };
@@ -64,7 +65,7 @@ export class AuthService {
                 const user: User = {
                   email: d.user.email,
                   displayName: name,
-                  imageUrl: '',
+                  imageUrl: r.data().avatar,
                   userId: d.user.uid,
                   guest: false
                 };
@@ -89,7 +90,7 @@ export class AuthService {
     this.user = {
       email: '',
       displayName: '',
-      imageUrl: '',
+      imageUrl: environment.defaultAvatarURL,
       userId: uuid,
       guest: true
     };
@@ -139,7 +140,7 @@ export class AuthService {
         this.user = {
           email: '',
           displayName: '',
-          imageUrl: '',
+          imageUrl: environment.defaultAvatarURL,
           userId: uuid,
           guest: true
         };
@@ -299,7 +300,7 @@ export class AuthService {
   // }
 
   get displayName(): string {
-    return this.user ? this.user.displayName : '';
+    return this.user ? this.user.displayName : environment.defaultAvatarURL;
   }
 
   // set displayName(value: string) {
@@ -307,7 +308,7 @@ export class AuthService {
   // }
 
   get imageUrl(): string {
-    return this.user ? this.user.imageUrl : '';
+    return this.user ? this.user.imageUrl : null;
   }
 
   // set imageUrl(value: string) {
@@ -315,7 +316,7 @@ export class AuthService {
   // }
 
   getLocalVariableValue() {
-    return this.local.getItem('user').then((val) => val);
+    return this.local.getItem('user').then((val) => console.log(val));
   }
 
 }

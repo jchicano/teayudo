@@ -1,3 +1,4 @@
+import { AngularFireStorage } from '@angular/fire/storage';
 import { LoginModalPage } from './modals/login-modal/login-modal.page';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -19,9 +20,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { environment } from "src/environments/environment";
-import { AngularFireModule } from "angularfire2";
-import { AngularFirestoreModule } from "angularfire2/firestore";
+import { environment } from 'src/environments/environment.prod';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SettingsModalPage } from './modals/settings-modal/settings-modal.page';
 
@@ -51,6 +52,7 @@ import { SettingsModalPage } from './modals/settings-modal/settings-modal.page';
     AppVersion,
     ScreenOrientation,
     AngularFireAuth,
+    AngularFireStorage,
     NativeStorage,
     Clipboard
   ],

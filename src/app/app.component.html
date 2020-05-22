@@ -13,8 +13,7 @@
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img *ngIf="auth.isGuest() || auth.imageUrl === ''" src="assets/img/user.svg" />
-            <img *ngIf="!auth.isGuest() && auth.imageUrl != ''" src="{{ auth.imageUrl }}" />
+            <img [src]="auth.imageUrl" />
           </ion-avatar>
         </div>
         <div class="center-custom user-name">

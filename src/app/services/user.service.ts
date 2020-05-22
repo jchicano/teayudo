@@ -1,6 +1,6 @@
+import { AngularFireStorage } from '@angular/fire/storage';
 import * as firebase from 'firebase/app';
 import { StudentService } from './student.service';
-import { CardService } from './card.service';
 import { Observable } from 'rxjs';
 import { environment } from './../../environments/environment.prod';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
@@ -15,13 +15,15 @@ export class UserService { // User is Teacher
 
   public emailRegex: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   public passRegex: RegExp = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+  public storageRef;
 
   constructor(
     private fireStore: AngularFirestore,
-    private cardS: CardService,
-    private studentS: StudentService
+    private studentS: StudentService,
+    private storage: AngularFireStorage
   ) {
     this.myCollection = this.fireStore.collection<any>(environment.collection.user);
+    this.storageRef = firebase.storage().ref();
   }
 
   createUser(id: string, inputName: string): Promise<void> {
@@ -40,6 +42,24 @@ export class UserService { // User is Teacher
 
   updateName(id: string, newName: string): Promise<void> {
     return this.myCollection.doc(id).update({ name: newName });
+  }
+
+  updateAvatar(id: string, newImage: string): Promise<void> {
+    return this.myCollection.doc(id).update({ avatar: newImage });
+  }
+
+  // NOTE https://stackoverflow.com/q/45799684
+  uploadImage(uid: string, image: Blob): firebase.storage.UploadTask {
+    return this.storageRef.child('avatar/' + uid).put(image);
+  }
+
+  // NOTE https://firebase.google.com/docs/storage/web/download-files
+  getDownloadURL(filename: string): Promise<any> {
+    return this.storageRef.child('avatar/' + filename).getDownloadURL();
+  }
+
+  deleteImage(filename: string): Promise<any> {
+    return this.storageRef.child('avatar/' + filename).delete();
   }
 
   createCredential(email: string, password: string): firebase.auth.AuthCredential {
@@ -71,10 +91,16 @@ export class UserService { // User is Teacher
                             .then((e) => {
                               this.deleteAuthUser()
                                 .then((e) => {
-                                  observer.next('success-deleting-user');
-                                  observer.complete();
+                                  this.deleteImage(id)
+                                    .then((e) => {
+                                      observer.next('success-deleting-user');
+                                      observer.complete();
+                                    })
+                                    .catch((error) => {
+                                      observer.error('error-deleting-storage');
+                                    })
                                 })
-                                .catch(() => {
+                                .catch((error) => {
                                   observer.error('error-deleting-user');
                                 });
                             })
