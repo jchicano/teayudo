@@ -8,6 +8,7 @@ export class SettingsService {
 
   public debugMode: boolean;
   public version: string;
+  public DEBUG_MODE_NECESSARY_CLICKS = 10;
 
   constructor(
     private appVersion: AppVersion
