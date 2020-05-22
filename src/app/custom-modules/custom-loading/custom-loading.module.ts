@@ -25,7 +25,7 @@ export class CustomLoadingModule {
       message: msg,
       spinner: null,
       leaveAnimation: null,
-      cssClass: 'test'
+      cssClass: 'loading-custom'
     });
     this.timeout = setTimeout(() => {
       this.myloading.dismiss();

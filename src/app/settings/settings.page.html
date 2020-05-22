@@ -8,39 +8,78 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <!-- <ion-radio-group [(ngModel)]="fontFamily" (ionChange)="onFontFamilyChange($event)">
-      <ion-list-header>
-        <ion-label>Fuente</ion-label>
-      </ion-list-header>
-      <ion-item *ngFor="let font of fontList">
-        <ion-label>{{ font.name }}</ion-label>
-        <ion-radio slot="end" value="font.value"></ion-radio>
-      </ion-item>
-    </ion-radio-group> -->
+  <ion-header *ngIf="!isEmailVerified() && !auth.isGuest()" class="ion-no-border" class="line-bottom">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button disabled>
+          <ion-icon name="alert-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title size="small">
+        Por favor verifica tu dirección de correo electrónico&nbsp;
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="sendEmail();" color="dark" class="resend-button" size="small" mode="ios" fill="outline"
+          shape="round">
+          Reenviar
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
-    <!-- <ion-radio-group [(ngModel)]="fontFamily" (ionChange)="onFontFamilyChange($event)">
-      <ion-list-header>
-        <ion-label>Fuente</ion-label>
-      </ion-list-header>
-      <ion-item>
-        <ion-label>Por defecto</ion-label>
-        <ion-radio color="customtwo" slot="end" value=""></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Escolar</ion-label>
-        <ion-radio color="customtwo" slot="end" value="escolar-font"></ion-radio>
-      </ion-item>
-    </ion-radio-group> -->
+  <ion-segment color="customtwo" value="account" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="account" layout="icon-bottom">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Cuenta</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="general" layout="icon-bottom">
+      <ion-icon name="cog"></ion-icon>
+      <ion-label>General</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="about" layout="icon-bottom">
+      <ion-icon name="information-circle"></ion-icon>
+      <ion-label>Acerca de</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-    <!-- <ion-radio-group [(ngModel)]="fontFamily" (ionChange)="onFontFamilyChange($event)">
-      <ion-list-header>
-        <ion-label>Fuente</ion-label>
-      </ion-list-header>
-      <ion-item *ngFor="let font of fontS.getAvailableFonts(); let i = index">
-        <ion-label>{{font.name}}</ion-label>
-        <ion-radio color="customtwo" slot="end" [value]="font.value"></ion-radio>
-      </ion-item>
-    </ion-radio-group> -->
+  <ion-list *ngIf="accountSelected && !auth.isGuest()">
+    <ion-item (click)="openModal('updateEmail')" button detail="true">
+      <ion-label>Actualizar dirección de correo electrónico</ion-label>
+    </ion-item>
+    <ion-item (click)="openModal('updatePassword')" button detail="true">
+      <ion-label>Cambiar contraseña</ion-label>
+    </ion-item>
+    <ion-item (click)="openModal('updateName')" button detail="true">
+      <ion-label>Cambiar nombre</ion-label>
+    </ion-item>
+    <ion-item (click)="openModal('updateAvatar')" button detail="true">
+      <ion-label>Cambiar foto de perfil</ion-label>
+    </ion-item>
+    <ion-item (click)="openModal('deleteUser')" button detail="true">
+      <ion-label>Eliminar usuario</ion-label>
+    </ion-item>
+
   </ion-list>
+  <ion-text *ngIf="accountSelected && auth.isGuest()" color="medium" class="center-middle-screen ion-text-center">Para
+    modificar tus datos debes iniciar sesión</ion-text>
+
+  <ion-list *ngIf="generalSelected">
+    <!-- <ion-item>
+      <ion-icon name="warning"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <ion-label>Modo depuración</ion-label>
+      <ion-toggle (ionChange)="debugSwitched()" color="customtwo" [(ngModel)]="settings.debugMode"></ion-toggle>
+    </ion-item> -->
+  </ion-list>
+
+  <ion-list *ngIf="aboutSelected">
+    <ion-item (click)="enableDebugMode()" button detail="false">
+      <ion-label>Versión</ion-label>
+      <ion-note color="medium" slot="end">{{ this.settings.version }}</ion-note>
+    </ion-item>
+    <ion-item *ngIf="this.settings.debugMode && this.auth.isGuest()" (click)="copyUUID()" button detail="false">
+      <ion-label>UUID del dispositivo</ion-label>
+      <ion-note color="medium" slot="end">{{ this.auth.user.userId }}</ion-note>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

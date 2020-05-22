@@ -1,7 +1,7 @@
 <ion-app [class.escolar-font]="router.url=='/show'">
   <ion-split-pane contentId="main-content" [when]="false">
     <!-- Oculto siempre el menu lateral -->
-    <ion-menu contentId="main-content" type="push" swipeGesture="false">
+    <ion-menu contentId="main-content" type="push" [swipeGesture]="router.url === '/home' || router.url === '/list' || router.url === '/settings'">
       <ion-content>
         <div *ngIf="!this.network.isConnected">
           <div class="no-internet-icon">
@@ -13,12 +13,13 @@
         </div>
         <div class="center-custom user-image">
           <ion-avatar>
-            <img src="assets/img/avatar.svg" />
+            <img [src]="auth.imageUrl" />
           </ion-avatar>
         </div>
         <div class="center-custom user-name">
           <ion-text>
-            <h2>Nombre Apellidos</h2>
+            <h2 *ngIf="auth.isGuest()">Anónimo</h2>
+            <h2 *ngIf="!auth.isGuest()">{{ auth.displayName }}</h2>
           </ion-text>
         </div>
         <ion-grid>
@@ -42,9 +43,17 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-
-        <ion-button class="fix-bottom-menu">Logout</ion-button>
-        <ion-text class="fix-bottom-menu-appversion center-custom">v{{ showVersion }}</ion-text>
+        <div *ngIf="!auth.isGuest()" class="center-custom">
+          <ion-button color="black" fill="clear" shape="round" mode="ios" (click)="logout()" class="fix-bottom-menu">
+            <ion-icon name="power"></ion-icon>&nbsp;Cerrar sesión
+          </ion-button>
+        </div>
+        <div *ngIf="auth.isGuest()" class="center-custom">
+          <ion-button color="black" fill="clear" shape="round" mode="ios" (click)="login()" class="fix-bottom-menu">
+            <ion-icon name="log-in"></ion-icon>&nbsp;Iniciar sesión
+          </ion-button>
+        </div>
+        <ion-text *ngIf="settings.debugMode" class="fix-bottom-menu-appversion center-custom">v{{ settings.version }}</ion-text>
       </ion-content>
       <!-- <ion-footer class="bar-stable">
         <ion-list>

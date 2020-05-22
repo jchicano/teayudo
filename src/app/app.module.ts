@@ -1,3 +1,8 @@
+import { AngularFireStorage } from '@angular/fire/storage';
+import { LoginModalPage } from './modals/login-modal/login-modal.page';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { CelebrateModule } from './custom-modules/celebrate/celebrate.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
@@ -15,13 +20,15 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { environment } from "src/environments/environment";
-import { AngularFireModule } from "angularfire2";
-import { AngularFirestoreModule } from "angularfire2/firestore";
+import { environment } from 'src/environments/environment.prod';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { SettingsModalPage } from './modals/settings-modal/settings-modal.page';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, LoginModalPage, SettingsModalPage],
+  entryComponents: [LoginModalPage, SettingsModalPage],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -33,7 +40,9 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     CustomLoadingModule,
     DefaultLoadingModule,
     DefaultAlertModule,
-    CelebrateModule
+    CelebrateModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
@@ -41,7 +50,11 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     Network,
     NetworkService,
     AppVersion,
-    ScreenOrientation
+    ScreenOrientation,
+    AngularFireAuth,
+    AngularFireStorage,
+    NativeStorage,
+    Clipboard
   ],
   bootstrap: [AppComponent]
 })

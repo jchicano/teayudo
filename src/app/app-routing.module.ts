@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
   },
   {
+    path: 'settings-modal',
+    loadChildren: () => import('./modals/settings-modal/settings-modal.module').then( m => m.SettingsModalPageModule)
+  },
+  {
     path: 'tutorial',
     loadChildren: () => import('./tutorial-slides/tutorial-slides.module').then( m => m.TutorialSlidesPageModule)
   },
@@ -47,6 +51,10 @@ const routes: Routes = [
   {
     path: 'colors-modal',
     loadChildren: () => import('./modals/colors-modal/colors-modal.module').then( m => m.ColorsModalPageModule)
+  }
+  {
+    path: 'login-modal',
+    loadChildren: () => import('./modals/login-modal/login-modal.module').then( m => m.LoginModalPageModule)
   }
   */
 ];

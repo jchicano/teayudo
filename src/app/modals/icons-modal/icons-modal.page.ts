@@ -10,7 +10,6 @@ import { ModalController } from '@ionic/angular';
 export class IconsModalPage implements OnInit {
 
   public selectedIcon: string;
-  public iconList: any[];
 
   constructor(
     private modalController: ModalController,
@@ -26,9 +25,11 @@ export class IconsModalPage implements OnInit {
     await this.modalController.dismiss(this.selectedIcon);
   }
 
-  radioChecked(icon) {
-    this.selectedIcon = icon;
-    console.log('Icono seleccionado: ' + icon);
+  radioChecked($event) {
+    const indexSelected = $event.detail.value.slice(-1);
+    console.log('Seleccionado radio con index:', indexSelected);
+    this.selectedIcon = this.iconS.iconList[indexSelected].url;
+    console.log('Icono seleccionado:', this.selectedIcon);
   }
 
 }

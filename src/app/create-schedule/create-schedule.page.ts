@@ -3,7 +3,7 @@ import { DefaultAlertModule } from './../custom-modules/default-alert/default-al
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { CardService } from './../services/card.service';
 import { IconsModalPage } from './../modals/icons-modal/icons-modal.page';
-import { card } from './../model/card';
+import { Card } from '../model/Card';
 import { ColorsModalPage } from './../modals/colors-modal/colors-modal.page';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -17,7 +17,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 export class CreateSchedulePage implements OnInit {
 
   public cardsChecker: string[];
-  public cardList: card[];
+  public cardList: Card[];
   public receivedParams: any;
   public showSpinner: boolean;
   public cardsAvailable: boolean;
@@ -66,7 +66,7 @@ export class CreateSchedulePage implements OnInit {
   addCard(): void {
     console.log('Click FAB addCard');
     this.cardsAvailable = true;
-    let newCard: card = {
+    let newCard: Card = {
       title: '',
       pictogram: '',
       color: '',
@@ -114,7 +114,7 @@ export class CreateSchedulePage implements OnInit {
   }
 
   //=============================================================================
-  // Para abrir el modal de colores
+  // Para abrir el modal de pictogramas
   //=============================================================================
   async openIconsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
@@ -207,7 +207,7 @@ export class CreateSchedulePage implements OnInit {
   }
 
   getTotalTimeRaw() {
-    console.log("llamando");
+    console.log('Getting total time...');
     this.totalTime = 0;
     this.cardList.forEach(e => {
       let onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm

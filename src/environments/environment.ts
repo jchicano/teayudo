@@ -13,9 +13,11 @@ export const environment = {
   },
   collection: {
     card: "card",
-    student: "student"
+    student: "student",
+    user: 'user'
   },
-  timemaxloading:10000, //Tiempo máximo que puede estar cargando la aplicación, supera deja de cargar y muestra error en carga,
+  timemaxloading: 10000, //Tiempo máximo que puede estar cargando la aplicación, supera deja de cargar y muestra error en carga,
+  defaultAvatarURL: 'assets/img/user.svg',
 };
 
 /*

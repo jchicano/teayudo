@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { Subscription } from 'rxjs';
@@ -29,16 +30,15 @@ export class ListPage implements OnInit {
     private toastC: CustomToastModule,
     private navCtrl: NavController,
     private platform: Platform,
-    private loadingC: CustomLoadingModule
+    private loadingC: CustomLoadingModule,
+    private auth: AuthService
   ) {
     this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
     this.searchText = "";
   }
 
-  ngOnInit() {
-    this.refresh();
-  }
+  ngOnInit() { }
 
   // NOTE https://stackoverflow.com/a/58736680
   // Para que funcione el boton atras al salir de la app
@@ -46,6 +46,7 @@ export class ListPage implements OnInit {
     this.subscription = this.platform.backButton.subscribeWithPriority(1, () => {
       this.navCtrl.navigateBack('/home');
     });
+    this.refresh();
   }
 
   ionViewWillLeave() {
@@ -54,14 +55,14 @@ export class ListPage implements OnInit {
 
   // Refresco de la lista
   async refresh($event?) {
-    if (!$event){
+    if (!$event) {
       this.showSpinner = true; // Si se usa el ion-refresher no se muestra spinner central
     }
     this.loadingC.show("");
     //this.studentList = [];
     console.log("Cargando alumnos");
     try {
-      this.studentS.readStudentsObsv().subscribe((list) => {
+      this.studentS.readStudentsObsvForTeacher(this.auth.user.userId).subscribe((list) => { // Si esta logueado pasamos el UID, si es invitado pasamos el UID del dispositivo
         if (list.length <= 0) this.studentsAvailable = false;
         else this.studentsAvailable = true;
         this.studentList = list;
@@ -91,21 +92,40 @@ export class ListPage implements OnInit {
   deleteStudent(currentStudent: any) {
     console.log('deleteStudent');
     this.list.closeSlidingItems();
-    this.cardS.deleteCard(currentStudent.collectionId)
-      .then(() => {
-        console.log('Horario del alumno eliminado')
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    this.studentS.deleteStudent(currentStudent.id)
-      .then(() => {
-        console.log('Alumno eliminado')
-        this.toastC.show('Alumno eliminado');
-        this.refresh();
-      })
-      .catch((error) => {
-        console.log(error);
+    // this.cardS.deleteCard(currentStudent.collectionId)
+    //   .then(() => {
+    //     console.log('Horario del alumno eliminado');
+    //     this.studentS.deleteStudent(currentStudent.id)
+    //       .then(() => {
+    //         console.log('Alumno eliminado');
+    //         this.toastC.show('Alumno eliminado');
+    //         this.refresh();
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    this.studentS.deleteStudentObs(currentStudent.id, currentStudent.collectionId)
+      .subscribe((e) => {
+        switch (e) {
+          case 'error-deleting-schedule':
+            this.toastC.show('Error al eliminar el horario del alumno');
+            console.log('Error al eliminar el horario del alumno');
+            break;
+          case 'error-deleting-student':
+            this.toastC.show('Error al eliminar el alumno');
+            console.log('Error al eliminar el alumno');
+            break;
+          case 'success-deleting-student':
+            this.toastC.show('Alumno eliminado con éxito');
+            console.log('Alumno eliminado correctamente');
+            this.refresh();
+            break;
+          default: break;
+        }
       });
   }
 
@@ -140,7 +160,7 @@ export class ListPage implements OnInit {
       });
   }
 
-  search ($event) {
+  search($event) {
     // console.log($event);
     this.searchText = $event.detail.value;
   }
