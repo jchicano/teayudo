@@ -89,8 +89,22 @@ export class LoginModalPage implements OnInit {
             console.log(e);
           });
       })
-      .catch(() => {
-        this.toastC.show('Error al iniciar sesión');
+      .catch((error) => {
+        console.log(error);
+        switch (error.code) {
+          case 'auth/invalid-email':
+            this.toastC.show('El correo electrónico no es válido');
+            break;
+          case 'auth/user-not-found':
+            this.toastC.show('El usuario no existe');
+            break;
+          case 'auth/wrong-password':
+            this.toastC.show('Contraseña incorrecta');
+            break;
+          default:
+            this.toastC.show('Error al iniciar sesión');
+            break;
+        }
       })
       .finally(() => { this.loadingC.hide(); });
   }
@@ -105,8 +119,22 @@ export class LoginModalPage implements OnInit {
         this.dismiss();
         this.router.navigate(['/home']);
       })
-      .catch(() => {
-        this.toastC.show('Error al realizar el registro');
+      .catch((error) => {
+        // console.log(error);
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            this.toastC.show('El correo electrónico ya está en uso por otra cuenta');
+            break;
+          case 'auth/invalid-email':
+            this.toastC.show('El correo electrónico no es válido');
+            break;
+          case 'auth/weak-password':
+            this.toastC.show('La contraseña no es lo sufientemente fuerte');
+            break;
+          default:
+            this.toastC.show('Error al realizar el registro');
+            break;
+        }
       })
       .finally(() => { this.loadingC.hide(); });
   }

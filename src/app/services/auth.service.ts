@@ -30,7 +30,6 @@ export class AuthService {
           // console.log(d);
           if (d && d.user) {
             this.userS.createUser(d.user.uid, userdata.name);
-            //////
             const user: User = {
               email: d.user.email,
               displayName: userdata.name,
@@ -46,8 +45,7 @@ export class AuthService {
           else reject(false);
         })
         .catch((e) => {
-          console.log(e);
-          reject(false);
+          reject(e);
         });
     });
   }
@@ -77,8 +75,7 @@ export class AuthService {
           else reject(false);
         })
         .catch((e) => {
-          console.log(e);
-          reject(false);
+          reject(e);
         });
     });
   }
