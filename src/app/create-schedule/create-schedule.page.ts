@@ -98,13 +98,19 @@ export class CreateSchedulePage implements OnInit {
   //=============================================================================
   async openColorsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
-      component: ColorsModalPage
+      component: ColorsModalPage,
+      animated: true,
+      swipeToClose: true,
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.cardList[cardIndex].color = dataReturned.data;
-      console.log('Color received: ' + dataReturned.data);
+      if (dataReturned.data) {
+        this.cardList[cardIndex].color = dataReturned.data;
+        console.log('Color received: ' + dataReturned.data);
+      }
     });
 
     return await modal.present()
@@ -118,13 +124,19 @@ export class CreateSchedulePage implements OnInit {
   //=============================================================================
   async openIconsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
-      component: IconsModalPage
+      component: IconsModalPage,
+      animated: true,
+      swipeToClose: true,
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.cardList[cardIndex].pictogram = dataReturned.data;
-      console.log('Icon received: ' + dataReturned.data);
+      if (dataReturned.data) {
+        this.cardList[cardIndex].pictogram = dataReturned.data;
+        console.log('Icon received: ' + dataReturned.data);
+      }
     });
 
     return await modal.present()

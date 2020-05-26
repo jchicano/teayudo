@@ -21,14 +21,18 @@ export class ColorsModalPage implements OnInit {
   ngOnInit() {
   }
 
-  async closeModal() {
+  async dismiss() {
+    await this.modalController.dismiss();
+  }
+
+  async saveData() {
     await this.modalController.dismiss(this.selectedColor);
   }
 
   radioChecked($event) {
     // console.log($event.detail.value);
     const indexSelected = $event.detail.value;
-    console.log('Seleccionado radio con index:', indexSelected);
+    // console.log('Seleccionado radio con index:', indexSelected);
     this.selectedColor = this.colorS.colorList[indexSelected].hex;
     console.log('Color seleccionado:', this.selectedColor);
   }
