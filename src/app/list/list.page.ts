@@ -141,12 +141,19 @@ export class ListPage implements OnInit {
         component: StudentModalPage,
         componentProps: {
           studentObject: currentStudent
-        }
+        },
+        animated: true,
+        swipeToClose: true,
+        mode: 'ios',
+        cssClass: 'roundedModal'
       });
-    }
-    else { // Se crea alumno, no se pasan parametros
+    } else { // Se crea alumno, no se pasan parametros
       modal = await this.modalController.create({
-        component: StudentModalPage
+        component: StudentModalPage,
+        animated: true,
+        swipeToClose: true,
+        mode: 'ios',
+        cssClass: 'roundedModal'
       });
     }
     modal.onWillDismiss().then((dataReturned) => {

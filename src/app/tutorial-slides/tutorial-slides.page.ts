@@ -142,6 +142,7 @@ export class TutorialSlidesPage implements OnInit {
   async showModalLogin() {
     const modal = await this.modalController.create({
       component: LoginModalPage,
+      animated: true,
       swipeToClose: true,
       mode: 'ios'
     });

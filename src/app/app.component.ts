@@ -113,6 +113,7 @@ export class AppComponent {
   async login() {
     const modal = await this.modalController.create({
       component: LoginModalPage,
+      animated: true,
       swipeToClose: true,
       mode: 'ios',
       cssClass: 'roundedModal'
