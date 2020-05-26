@@ -12,10 +12,10 @@
 <ion-content>
   <ion-list>
     <ion-radio-group (ionChange)="radioChecked($event)">
-      <ion-item *ngFor="let colorObj of colorS.colorList">
+      <ion-item *ngFor="let colorObj of colorS.colorList; let i = index">
         <ion-label>{{ colorObj.name }}</ion-label>
         <ion-icon slot="start" name="color-fill" color="{{ colorObj.value }}"></ion-icon>
-        <ion-radio slot="end"></ion-radio>
+        <ion-radio slot="end" [value]="i"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>

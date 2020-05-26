@@ -26,7 +26,8 @@ export class ColorsModalPage implements OnInit {
   }
 
   radioChecked($event) {
-    const indexSelected = $event.detail.value.slice(-1);
+    // console.log($event.detail.value);
+    const indexSelected = $event.detail.value;
     console.log('Seleccionado radio con index:', indexSelected);
     this.selectedColor = this.colorS.colorList[indexSelected].hex;
     console.log('Color seleccionado:', this.selectedColor);
