@@ -8,8 +8,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
-import * as firebase from 'firebase';
-
 @Component({
   selector: 'app-login-modal',
   templateUrl: './login-modal.page.html',

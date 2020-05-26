@@ -114,7 +114,8 @@ export class AppComponent {
     const modal = await this.modalController.create({
       component: LoginModalPage,
       swipeToClose: true,
-      mode: 'ios'
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
     return await modal.present();
   }
