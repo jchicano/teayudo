@@ -208,14 +208,18 @@ export class CreateSchedulePage implements OnInit {
   }
 
   showSchedule() {
-    console.log('Mostrando horario del alumno...');
-    let navigationExtras: NavigationExtras = {
-      state: {
-        cardsId: this.receivedParams.get('id'),
-        cards: this.cardList
-      }
-    };
-    this.router.navigate(['/show'], navigationExtras);
+    if (this.cardList.length === 0) {
+      this.alertD.show('Reproducir horario', '', 'No hay tarjetas creadas');
+    } else {
+      console.log('Mostrando horario del alumno...');
+      const navigationExtras: NavigationExtras = {
+        state: {
+          cardsId: this.receivedParams.get('id'),
+          cards: this.cardList
+        }
+      };
+      this.router.navigate(['/show'], navigationExtras);
+    }
   }
 
   getTotalTimeRaw() {
