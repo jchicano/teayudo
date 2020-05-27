@@ -2,7 +2,6 @@ import { UserService } from './../services/user.service';
 import { User } from './../model/User';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SettingsService } from './../services/settings.service';
-import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { AuthService } from './../services/auth.service';
@@ -10,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Platform, NavController, ModalController } from '@ionic/angular';
 import { SettingsModalPage } from '../modals/settings-modal/settings-modal.page';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: 'app-settings',
@@ -35,10 +35,10 @@ export class SettingsPage implements OnInit {
     private userS: UserService,
     private toastC: CustomToastModule,
     private formBuilder: FormBuilder,
-    private loadingC: CustomLoadingModule,
     public settings: SettingsService,
     private clipboard: Clipboard,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private screenOrientation: ScreenOrientation
   ) {
     this.accountSelected = true;
     this.generalSelected = false;
@@ -47,6 +47,10 @@ export class SettingsPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log('Fijando orientacion a Portrait...');
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT)
+      .then((e) => console.log('Fijada orientacion Portrait: ' + e))
+      .catch((e) => console.log('Error al fijar orientacion: ' + e));
     this.accountData = {
       displayName: this.auth.user.displayName,
       email: this.auth.user.email,
