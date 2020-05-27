@@ -2,7 +2,6 @@ import { AuthService } from './../services/auth.service';
 import { LoginModalPage } from './../modals/login-modal/login-modal.page';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DefaultAlertModule } from './../custom-modules/default-alert/default-alert.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, Platform, AlertController, ModalController } from '@ionic/angular';
@@ -49,7 +48,6 @@ export class TutorialSlidesPage implements OnInit {
 
   constructor(
     private screenOrientation: ScreenOrientation,
-    private alertD: DefaultAlertModule,
     private platform: Platform,
     private alertController: AlertController,
     private router: Router,
@@ -144,7 +142,8 @@ export class TutorialSlidesPage implements OnInit {
       component: LoginModalPage,
       animated: true,
       swipeToClose: true,
-      mode: 'ios'
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
     return await modal.present();
   }
