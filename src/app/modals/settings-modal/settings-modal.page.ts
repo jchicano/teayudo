@@ -177,7 +177,14 @@ export class SettingsModalPage implements OnInit {
     console.log('Saving password...');
     this.loadingC.show('');
     this.auth.updatePassword(this.currentPassword, this.newPassword, this.newPasswordConfirm)
-      .subscribe((e) => {
+      .toPromise()
+      .then((e) => {
+        this.toastC.show('Contraseña actualizada con éxito');
+        console.log('Contraseña actualizada correctamente');
+        this.dismiss();
+      })
+      .catch((e) => {
+        console.log(e);
         switch (e) {
           case 'password-format':
             this.toastC.show('La contraseña no cumple los requisitos de seguridad');
@@ -188,19 +195,17 @@ export class SettingsModalPage implements OnInit {
             console.log('Las contraseñas no coinciden');
             break;
           case 'credential-error':
+            this.toastC.show('Error en las credenciales');
             console.log('Error al re-autenticar el usuario');
             break;
           case 'update-error':
             this.toastC.show('Error al actualizar la contraseña');
             console.log('Error al actualizar la contraseña');
             break;
-          case 'update-success':
-            this.toastC.show('Contraseña actualizada con éxito');
-            console.log('Contraseña actualizada correctamente');
-            this.dismiss();
-            break;
           default: break;
         }
+      })
+      .finally(() => {
         this.loadingC.hide();
       });
   }
@@ -231,20 +236,24 @@ export class SettingsModalPage implements OnInit {
 
   saveAvatar() {
     console.log('Updating avatar...');
-    this.loadingC.show('');
-    this.userS.uploadImage(this.auth.user.userId, this.newAvatarToUpload)
-      .then((snapshot) => {
-        console.log(snapshot);
-        this.getAvatarURL();
-        console.log('Image successfully added');
-        this.toastC.show('Imagen actualizada');
-        this.dismiss();
-      })
-      .catch((error) => {
-        console.log(error);
-        this.toastC.show('Ha ocurrido un error al actualizar el avatar');
-      })
-      .finally(() => this.loadingC.hide());
+    if (this.newAvatarToUpload) {
+      this.loadingC.show('');
+      this.userS.uploadImage(this.auth.user.userId, this.newAvatarToUpload)
+        .then((snapshot) => {
+          console.log(snapshot);
+          this.getAvatarURL();
+          console.log('Image successfully added');
+          this.toastC.show('Imagen actualizada');
+          this.dismiss();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.toastC.show('Ha ocurrido un error al actualizar el avatar');
+        })
+        .finally(() => this.loadingC.hide());
+    } else {
+      this.toastC.show('Primero debes subir una imagen');
+    }
   }
 
   async deleteUser() {
