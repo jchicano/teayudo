@@ -30,6 +30,7 @@ export class ShowPage implements OnInit {
   public autoScroll: boolean;
   public scrollAutomaticValue: number; // Almaceno el scroll que tendra la barra
   public endedSchedule: boolean;
+  private interval: any;
 
   constructor(
     private router: Router,
@@ -84,6 +85,10 @@ export class ShowPage implements OnInit {
     }
   }
 
+  ionViewWillLeave() {
+    clearInterval(this.interval);
+  }
+
   scrollInfo() {
     // let element = document.querySelector('.scroll');
     console.log(this.scroll.nativeElement);
@@ -97,7 +102,7 @@ export class ShowPage implements OnInit {
     console.log('Running Progress Bar...');
     let counter = 0;
     this.currentIndex = 0;
-    let interval = setInterval(() => {
+    this.interval = setInterval(() => {
 
       let ratio = undefined;
       this.cardList.forEach((card, index) => {
@@ -140,7 +145,7 @@ export class ShowPage implements OnInit {
       }
       else { // Se ha llegado al maximo del progreso
         this.progressBarMargin = 0; // Lo pongo a 0 para que se vea perfectamente completa la barra
-        clearInterval(interval); // Paro el intervalo
+        clearInterval(this.interval); // Paro el intervalo
         this.scheduleRunning = false;
         console.log('Fin del horario');
         this.endedSchedule = true;
@@ -183,19 +188,6 @@ export class ShowPage implements OnInit {
     if (ms > 0) return new Date(ms).toISOString().slice(11, 19);
     return '00:00:00';
   }
-
-  timerForCard(index: number) {
-    console.log('Creando intervalo para tarjeta indice ' + index);
-    let interval = setInterval(() => {
-      this.cardsTimeNew[index] -= 1000;
-      if (this.cardsTimeNew[index] <= 0) {
-        clearInterval(interval);
-        this.cardsTimeNew[index] = 0;
-        console.log('Intervalo de tarjeta indice ' + index + ' terminado');
-      }
-    }, 1000);
-  }
-
 
   // TODO quitar variables repetidas y/o inutiles
 }
