@@ -5,3 +5,46 @@
 .resend-button {
     margin: 0;
 }
+
+.remove-list-padding {
+    padding-top: 0px !important;
+}
+
+// NOTE https://codepen.io/rafacordlee/pen/XWbWJzX
+span {
+    color: #666;
+    font-size: 12px;
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    position: absolute;
+    width: 90%;
+    left: 50%;
+    top: 45%;
+    bottom: auto;
+    right: auto;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}
+span .pulse {
+    color: #E90606;
+    margin: 0 3px;
+    font-size: 10px;
+    animation: pound 0.35s infinite alternate;
+    -webkit-animation: pound 0.35s infinite alternate;
+}
+span a {
+    color: #000;
+    text-decoration: none;
+}
+
+@-webkit-keyframes pound {
+    to {
+        transform: scale(1.1);
+    }
+}
+@keyframes pound {
+    to {
+        transform: scale(1.1);
+    }
+}
