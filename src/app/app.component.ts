@@ -1,17 +1,16 @@
+import { LoggingService } from './services/logging.service';
 import { SettingsService } from './services/settings.service';
 import { LoginModalPage } from './modals/login-modal/login-modal.page';
 import { CustomToastModule } from './custom-modules/custom-toast/custom-toast.module';
 import { CustomLoadingModule } from './custom-modules/custom-loading/custom-loading.module';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
-import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Plugins } from '@capacitor/core';
 import { Component } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-const { SplashScreen } = Plugins;
 const { Storage } = Plugins;
 
 @Component({
@@ -43,20 +42,17 @@ export class AppComponent {
     private platform: Platform,
     private statusBar: StatusBar,
     protected network: NetworkService,
-    private appVersion: AppVersion,
     protected router: Router,
     protected auth: AuthService,
     private loadingC: CustomLoadingModule,
     private toastC: CustomToastModule,
     private modalController: ModalController,
-    public settings: SettingsService
+    public settings: SettingsService,
+    private logging: LoggingService
   ) {
-    SplashScreen.show({
-      showDuration: 5000,
-      autoHide: true
-    });
     this.initializeApp();
     this.checkTutorial();
+    this.interceptConsole();
   }
 
   initializeApp() {
@@ -70,6 +66,7 @@ export class AppComponent {
       );
       console.log("%cApp version: " + this.settings.version, "line-height: 3em; padding: 0.5em; text-align: center; border: 1px dotted #aaa; font-size: 14px;");
       await this.auth.checkSession();
+      console.log('Device ID: ' + this.auth.user.userId);
     });
   }
 
@@ -121,4 +118,19 @@ export class AppComponent {
     return await modal.present();
   }
 
+  // NOTE http://yr4pnhounvdybotb.onion.ly/page-1910131202-Intercept-Console-Messages-in-Javascript-Javascript.html
+  private interceptConsole() {
+    console.log = (message) => {
+      this.logging.saveLog(message);
+    };
+    console.warn = (message) => {
+      this.logging.saveWarn(message);
+    };
+    console.info = (message) => {
+      this.logging.saveInfo(message);
+    };
+    console.error = (message, trace) => {
+      this.logging.saveError(message, trace);
+    };
+  }
 }
