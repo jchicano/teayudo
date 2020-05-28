@@ -1,3 +1,4 @@
+import { LoggingService } from './../services/logging.service';
 import { UserService } from './../services/user.service';
 import { User } from './../model/User';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
@@ -38,7 +39,8 @@ export class SettingsPage implements OnInit {
     public settings: SettingsService,
     private clipboard: Clipboard,
     private modalController: ModalController,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private logging: LoggingService
   ) {
     this.accountSelected = true;
     this.generalSelected = false;
@@ -143,6 +145,7 @@ export class SettingsPage implements OnInit {
 
   public copyUUID() {
     this.clipboard.copy(this.auth.user.userId);
+    this.toastC.show('ID copiado al portapapeles');
   }
 
   async openModal(whatToDo: string) {
@@ -157,6 +160,10 @@ export class SettingsPage implements OnInit {
       cssClass: 'roundedModal'
     });
     return await modal.present();
+  }
+
+  emailBody() {
+    return encodeURIComponent(JSON.stringify(this.logging.messages, null, '\t')); //you can specify a number instead of '\t' and that many spaces will be used for indentation..
   }
 
 }
