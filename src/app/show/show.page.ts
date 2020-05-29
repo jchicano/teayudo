@@ -172,10 +172,6 @@ export class ShowPage implements OnInit {
     }, 1000);
   }
 
-  toggleAutoScroll() {
-    this.autoScroll = !this.autoScroll;
-  }
-
   comenzarHorario() {
     console.log('Comenzando horario...');
     this.scheduleRunning = true;
