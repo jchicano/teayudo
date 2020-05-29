@@ -4,7 +4,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { CelebrateModule } from './custom-modules/celebrate/celebrate.module';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NetworkService } from './services/network.service';
 import { Network } from '@ionic-native/network/ngx';
@@ -50,7 +49,6 @@ import { SettingsModalPage } from './modals/settings-modal/settings-modal.page';
     Network,
     NetworkService,
     AppVersion,
-    ScreenOrientation,
     AngularFireAuth,
     AngularFireStorage,
     NativeStorage,

@@ -6,7 +6,6 @@ import { StudentModalPage } from './../modals/student-modal/student-modal.page';
 import { StudentService } from './../services/student.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonList, ModalController, Platform, NavController } from '@ionic/angular';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: 'app-list',
@@ -30,20 +29,14 @@ export class ListPage implements OnInit {
     private navCtrl: NavController,
     private platform: Platform,
     private loadingC: CustomLoadingModule,
-    private auth: AuthService,
-    private screenOrientation: ScreenOrientation
+    private auth: AuthService
   ) {
     this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
     this.searchText = '';
   }
 
-  ngOnInit() {
-    console.log('Fijando orientacion a Portrait...');
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT)
-      .then((e) => console.log('Fijada orientacion Portrait: ' + e))
-      .catch((e) => console.log('Error al fijar orientacion: ' + e));
-  }
+  ngOnInit() { }
 
   // NOTE https://stackoverflow.com/a/58736680
   // Para que funcione el boton atras al salir de la app

@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Platform, NavController, ModalController } from '@ionic/angular';
 import { SettingsModalPage } from '../modals/settings-modal/settings-modal.page';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: 'app-settings',
@@ -39,7 +38,6 @@ export class SettingsPage implements OnInit {
     public settings: SettingsService,
     private clipboard: Clipboard,
     private modalController: ModalController,
-    private screenOrientation: ScreenOrientation,
     private logging: LoggingService
   ) {
     this.accountSelected = true;
@@ -49,10 +47,6 @@ export class SettingsPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Fijando orientacion a Portrait...');
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT)
-      .then((e) => console.log('Fijada orientacion Portrait: ' + e))
-      .catch((e) => console.log('Error al fijar orientacion: ' + e));
     this.accountData = {
       displayName: this.auth.user.displayName,
       email: this.auth.user.email,
