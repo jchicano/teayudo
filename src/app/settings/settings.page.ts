@@ -160,4 +160,11 @@ export class SettingsPage implements OnInit {
     return encodeURIComponent(JSON.stringify(this.logging.messages, null, '\t')); //you can specify a number instead of '\t' and that many spaces will be used for indentation..
   }
 
+  hideTutorialCardChange() {
+    this.settings.saveHideTutorialCardChange();
+  }
+
+  autoPlayScheduleChange() {
+    this.settings.saveAutoPlaySchedule();
+  }
 }

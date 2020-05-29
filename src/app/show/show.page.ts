@@ -1,3 +1,4 @@
+import { SettingsService } from './../services/settings.service';
 import { CelebrateModule } from './../custom-modules/celebrate/celebrate.module';
 import { Platform, AlertController } from '@ionic/angular';
 import { Card } from '../model/Card';
@@ -35,7 +36,8 @@ export class ShowPage implements OnInit {
   constructor(
     private router: Router,
     private platform: Platform,
-    private celebrate: CelebrateModule
+    private celebrate: CelebrateModule,
+    private settings: SettingsService
   ) {
     this.cardList = [];
     this.cardsTime = [];
@@ -87,6 +89,12 @@ export class ShowPage implements OnInit {
 
   ionViewWillLeave() {
     clearInterval(this.interval);
+  }
+
+  ionViewDidEnter() {
+    if (this.settings.autoPlaySchedule) {
+      this.comenzarHorario();
+    }
   }
 
   scrollInfo() {

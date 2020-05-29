@@ -64,6 +64,14 @@
     modificar tus datos debes iniciar sesión</ion-text>
 
   <ion-list *ngIf="generalSelected">
+    <ion-item>
+      <ion-label>Ocultar tarjeta del tutorial</ion-label>
+      <ion-toggle color="customfour" [(ngModel)]="settings.hideTutorialCard" (ionChange)="hideTutorialCardChange()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Reproducir horario al cargar</ion-label>
+      <ion-toggle color="customfour" [(ngModel)]="settings.autoPlaySchedule" (ionChange)="autoPlayScheduleChange()"></ion-toggle>
+    </ion-item>
     <!-- <ion-item>
       <ion-icon name="warning"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <ion-label>Modo depuración</ion-label>
@@ -113,8 +121,7 @@
 <ion-footer *ngIf="aboutSelected" class="ion-no-border">
   <ion-toolbar>
     <span>
-      Made with <ion-icon class="pulse" name="heart"></ion-icon> by <a
-        href="https://jchicano.github.io/"
+      Made with <ion-icon class="pulse" name="heart"></ion-icon> by <a href="https://jchicano.github.io/"
         target="_blank">Jesús Chicano</a>
     </span>
   </ion-toolbar>
