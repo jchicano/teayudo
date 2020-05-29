@@ -52,6 +52,7 @@ export class AppComponent {
   ) {
     this.initializeApp();
     this.checkTutorial();
+    this.getSettings();
     this.interceptConsole();
   }
 
@@ -76,12 +77,10 @@ export class AppComponent {
     const ret = await Storage.get({ key: 'did_tutorial' });
     if (ret.value === 'true') {
       console.log('Tutorial already seen');
-    }
-    else if (ret.value === 'false') {
+    } else if (ret.value === 'false') {
       console.log('Tutorial should open 1');
       this.router.navigate(['/tutorial']);
-    }
-    else if (ret.value === null) {
+    } else if (ret.value === null) {
       console.log('Tutorial should open 2');
       this.router.navigate(['/tutorial']);
       await Storage.set({
@@ -89,6 +88,11 @@ export class AppComponent {
         value: 'false'
       });
     }
+  }
+
+  async getSettings() {
+    this.settings.checkHideTutorialCard();
+    this.settings.checkAutoPlaySchedule();
   }
 
   public async logout() {

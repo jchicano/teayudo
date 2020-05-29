@@ -1,3 +1,4 @@
+import { SettingsService } from './../services/settings.service';
 import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
@@ -14,7 +15,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private platform: Platform,
-    private router: Router
+    private router: Router,
+    public settings: SettingsService
   ) { }
 
   ngOnInit() { }
