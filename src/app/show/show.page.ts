@@ -63,9 +63,9 @@ export class ShowPage implements OnInit {
     this.cardList.forEach((card, index) => {
       console.log('Card ' + index + ':');
       // console.log('Duration RAW: ' + card.duration);
-      let onlyTime = card.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
+      const onlyTime = card.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
       // console.log('Duration time: ' + onlyTime);
-      var timeMillis = Number(onlyTime.split(':')[0]) * 60 + Number(onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
+      const timeMillis = (+onlyTime.split(':')[0] * 60 + +onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
       console.log('Duration millis: ' + timeMillis);
       this.cardsTime.push(timeMillis);
       this.cardsTimeNew.push(timeMillis);
