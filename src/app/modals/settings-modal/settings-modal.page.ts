@@ -296,7 +296,7 @@ export class SettingsModalPage implements OnInit {
               this.dismiss();
               this.auth.logout()
                 .then(() => {
-                  this.toastC.show('Sesión cerrada');
+                  // this.toastC.show('Sesión cerrada');
                   this.router.navigate(['/home'])
                     .then(() => {
                       this.loadingC.hide();
