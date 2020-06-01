@@ -225,9 +225,9 @@ export class CreateSchedulePage implements OnInit {
   getTotalTimeRaw() {
     console.log('Getting total time...');
     this.totalTime = 0;
-    this.cardList.forEach(e => {
-      let onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
-      var timeMillis = Number(onlyTime.split(':')[0]) * 60 + Number(onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
+    this.cardList.forEach((e,index) => {
+      const onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
+      const timeMillis = (+onlyTime.split(':')[0] * 60 + +onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
       console.log('Duration millis: ' + timeMillis);
       this.totalTime += timeMillis;
     });
