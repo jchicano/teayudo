@@ -40,10 +40,12 @@ export class StudentModalPage implements OnInit {
       nombre: ['', Validators.required]
     });
     if (this.studentObject !== undefined) {
+      console.log('Parametro recibido por el modal:');
+      console.log(this.studentObject);
       this.studentForm.get('nombre').setValue(this.studentObject.fullname);
+    } else {
+      console.log('No se ha recibido ningun parametro:');
     }
-    console.log('Parametro recibido por el modal:');
-    console.log(this.studentObject);
   }
 
   resetFormFields() {
