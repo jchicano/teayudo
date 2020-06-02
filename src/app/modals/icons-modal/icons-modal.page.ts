@@ -18,16 +18,20 @@ export class IconsModalPage implements OnInit {
     this.selectedIcon = '';
   }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  async dismiss() {
+    await this.modalController.dismiss();
   }
 
-  async closeModal() {
+  async saveData() {
     await this.modalController.dismiss(this.selectedIcon);
   }
 
   radioChecked($event) {
-    const indexSelected = $event.detail.value.slice(-1);
-    console.log('Seleccionado radio con index:', indexSelected);
+    // console.log($event.detail.value);
+    const indexSelected = $event.detail.value;
+    // console.log('Seleccionado radio con index:', indexSelected);
     this.selectedIcon = this.iconS.iconList[indexSelected].url;
     console.log('Icono seleccionado:', this.selectedIcon);
   }

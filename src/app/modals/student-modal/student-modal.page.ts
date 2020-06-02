@@ -40,10 +40,12 @@ export class StudentModalPage implements OnInit {
       nombre: ['', Validators.required]
     });
     if (this.studentObject !== undefined) {
+      console.log('Parametro recibido por el modal:');
+      console.log(this.studentObject);
       this.studentForm.get('nombre').setValue(this.studentObject.fullname);
+    } else {
+      console.log('No se ha recibido ningun parametro:');
     }
-    console.log('Parametro recibido por el modal:');
-    console.log(this.studentObject);
   }
 
   resetFormFields() {
@@ -51,7 +53,7 @@ export class StudentModalPage implements OnInit {
     this.formError = '';
   }
 
-  async closeModal() {
+  async dismiss() {
     await this.modalController.dismiss();
   }
 
@@ -59,21 +61,21 @@ export class StudentModalPage implements OnInit {
     console.log('Guardando alumno...');
     if (this.studentObject !== undefined) { // Estamos editando un usuario
       console.log('Se va a editar un alumno');
-      let updatedStudent: Student = {
+      const updatedStudent: Student = {
         fullname: this.studentForm.get('nombre').value,
-        collectionId: this.studentObject.collectionId
-      }
+        collectionId: this.studentObject.collectionId,
+        teacherId: this.auth.user.userId
+      };
       this.studentS.updateStudent(this.studentObject.id, updatedStudent)
         .then(() => {
           this.toastC.show('Alumno editado correctamente');
-          this.closeModal();
+          this.dismiss();
         })
         .catch((error) => {
           this.toastC.show('Error al editar alumno');
           console.log(error);
         });
-    }
-    else { // Estamos creando un usuario
+    } else { // Estamos creando un usuario
       console.log('Se va a crear un alumno');
       this.loadingC.show('');
       if (this.studentForm.valid) {
@@ -82,28 +84,22 @@ export class StudentModalPage implements OnInit {
             // console.log('Coleccion creada con exito: ' + ok.id); // Obtengo el id del documento guardado
             const myStudent: Student = {
               fullname: this.studentForm.get('nombre').value,
-              collectionId: ok.id
+              collectionId: ok.id,
+              teacherId: this.auth.user.userId
             };
             this.studentS.addStudent(myStudent)
               .then(async (r) => {
                 // console.log('Alumno creado con exito: ' + r.id);
                 // console.log(myStudent);
-                this.studentS.assignTeacher(r.id, this.auth.user.userId)
-                  .then((r) => {
-                    this.toastC.show('Alumno creado correctamente');
-                  })
-                  .catch((r) => {
-                    this.toastC.show('Error al asignar alumno');
-                    console.log(r);
-                  })
-                  .finally(() => {
-                    this.loadingC.hide();
-                    this.closeModal();
-                  });
+                this.toastC.show('Alumno creado correctamente');
               })
               .catch((error) => {
                 this.toastC.show('Error al crear alumno');
                 console.log(error);
+              })
+              .finally(() => {
+                this.loadingC.hide();
+                this.dismiss();
               });
           })
           .catch((err) => {

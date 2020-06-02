@@ -22,6 +22,7 @@ export class CreateSchedulePage implements OnInit {
   public showSpinner: boolean;
   public cardsAvailable: boolean;
   public totalTime: number;
+  private unsavedChanges: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +38,7 @@ export class CreateSchedulePage implements OnInit {
     this.showSpinner = false;
     this.cardsAvailable = false;
     this.totalTime = 0;
+    this.unsavedChanges = false;
   }
 
   ngOnInit() {
@@ -66,6 +68,7 @@ export class CreateSchedulePage implements OnInit {
   addCard(): void {
     console.log('Click FAB addCard');
     this.cardsAvailable = true;
+    this.unsavedChanges = true;
     let newCard: Card = {
       title: '',
       pictogram: '',
@@ -98,13 +101,20 @@ export class CreateSchedulePage implements OnInit {
   //=============================================================================
   async openColorsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
-      component: ColorsModalPage
+      component: ColorsModalPage,
+      animated: true,
+      swipeToClose: true,
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.cardList[cardIndex].color = dataReturned.data;
-      console.log('Color received: ' + dataReturned.data);
+      if (dataReturned.data) {
+        this.unsavedChanges = true;
+        this.cardList[cardIndex].color = dataReturned.data;
+        console.log('Color received: ' + dataReturned.data);
+      }
     });
 
     return await modal.present()
@@ -118,13 +128,20 @@ export class CreateSchedulePage implements OnInit {
   //=============================================================================
   async openIconsModalWithData(cardIndex: number) {
     const modal = await this.modalController.create({
-      component: IconsModalPage
+      component: IconsModalPage,
+      animated: true,
+      swipeToClose: true,
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
 
     modal.onWillDismiss().then((dataReturned) => {
       // triggered when about to close the modal
-      this.cardList[cardIndex].pictogram = dataReturned.data;
-      console.log('Icon received: ' + dataReturned.data);
+      if (dataReturned.data) {
+        this.unsavedChanges = true;
+        this.cardList[cardIndex].pictogram = dataReturned.data;
+        console.log('Icon received: ' + dataReturned.data);
+      }
     });
 
     return await modal.present()
@@ -157,6 +174,7 @@ export class CreateSchedulePage implements OnInit {
         .then((data) => {
           console.log('Tarjetas guardadas');
           this.toastC.show('Tarjetas guardadas');
+          this.unsavedChanges = false;
           // this.router.navigateByUrl('/list');
         })
         .catch((error) => {
@@ -174,6 +192,7 @@ export class CreateSchedulePage implements OnInit {
     this.cardList.splice(cardIndex, 1);
     this.cardsChecker.splice(cardIndex, 1);
     this.getTotalTimeRaw();
+    this.unsavedChanges = true;
   }
 
   loadCardsForCurrentUser() {
@@ -196,22 +215,28 @@ export class CreateSchedulePage implements OnInit {
   }
 
   showSchedule() {
-    console.log('Mostrando horario del alumno...');
-    let navigationExtras: NavigationExtras = {
-      state: {
-        cardsId: this.receivedParams.get('id'),
-        cards: this.cardList
-      }
-    };
-    this.router.navigate(['/show'], navigationExtras);
+    if (!this.cardsAvailable) {
+      this.alertD.show('Reproducir horario', '', 'No hay tarjetas creadas');
+    } else if (this.unsavedChanges) {
+      this.alertD.show('Reproducir horario', '', 'Tienes cambios sin guardar');
+    } else {
+      console.log('Mostrando horario del alumno...');
+      const navigationExtras: NavigationExtras = {
+        state: {
+          cardsId: this.receivedParams.get('id'),
+          cards: this.cardList
+        }
+      };
+      this.router.navigate(['/show'], navigationExtras);
+    }
   }
 
   getTotalTimeRaw() {
     console.log('Getting total time...');
     this.totalTime = 0;
-    this.cardList.forEach(e => {
-      let onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
-      var timeMillis = Number(onlyTime.split(':')[0]) * 60 + Number(onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
+    this.cardList.forEach((e,index) => {
+      const onlyTime = e.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
+      const timeMillis = (+onlyTime.split(':')[0] * 60 + +onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
       console.log('Duration millis: ' + timeMillis);
       this.totalTime += timeMillis;
     });

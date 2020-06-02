@@ -18,5 +18,9 @@
 
     <style name="AppTheme.NoActionBarLaunch" parent="AppTheme.NoActionBar">
         <item name="android:background">@drawable/splash</item>
+        <!-- NOTE https://forum.ionicframework.com/t/double-splash-screen-with-with-flash-in-between/187916/9 -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

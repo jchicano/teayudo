@@ -11,12 +11,23 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class CustomToastModule {
-  toast;
+
+  private toastInstace: any;
+
   constructor(private toastCtrl: ToastController) { }
 
-  async show(msg) {
-    this.toastCtrl.dismiss(); // Descarto el toast anterior para que no se solapen
-    const toast = await this.toastCtrl.create({
+  // NOTE // https://stackoverflow.com/a/55125430/10387022
+  show(msg: string): void {
+    this.toastCtrl.dismiss()
+      .then((obj) => { })
+      .catch(() => { })
+      .finally(() => {
+        this.manageToast(msg);
+      });
+  }
+
+  private manageToast(msg: string): void {
+    this.toastInstace = this.toastCtrl.create({
       message: msg,
       buttons: [
         {
@@ -30,15 +41,16 @@ export class CustomToastModule {
       animated: true,
       position: 'bottom',
       duration: 3000
+    }).then((obj) => {
+      obj.present();
     });
-    toast.present();
   }
 
   async showTop(msg, time?) {
-    if (this.toast)
-      this.toast.dismiss();
+    if (this.toastInstace)
+      this.toastInstace.dismiss();
     if (!time) {
-      this.toast = await this.toastCtrl.create({
+      this.toastInstace = await this.toastCtrl.create({
         message: msg,
         buttons: [
           {
@@ -52,15 +64,15 @@ export class CustomToastModule {
         animated: true,
         position: 'top'
       });
-      this.toast.present();
+      this.toastInstace.present();
     } else {
-      this.toast = await this.toastCtrl.create({
+      this.toastInstace = await this.toastCtrl.create({
         message: msg,
         animated: true,
         position: 'top',
         duration: time
       });
-      this.toast.present();
+      this.toastInstace.present();
     }
   }
 }

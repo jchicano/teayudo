@@ -1,8 +1,8 @@
+import { LoggingService } from './../services/logging.service';
 import { UserService } from './../services/user.service';
 import { User } from './../model/User';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SettingsService } from './../services/settings.service';
-import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { AuthService } from './../services/auth.service';
@@ -35,10 +35,10 @@ export class SettingsPage implements OnInit {
     private userS: UserService,
     private toastC: CustomToastModule,
     private formBuilder: FormBuilder,
-    private loadingC: CustomLoadingModule,
     public settings: SettingsService,
     private clipboard: Clipboard,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private logging: LoggingService
   ) {
     this.accountSelected = true;
     this.generalSelected = false;
@@ -139,6 +139,7 @@ export class SettingsPage implements OnInit {
 
   public copyUUID() {
     this.clipboard.copy(this.auth.user.userId);
+    this.toastC.show('ID copiado al portapapeles');
   }
 
   async openModal(whatToDo: string) {
@@ -155,4 +156,23 @@ export class SettingsPage implements OnInit {
     return await modal.present();
   }
 
+  emailBody() {
+    return encodeURIComponent(JSON.stringify(this.logging.messages, null, '\t')); //you can specify a number instead of '\t' and that many spaces will be used for indentation..
+  }
+
+  hideTutorialCardChange() {
+    this.settings.saveHideTutorialCardChange();
+  }
+
+  autoPlayScheduleChange() {
+    this.settings.saveAutoPlaySchedule();
+  }
+
+  switchFontOnShowSchedule() {
+    this.settings.saveSwitchFontOnShowSchedule();
+  }
+
+  showConfettiOnFinish() {
+    this.settings.saveShowConfettiOnFinish();
+  }
 }

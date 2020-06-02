@@ -129,51 +129,62 @@ export class SettingsModalPage implements OnInit {
   saveEmail() {
     console.log('Saving email...');
     // console.log('Email a guardar:', this.email);
-    this.loadingC.show('');
-    this.auth.updateEmail(this.email, this.currentPassword)
-      .subscribe(async (e) => {
-        switch (e) {
-          case 'email-format':
-            this.toastC.show('El correo electrónico no es válido');
-            console.log('Formato de email no valido');
-            break;
-          case 'password-format':
-            this.toastC.show('La contraseña no cumple los requisitos de seguridad');
-            console.log('La contraseña no cumple los requisitos de seguridad');
-            break;
-          case 'credential-error':
-            console.log('Error al re-autenticar el usuario');
-            break;
-          case 'update-error':
-            this.toastC.show('Error al actualizar el correo electrónico');
-            console.log('Error al actualizar el email');
-            break;
-          case 'update-success':
-            this.toastC.show('Correo electrónico actualizado con éxito');
-            console.log('Email actualizado correctamente');
-            // Guardo el usuario en local storage
-            const user: User = {
-              email: this.email,
-              displayName: this.auth.user.displayName,
-              imageUrl: this.auth.user.imageUrl,
-              userId: this.auth.user.userId,
-              guest: this.auth.isGuest(),
-            };
-            await this.auth.saveSession(user);
-            this.auth.user.email = this.email;
-            this.dismiss();
-            break;
-          default: break;
-        }
-        this.loadingC.hide();
-      });
+    if (this.email === this.auth.user.email) {
+      this.toastC.show('El correo electrónico debe ser diferente');
+    } else {
+      this.loadingC.show('');
+      this.auth.updateEmail(this.email, this.currentPassword)
+        .subscribe(async (e) => {
+          switch (e) {
+            case 'email-format':
+              this.toastC.show('El correo electrónico no es válido');
+              console.log('Formato de email no valido');
+              break;
+            case 'password-format':
+              this.toastC.show('La contraseña no cumple los requisitos de seguridad');
+              console.log('La contraseña no cumple los requisitos de seguridad');
+              break;
+            case 'credential-error':
+              console.log('Error al re-autenticar el usuario');
+              break;
+            case 'update-error':
+              this.toastC.show('Error al actualizar el correo electrónico');
+              console.log('Error al actualizar el email');
+              break;
+            case 'update-success':
+              this.toastC.show('Correo electrónico actualizado con éxito');
+              console.log('Email actualizado correctamente');
+              // Guardo el usuario en local storage
+              const user: User = {
+                email: this.email,
+                displayName: this.auth.user.displayName,
+                imageUrl: this.auth.user.imageUrl,
+                userId: this.auth.user.userId,
+                guest: this.auth.isGuest(),
+              };
+              await this.auth.saveSession(user);
+              this.auth.user.email = this.email;
+              this.dismiss();
+              break;
+            default: break;
+          }
+          this.loadingC.hide();
+        });
+    }
   }
 
   savePassword() {
     console.log('Saving password...');
     this.loadingC.show('');
     this.auth.updatePassword(this.currentPassword, this.newPassword, this.newPasswordConfirm)
-      .subscribe((e) => {
+      .toPromise()
+      .then((e) => {
+        this.toastC.show('Contraseña actualizada con éxito');
+        console.log('Contraseña actualizada correctamente');
+        this.dismiss();
+      })
+      .catch((e) => {
+        console.log(e);
         switch (e) {
           case 'password-format':
             this.toastC.show('La contraseña no cumple los requisitos de seguridad');
@@ -184,19 +195,17 @@ export class SettingsModalPage implements OnInit {
             console.log('Las contraseñas no coinciden');
             break;
           case 'credential-error':
+            this.toastC.show('Error en las credenciales');
             console.log('Error al re-autenticar el usuario');
             break;
           case 'update-error':
             this.toastC.show('Error al actualizar la contraseña');
             console.log('Error al actualizar la contraseña');
             break;
-          case 'update-success':
-            this.toastC.show('Contraseña actualizada con éxito');
-            console.log('Contraseña actualizada correctamente');
-            this.dismiss();
-            break;
           default: break;
         }
+      })
+      .finally(() => {
         this.loadingC.hide();
       });
   }
@@ -227,20 +236,24 @@ export class SettingsModalPage implements OnInit {
 
   saveAvatar() {
     console.log('Updating avatar...');
-    this.loadingC.show('');
-    this.userS.uploadImage(this.auth.user.userId, this.newAvatarToUpload)
-      .then((snapshot) => {
-        console.log(snapshot);
-        this.getAvatarURL();
-        console.log('Image successfully added');
-        this.toastC.show('Imagen actualizada');
-        this.dismiss();
-      })
-      .catch((error) => {
-        console.log(error);
-        this.toastC.show('Ha ocurrido un error al actualizar el avatar');
-      })
-      .finally(() => this.loadingC.hide());
+    if (this.newAvatarToUpload) {
+      this.loadingC.show('');
+      this.userS.uploadImage(this.auth.user.userId, this.newAvatarToUpload)
+        .then((snapshot) => {
+          console.log(snapshot);
+          this.getAvatarURL();
+          console.log('Image successfully added');
+          this.toastC.show('Imagen actualizada');
+          this.dismiss();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.toastC.show('Ha ocurrido un error al actualizar el avatar');
+        })
+        .finally(() => this.loadingC.hide());
+    } else {
+      this.toastC.show('Primero debes subir una imagen');
+    }
   }
 
   async deleteUser() {
@@ -283,7 +296,7 @@ export class SettingsModalPage implements OnInit {
               this.dismiss();
               this.auth.logout()
                 .then(() => {
-                  this.toastC.show('Sesión cerrada');
+                  // this.toastC.show('Sesión cerrada');
                   this.router.navigate(['/home'])
                     .then(() => {
                       this.loadingC.hide();

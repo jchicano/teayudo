@@ -2,8 +2,6 @@ import { AuthService } from './../services/auth.service';
 import { LoginModalPage } from './../modals/login-modal/login-modal.page';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DefaultAlertModule } from './../custom-modules/default-alert/default-alert.module';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, Platform, AlertController, ModalController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
@@ -48,8 +46,6 @@ export class TutorialSlidesPage implements OnInit {
   private subscription: Subscription;
 
   constructor(
-    private screenOrientation: ScreenOrientation,
-    private alertD: DefaultAlertModule,
     private platform: Platform,
     private alertController: AlertController,
     private router: Router,
@@ -58,10 +54,6 @@ export class TutorialSlidesPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('Fijando orientacion a Portrait...');
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT)
-      .then((e) => console.log('Fijada orientacion Portrait: ' + e))
-      .catch((e) => console.log('Error al fijar orientacion: ' + e));
   }
 
 
@@ -142,8 +134,10 @@ export class TutorialSlidesPage implements OnInit {
   async showModalLogin() {
     const modal = await this.modalController.create({
       component: LoginModalPage,
+      animated: true,
       swipeToClose: true,
-      mode: 'ios'
+      mode: 'ios',
+      cssClass: 'roundedModal'
     });
     return await modal.present();
   }
