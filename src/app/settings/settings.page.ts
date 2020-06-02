@@ -167,4 +167,12 @@ export class SettingsPage implements OnInit {
   autoPlayScheduleChange() {
     this.settings.saveAutoPlaySchedule();
   }
+
+  switchFontOnShowSchedule() {
+    this.settings.saveSwitchFontOnShowSchedule();
+  }
+
+  showConfettiOnFinish() {
+    this.settings.saveShowConfettiOnFinish();
+  }
 }

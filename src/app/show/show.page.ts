@@ -25,7 +25,7 @@ export class ShowPage implements OnInit {
   public scrollCurrentValue: number;//
   public scrollMaxValue: number;//
   public executeFirstTimeOnly: boolean;
-  public scheduleRunning: boolean
+  public scheduleRunning: boolean;
   public currentIndex: number;
   public displayTime: string[];
   public autoScroll: boolean;
@@ -157,7 +157,10 @@ export class ShowPage implements OnInit {
         this.scheduleRunning = false;
         console.log('Fin del horario');
         this.endedSchedule = true;
-        this.celebrate.showOnce();
+        if (this.settings.showConfettiOnFinish) {
+          console.log('Saltando confetti via settings');
+          this.celebrate.showOnce();
+        }
       }
       if (this.cardList[this.currentIndex] && this.cardList[this.currentIndex].completed !== true) {
         this.cardsTimeNew[this.currentIndex] -= 1000;
