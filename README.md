@@ -30,38 +30,38 @@ _Nota: Ver [Cómo Evitar Errores de Permisos](https://docs.npmjs.com/getting-sta
 
 | Material Design  |
 | -----------------|
-| ![Android Menu](/resources/screenshots/android-menu.png) |
+| <div align="center"><img align="center" src="resources/screenshots/android-menu.png" width="40%"></div> |
 
 
 ### [Página principal](https://github.com/jchicano/teayudo/blob/master/src/app/home/home.page.html)
 
 | Material Design  |
 | -----------------|
-| ![Android Main Page](/resources/screenshots/android-menu.png) |
+| <div align="center"><img align="center" src="/resources/screenshots/android-menu.png" width="40%"></div> |
 
 ### [Listado de alumnos](https://github.com/jchicano/teayudo/blob/master/src/app/list/list.page.html)
 
 | Material Design  |
 | -----------------|
-| ![Android List Page](/resources/screenshots/android-list.png) |
+| <div align="center"><img align="center" src="/resources/screenshots/android-list.png" width="40%"></div> |
 
 ### [Crear horario](https://github.com/jchicano/teayudo/blob/master/src/app/create-schedule/create-schedule.page.html)
 
 | Material Design  |
 | -----------------|
-| ![Android Create Page](/resources/screenshots/android-create.png) |
+| <div align="center"><img align="center" src="/resources/screenshots/android-create.png" width="40%"></div> |
 
 ### [Mostrar horario](https://github.com/jchicano/teayudo/blob/master/src/app/show/show.page.html)
 
 | Material Design  |
 | -----------------|
-| ![Android Show Page](/resources/screenshots/android-show.png) |
+| <div align="center"><img align="center" src="/resources/screenshots/android-show.png" width="40%"></div> |
 
 ### [Página de configuración](https://github.com/jchicano/teayudo/blob/master/src/app/settings/settings.page.html)
 
 | Material Design  |
 | -----------------|
-| ![Android Settings Page](/resources/screenshots/android-settings.png) |
+| <div align="center"><img align="center" src="/resources/screenshots/android-settings.png" width="40%"></div> |
 
 ## Despliegue
 
