@@ -2,7 +2,6 @@ import { AuthService } from './../services/auth.service';
 import { CustomToastModule } from './../custom-modules/custom-toast/custom-toast.module';
 import { CustomLoadingModule } from './../custom-modules/custom-loading/custom-loading.module';
 import { Subscription } from 'rxjs';
-import { CardService } from './../services/card.service';
 import { StudentModalPage } from './../modals/student-modal/student-modal.page';
 import { StudentService } from './../services/student.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -25,7 +24,6 @@ export class ListPage implements OnInit {
 
   constructor(
     private studentS: StudentService,
-    private cardS: CardService,
     private modalController: ModalController,
     private toastC: CustomToastModule,
     private navCtrl: NavController,
@@ -35,7 +33,7 @@ export class ListPage implements OnInit {
   ) {
     this.showSpinner = false; // Se usaba para mostrar el componente spinner
     this.studentsAvailable = false;
-    this.searchText = "";
+    this.searchText = '';
   }
 
   ngOnInit() { }
@@ -92,22 +90,6 @@ export class ListPage implements OnInit {
   deleteStudent(currentStudent: any) {
     console.log('deleteStudent');
     this.list.closeSlidingItems();
-    // this.cardS.deleteCard(currentStudent.collectionId)
-    //   .then(() => {
-    //     console.log('Horario del alumno eliminado');
-    //     this.studentS.deleteStudent(currentStudent.id)
-    //       .then(() => {
-    //         console.log('Alumno eliminado');
-    //         this.toastC.show('Alumno eliminado');
-    //         this.refresh();
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     this.studentS.deleteStudentObs(currentStudent.id, currentStudent.collectionId)
       .subscribe((e) => {
         switch (e) {
@@ -141,12 +123,19 @@ export class ListPage implements OnInit {
         component: StudentModalPage,
         componentProps: {
           studentObject: currentStudent
-        }
+        },
+        animated: true,
+        swipeToClose: true,
+        mode: 'ios',
+        cssClass: 'roundedModal'
       });
-    }
-    else { // Se crea alumno, no se pasan parametros
+    } else { // Se crea alumno, no se pasan parametros
       modal = await this.modalController.create({
-        component: StudentModalPage
+        component: StudentModalPage,
+        animated: true,
+        swipeToClose: true,
+        mode: 'ios',
+        cssClass: 'roundedModal'
       });
     }
     modal.onWillDismiss().then((dataReturned) => {

@@ -45,14 +45,12 @@
   <ion-grid class="ion-text-center">
     <ion-row class="ion-margin-bottom">
       <ion-col size="12">
-        <ion-button (click)="toggleAutoScroll()" color="customtwo" shape="round" [fill]="autoScroll? 'solid':'outline'">
-          <span *ngIf="autoScroll">
-            <ion-icon name="hand"></ion-icon>&nbsp;Manual
-          </span>
-          <span *ngIf="!autoScroll">
-            <ion-icon name="play"></ion-icon>&nbsp;Automático
-          </span>
-        </ion-button>
+        <ion-list>
+          <ion-item lines="none">
+            <ion-label>Scroll automático</ion-label>
+            <ion-toggle color="customfour" [(ngModel)]="autoScroll"></ion-toggle>
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>

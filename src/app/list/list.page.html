@@ -20,9 +20,9 @@
   <ion-text *ngIf="!studentsAvailable && !showSpinner" color="medium" class="center-middle-screen ion-text-center">No
     hay alumnos creados. Pulsa en el botón para añadirlos</ion-text>
   <ion-list #list>
-    <ion-item-sliding *ngFor="let student of studentList | studentFilter: searchText: 'fullname'">
-      <ion-item-options side="start" (ionSwipe)="editStudent(student)">
-        <ion-item-option expandable (click)="editStudent(student)">
+    <ion-item-sliding #student.id *ngFor="let student of studentList | studentFilter: searchText: 'fullname'; let i = index">
+      <ion-item-options side="start">
+        <ion-item-option (click)="editStudent(student)">
           <ion-icon slot="icon-only" name="create"></ion-icon>
         </ion-item-option>
       </ion-item-options>
@@ -32,8 +32,8 @@
         </ion-avatar>
         {{ student.fullname }}
       </ion-item>
-      <ion-item-options side="end" (ionSwipe)="deleteStudent(student)">
-        <ion-item-option expandable color="danger" (click)="deleteStudent(student)">
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteStudent(student)">
           <ion-icon slot="icon-only" name="trash"></ion-icon>
         </ion-item-option>
       </ion-item-options>

@@ -1,3 +1,4 @@
+import { SettingsService } from './../services/settings.service';
 import { CelebrateModule } from './../custom-modules/celebrate/celebrate.module';
 import { Platform, AlertController } from '@ionic/angular';
 import { Card } from '../model/Card';
@@ -24,17 +25,19 @@ export class ShowPage implements OnInit {
   public scrollCurrentValue: number;//
   public scrollMaxValue: number;//
   public executeFirstTimeOnly: boolean;
-  public scheduleRunning: boolean
+  public scheduleRunning: boolean;
   public currentIndex: number;
   public displayTime: string[];
   public autoScroll: boolean;
   public scrollAutomaticValue: number; // Almaceno el scroll que tendra la barra
   public endedSchedule: boolean;
+  private interval: any;
 
   constructor(
     private router: Router,
     private platform: Platform,
-    private celebrate: CelebrateModule
+    private celebrate: CelebrateModule,
+    private settings: SettingsService
   ) {
     this.cardList = [];
     this.cardsTime = [];
@@ -60,9 +63,9 @@ export class ShowPage implements OnInit {
     this.cardList.forEach((card, index) => {
       console.log('Card ' + index + ':');
       // console.log('Duration RAW: ' + card.duration);
-      let onlyTime = card.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
+      const onlyTime = card.duration.split('T').pop().split('+')[0]; // Separo las horas hh:mm
       // console.log('Duration time: ' + onlyTime);
-      var timeMillis = Number(onlyTime.split(':')[0]) * 60 + Number(onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
+      const timeMillis = (+onlyTime.split(':')[0] * 60 + +onlyTime.split(':')[1]) * 60 * 1000; // Convierto las horas a milisegundos
       console.log('Duration millis: ' + timeMillis);
       this.cardsTime.push(timeMillis);
       this.cardsTimeNew.push(timeMillis);
@@ -84,6 +87,16 @@ export class ShowPage implements OnInit {
     }
   }
 
+  ionViewWillLeave() {
+    clearInterval(this.interval);
+  }
+
+  ionViewDidEnter() {
+    if (this.settings.autoPlaySchedule) {
+      this.comenzarHorario();
+    }
+  }
+
   scrollInfo() {
     // let element = document.querySelector('.scroll');
     console.log(this.scroll.nativeElement);
@@ -97,7 +110,7 @@ export class ShowPage implements OnInit {
     console.log('Running Progress Bar...');
     let counter = 0;
     this.currentIndex = 0;
-    let interval = setInterval(() => {
+    this.interval = setInterval(() => {
 
       let ratio = undefined;
       this.cardList.forEach((card, index) => {
@@ -140,11 +153,14 @@ export class ShowPage implements OnInit {
       }
       else { // Se ha llegado al maximo del progreso
         this.progressBarMargin = 0; // Lo pongo a 0 para que se vea perfectamente completa la barra
-        clearInterval(interval); // Paro el intervalo
+        clearInterval(this.interval); // Paro el intervalo
         this.scheduleRunning = false;
         console.log('Fin del horario');
         this.endedSchedule = true;
-        this.celebrate.showOnce();
+        if (this.settings.showConfettiOnFinish) {
+          console.log('Saltando confetti via settings');
+          this.celebrate.showOnce();
+        }
       }
       if (this.cardList[this.currentIndex] && this.cardList[this.currentIndex].completed !== true) {
         this.cardsTimeNew[this.currentIndex] -= 1000;
@@ -167,10 +183,6 @@ export class ShowPage implements OnInit {
     }, 1000);
   }
 
-  toggleAutoScroll() {
-    this.autoScroll = !this.autoScroll;
-  }
-
   comenzarHorario() {
     console.log('Comenzando horario...');
     this.scheduleRunning = true;
@@ -183,19 +195,6 @@ export class ShowPage implements OnInit {
     if (ms > 0) return new Date(ms).toISOString().slice(11, 19);
     return '00:00:00';
   }
-
-  timerForCard(index: number) {
-    console.log('Creando intervalo para tarjeta indice ' + index);
-    let interval = setInterval(() => {
-      this.cardsTimeNew[index] -= 1000;
-      if (this.cardsTimeNew[index] <= 0) {
-        clearInterval(interval);
-        this.cardsTimeNew[index] = 0;
-        console.log('Intervalo de tarjeta indice ' + index + ' terminado');
-      }
-    }, 1000);
-  }
-
 
   // TODO quitar variables repetidas y/o inutiles
 }

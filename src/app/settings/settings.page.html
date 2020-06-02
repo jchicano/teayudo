@@ -64,6 +64,22 @@
     modificar tus datos debes iniciar sesión</ion-text>
 
   <ion-list *ngIf="generalSelected">
+    <ion-item>
+      <ion-label>Ocultar tarjeta del tutorial</ion-label>
+      <ion-toggle color="customfour" [(ngModel)]="settings.hideTutorialCard" (ionChange)="hideTutorialCardChange()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Reproducir horario al cargar</ion-label>
+      <ion-toggle color="customfour" [(ngModel)]="settings.autoPlaySchedule" (ionChange)="autoPlayScheduleChange()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Cambiar fuente al reproducir horario</ion-label>
+      <ion-toggle color="customfour" [(ngModel)]="settings.switchFontOnShowSchedule" (ionChange)="switchFontOnShowSchedule()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mostrar confeti al finalizar horario</ion-label>
+      <ion-toggle color="customfour" [(ngModel)]="settings.showConfettiOnFinish" (ionChange)="showConfettiOnFinish()"></ion-toggle>
+    </ion-item>
     <!-- <ion-item>
       <ion-icon name="warning"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <ion-label>Modo depuración</ion-label>
@@ -71,7 +87,12 @@
     </ion-item> -->
   </ion-list>
 
-  <ion-list *ngIf="aboutSelected">
+  <ion-list *ngIf="aboutSelected" class="remove-list-padding">
+    <ion-item-divider color="light">
+      <ion-label>
+        Información
+      </ion-label>
+    </ion-item-divider>
     <ion-item (click)="enableDebugMode()" button detail="false">
       <ion-label>Versión</ion-label>
       <ion-note color="medium" slot="end">{{ this.settings.version }}</ion-note>
@@ -80,6 +101,36 @@
       <ion-label>UUID del dispositivo</ion-label>
       <ion-note color="medium" slot="end">{{ this.auth.user.userId }}</ion-note>
     </ion-item>
+    <ion-item-divider color="light">
+      <ion-label>
+        Contacto
+      </ion-label>
+    </ion-item-divider>
+    <ion-item href="mailto:jesus.d.chicano@gmail.com?&subject=TEAyudo%20logs&body={{ emailBody() }}" button
+      detail="false">
+      <ion-label class="ion-text-wrap">
+        Informar sobre errores
+      </ion-label>
+      <ion-icon name="bug" slot="end"></ion-icon>
+    </ion-item>
+    <ion-item href="mailto:jesus.d.chicano@gmail.com" button detail="false">
+      <ion-label class="ion-text-wrap">
+        ¿Alguna duda o sugerencia?
+      </ion-label>
+      <ion-icon name="mail" slot="end"></ion-icon>
+    </ion-item>
+    <ion-item lines="none">
+
+    </ion-item>
   </ion-list>
 
 </ion-content>
+
+<ion-footer *ngIf="aboutSelected" class="ion-no-border">
+  <ion-toolbar>
+    <span>
+      Made with <ion-icon class="pulse" name="heart"></ion-icon> by <a href="https://jchicano.github.io/"
+        target="_blank">Jesús Chicano</a>
+    </span>
+  </ion-toolbar>
+</ion-footer>
