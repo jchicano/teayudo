@@ -37,7 +37,7 @@ _Nota: Ver [Cómo Evitar Errores de Permisos](https://docs.npmjs.com/getting-sta
 
 | Material Design  |
 | -----------------|
-| <div align="center"><img align="center" src="/resources/screenshots/android-menu.png" width="40%"></div> |
+| <div align="center"><img align="center" src="/resources/screenshots/android-home.png" width="40%"></div> |
 
 ### [Listado de alumnos](https://github.com/jchicano/teayudo/blob/master/src/app/list/list.page.html)
 
